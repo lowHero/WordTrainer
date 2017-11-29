@@ -1,0 +1,90 @@
+ext {
+    androidMinSdkVersion = 15
+    androidTargetSdkVersion = 19
+    androidCompileSdkVersion = 26
+    androidBuildToolsVersion = '26.0.2'
+
+    androidSupportVersion = '26.1.0'
+    androidConstraintLayoutVersion = '1.0.2'
+
+    androidArchVersion = "1.0.0"
+
+    gsonVersion = '2.3'
+    daggerVersion = '2.8'
+    playServicesVersion = '11.4.2'
+    mapsUtilsVersion = '0.5'
+
+    rendererVersion = '3.3.3'
+    commonsIOVersion = '2.4'
+    dotProgressBarVersion = '1.1'
+    powerMenuVersion = '1.0.2'
+
+    butterKnifeVersion = '8.5.1'
+    okHttpVersion = '3.4.1'
+    retrofitVersion = '2.2.0'
+
+    powerMockVersion = '1.6.4'
+    dexmakerVersion = '1.0'
+    mockitoVersion = '1.9.5'
+    espressoVersion = '2.0'
+    testingSupportLibVersion = '0.1'
+    junitVersion = '4.12'
+    assertjVersion = '1.7.1'
+    robolectricVersion = '3.1.1'
+
+    globalDependencies = [
+            androidSupportAppcompat   : "com.android.support:appcompat-v7:${androidSupportVersion}",
+            androidSupportV4          : "com.android.support:support-v4:${androidSupportVersion}",
+            androidSupportDesign      : "com.android.support:design:${androidSupportVersion}",
+            androidSupportVector      : "com.android.support:support-vector-drawable:${androidSupportVersion}",
+            androidSupportAnnotations : "com.android.support:support-annotations:${androidSupportVersion}",
+
+            androidSupportRecyclerView: "com.android.support:recyclerview-v7:${androidSupportVersion}",
+            androidSupportCardView    : "com.android.support:cardview-v7:${androidSupportVersion}",
+            androidConstraintLayout   : "com.android.support.constraint:constraint-layout:${androidConstraintLayoutVersion}",
+
+            androidArchRoom           : "android.arch.persistence.room:runtime:${androidArchVersion}",
+
+            gson                      : "com.google.code.gson:gson:${gsonVersion}",
+            daggerCompiler            : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger                    : "com.google.dagger:dagger:${daggerVersion}",
+            playServiceBase           : "com.google.android.gms:play-services-base:${playServicesVersion}",
+            playServiceMaps           : "com.google.android.gms:play-services-maps:${playServicesVersion}",
+            playServiceLocation       : "com.google.android.gms:play-services-location:${playServicesVersion}",
+            mapsUtils                 : "com.google.maps.android:android-maps-utils:${mapsUtilsVersion}",
+
+            renderers                 : "com.github.pedrovgs:renderers:${rendererVersion}",
+            commonsIO                 : "commons-io:commons-io:${commonsIOVersion}",
+            dotProgressBar            : "com.github.silvestrpredko:dot-progress-bar:${dotProgressBarVersion}",
+            powerMenu                 : "com.github.skydoves:powermenu:${powerMenuVersion}",
+
+            butterKnifeCompiler       : "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
+            butterKnife               : "com.jakewharton:butterknife:${butterKnifeVersion}",
+            okHttp                    : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
+            okHttpLogging             : "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",
+            retrofit                  : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitGson              : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
+
+            javaxAnnotation           : "javax.annotation:jsr250-api:1.0",
+            javaxInject               : "javax.inject:javax.inject:1",
+    ]
+
+    testDependencies = [
+            powermockModuleJUnit    : "org.powermock:powermock-module-junit4:${powerMockVersion}",
+            powermockModuleJUnitRule: "org.powermock:powermock-module-junit4-rule:${powerMockVersion}",
+            powermockApiMockito     : "org.powermock:powermock-api-mockito:${powerMockVersion}",
+            powermockClassloading   : "org.powermock:powermock-classloading-xstream:${powerMockVersion}",
+            dexmaker                : "com.google.dexmaker:dexmaker:${dexmakerVersion}",
+            dexmakerMockito         : "com.google.dexmaker:dexmaker-mockito:${dexmakerVersion}",
+            mockito                 : "org.mockito:mockito-core:${mockitoVersion}",
+            espresso                : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+            testingSupportLib       : "com.android.support.test:testing-support-lib:${testingSupportLibVersion}",
+            junit                   : "junit:junit:${junitVersion}",
+            assertj                 : "org.assertj:assertj-core:${assertjVersion}",
+            robolectric             : "org.robolectric:robolectric:${robolectricVersion}",
+    ]
+
+    developmentDependencies = [
+            leakCanary: "com.squareup.leakcanary:leakcanary-android:1.3.1",
+    ]
+}

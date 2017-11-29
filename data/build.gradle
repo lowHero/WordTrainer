@@ -1,0 +1,33 @@
+apply plugin: 'com.android.library'
+
+android {
+    def config = rootProject.ext
+    compileSdkVersion config["androidCompileSdkVersion"]
+
+    defaultConfig {
+        minSdkVersion config["androidMinSdkVersion"]
+        targetSdkVersion config["androidTargetSdkVersion"]
+
+        versionCode config["versionCode"]
+        versionName config["versionName"]
+        testInstrumentationRunner config["testInstrumentationRunner"]
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    def globalDependencies = rootProject.ext.globalDependencies
+    implementation globalDependencies["androidArchRoom"]
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}

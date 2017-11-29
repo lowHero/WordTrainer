@@ -1,0 +1,32 @@
+apply from: 'dependencies.gradle'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
+}
+
+ext {
+    applicationId = 'com.nz2dev.wordtrainer'
+    versionCode = 1
+    versionName = "1.0"
+    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+    testApplicationId = 'com.nz2dev.wordtrainer.test'
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
