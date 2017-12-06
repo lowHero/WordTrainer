@@ -23,6 +23,9 @@ ext {
     okHttpVersion = '3.4.1'
     retrofitVersion = '2.2.0'
 
+    rxJavaVersion = '2.1.7'
+    rxAndroidVersion = '2.0.1'
+
     powerMockVersion = '1.6.4'
     dexmakerVersion = '1.0'
     mockitoVersion = '1.9.5'
@@ -64,6 +67,9 @@ ext {
             okHttpLogging             : "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",
             retrofit                  : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             retrofitGson              : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
+
+            rxJava                    : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+            rxAndroid                 : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
 
             javaxAnnotation           : "javax.annotation:jsr250-api:1.0",
             javaxInject               : "javax.inject:javax.inject:1",

@@ -21,13 +21,33 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':domain')
+    implementation project(path: ':data')
 
     def globalDependencies = rootProject.ext.globalDependencies
     implementation globalDependencies["androidSupportAppcompat"]
+    implementation globalDependencies["androidSupportDesign"]
+    implementation globalDependencies["androidSupportRecyclerView"]
+    implementation globalDependencies["androidSupportCardView"]
+    implementation globalDependencies["dagger"]
+    implementation globalDependencies["renderers"]
+    implementation globalDependencies["butterKnife"]
+    implementation globalDependencies["rxJava"]
+    implementation globalDependencies["rxAndroid"]
+
+    annotationProcessor globalDependencies["daggerCompiler"]
+    annotationProcessor globalDependencies["butterKnifeCompiler"]
+
+    def developmentDependencies = rootProject.ext.developmentDependencies
+    implementation developmentDependencies["leakCanary"]
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
