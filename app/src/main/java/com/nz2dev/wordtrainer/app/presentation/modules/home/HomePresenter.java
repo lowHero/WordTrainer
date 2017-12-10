@@ -1,6 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.home;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
+import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.domain.interactors.TrainerInteractor;
 import com.nz2dev.wordtrainer.domain.models.Word;
@@ -18,10 +19,12 @@ import io.reactivex.observers.DisposableSingleObserver;
 public class HomePresenter extends BasePresenter<HomeView> {
 
     private TrainerInteractor trainer;
+    private AccountPreferences accountPreferences;
 
     @Inject
-    public HomePresenter(TrainerInteractor trainer) {
+    public HomePresenter(TrainerInteractor trainer, AccountPreferences accountPreferences) {
         this.trainer = trainer;
+        this.accountPreferences = accountPreferences;
     }
 
     @Override
@@ -38,5 +41,10 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 // show errors
             }
         });
+    }
+
+    public void signOutSelected() {
+        accountPreferences.signOut();
+        getView().navigateAccount();
     }
 }

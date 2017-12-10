@@ -30,8 +30,8 @@ public class ExecutionManager {
         }
 
         Single<T> signedObservable = observable
-                .subscribeOn(backgroundExecutor.getSubscribeScheduler())
-                .observeOn(uiExecutor.getObserveScheduler());
+                .subscribeOn(backgroundExecutor.getScheduler())
+                .observeOn(uiExecutor.getScheduler());
 
         compositeDisposable.add(signedObservable.subscribeWith(observer));
     }

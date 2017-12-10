@@ -6,6 +6,11 @@ dependencies {
     def globalDependencies = rootProject.ext.globalDependencies
     implementation globalDependencies["javaxInject"]
     implementation globalDependencies["rxJava"]
+
+    def testDependencies = rootProject.ext.testDependencies
+    testImplementation testDependencies["junit"]
+    testImplementation testDependencies["assertj"]
+    testImplementation testDependencies["mockito"]
 }
 
 sourceCompatibility = "1.8"

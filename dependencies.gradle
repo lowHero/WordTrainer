@@ -29,11 +29,12 @@ ext {
     powerMockVersion = '1.6.4'
     dexmakerVersion = '1.0'
     mockitoVersion = '1.9.5'
-    espressoVersion = '2.0'
+    testRunnerVersion = '1.0.1'
+    espressoVersion = '3.0.1'
     testingSupportLibVersion = '0.1'
     junitVersion = '4.12'
     assertjVersion = '1.7.1'
-    robolectricVersion = '3.1.1'
+    robolectricVersion = '3.5.1'
 
     globalDependencies = [
             androidSupportAppcompat   : "com.android.support:appcompat-v7:${androidSupportVersion}",
@@ -47,6 +48,7 @@ ext {
             androidConstraintLayout   : "com.android.support.constraint:constraint-layout:${androidConstraintLayoutVersion}",
 
             androidArchRoom           : "android.arch.persistence.room:runtime:${androidArchVersion}",
+            androidArchRoomCompiler   : "android.arch.persistence.room:compiler:${androidArchVersion}",
 
             gson                      : "com.google.code.gson:gson:${gsonVersion}",
             daggerCompiler            : "com.google.dagger:dagger-compiler:${daggerVersion}",
@@ -80,11 +82,15 @@ ext {
             powermockModuleJUnitRule: "org.powermock:powermock-module-junit4-rule:${powerMockVersion}",
             powermockApiMockito     : "org.powermock:powermock-api-mockito:${powerMockVersion}",
             powermockClassloading   : "org.powermock:powermock-classloading-xstream:${powerMockVersion}",
+
             dexmaker                : "com.google.dexmaker:dexmaker:${dexmakerVersion}",
             dexmakerMockito         : "com.google.dexmaker:dexmaker-mockito:${dexmakerVersion}",
-            mockito                 : "org.mockito:mockito-core:${mockitoVersion}",
-            espresso                : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+
+            testRunner              : "com.android.support.test:runner:${testRunnerVersion}",
+            espressoCore            : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
             testingSupportLib       : "com.android.support.test:testing-support-lib:${testingSupportLibVersion}",
+
+            mockito                 : "org.mockito:mockito-core:${mockitoVersion}",
             junit                   : "junit:junit:${junitVersion}",
             assertj                 : "org.assertj:assertj-core:${assertjVersion}",
             robolectric             : "org.robolectric:robolectric:${robolectricVersion}",

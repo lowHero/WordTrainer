@@ -8,8 +8,18 @@ import java.util.Collection;
  * Created by nz2Dev on 01.12.2017
  */
 public interface AuthorizationView {
-    void setupUserNameEditor(String userNameText);
+
     void showRecentlyAccounts(Collection<Account> accounts);
     void showAccountCreation();
+    void showProgressIndicator(boolean visibility);
+    void showError(String message);
+
+    void showPasswordInput();
+    void showAccountHasPassword(boolean has);
+
+    void setupCreationButton(boolean enable);
+    void setupLoginButton(boolean enable);
+    void setupUserNameEditor(String userNameText);
     void navigateHome();
+
 }

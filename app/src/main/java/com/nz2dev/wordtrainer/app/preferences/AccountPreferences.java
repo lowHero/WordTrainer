@@ -3,8 +3,6 @@ package com.nz2dev.wordtrainer.app.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.nz2dev.wordtrainer.domain.models.Credentials;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -27,10 +25,10 @@ public class AccountPreferences {
         sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
     }
 
-    public void signIn(Credentials credentials) {
+    public void signIn(String userName, String password) {
         sharedPreferences.edit()
-                .putString(KEY_LOGIN, credentials.getLogin())
-                .putString(KEY_PASSWORD, credentials.getPassword())
+                .putString(KEY_LOGIN, userName)
+                .putString(KEY_PASSWORD, password)
                 .putBoolean(KEY_SIGN_IN, true)
                 .apply();
     }

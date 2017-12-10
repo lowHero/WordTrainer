@@ -18,7 +18,7 @@ public class AndroidUIExecutor implements UIExecutor {
     public AndroidUIExecutor() {}
 
     @Override
-    public Scheduler getObserveScheduler() {
+    public Scheduler getScheduler() {
         return AndroidSchedulers.mainThread();
     }
 }

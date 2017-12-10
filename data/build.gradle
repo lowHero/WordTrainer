@@ -34,7 +34,12 @@ dependencies {
     implementation globalDependencies["javaxInject"]
     implementation globalDependencies["rxJava"]
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    annotationProcessor globalDependencies["androidArchRoomCompiler"]
+
+    def testDependencies = rootProject.ext.testDependencies
+    testImplementation testDependencies["junit"]
+    testImplementation testDependencies["assertj"]
+    testImplementation testDependencies["robolectric"]
+    androidTestImplementation testDependencies["testRunner"]
+    androidTestImplementation testDependencies["espressoCore"]
 }

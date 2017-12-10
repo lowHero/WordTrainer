@@ -1,7 +1,8 @@
 package com.nz2dev.wordtrainer.domain.repositories;
 
 import com.nz2dev.wordtrainer.domain.models.Account;
-import com.nz2dev.wordtrainer.domain.models.Credentials;
+
+import java.util.Collection;
 
 import io.reactivex.Single;
 
@@ -10,7 +11,9 @@ import io.reactivex.Single;
  */
 public interface AccountRepository {
 
-    Single<Boolean> addAccount(Credentials account);
-    Single<Account> getAccount(Credentials credentials);
+    Single<Boolean> addAccount(Account account, String password);
+    Single<Account> getAccount(String name, String password);
+    Single<Account> getAccount(String name);
+    Single<Collection<Account>> getAccounts(String... names);
 
 }

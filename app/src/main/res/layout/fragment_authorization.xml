@@ -1,71 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rl_auth_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:id="@+id/rl_auth_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_recently_user_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/et_user_name"
+            android:layout_alignEnd="@+id/btn_login_account"
+            android:layout_alignRight="@+id/btn_login_account"
+            android:paddingBottom="16dp"
+            android:paddingLeft="64dp"
+            android:paddingRight="64dp"
+            android:paddingTop="16dp"
+            app:reverseLayout="true"
+            app:stackFromEnd="true"
+            tools:listitem="@layout/include_account_short_prompt">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/btn_login_account"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/et_user_name"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="Go" />
+
+        <EditText
+            android:id="@+id/et_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            tools:text="some name" />
+
+        <TextView
+            android:id="@+id/tv_prompt_create_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_user_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:text="Not a member yet? Enter name and hit NEW" />
+
+        <Button
+            android:id="@+id/btn_start_create_account"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/et_user_name"
+            android:layout_alignBottom="@+id/et_user_name"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="New" />
+
+        <ImageView
+            android:id="@+id/img_locked_indicator"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/btn_login_account"
+            android:layout_toStartOf="@+id/btn_login_account"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_locked"
+            tools:visibility="visible" />
+
+    </RelativeLayout>
+
     <FrameLayout
-        android:id="@+id/fl_registration_placeholder"
+        android:id="@+id/fl_progress_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="64dp">
+        android:background="@color/backgroundTransparent"
+        android:visibility="gone">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
     </FrameLayout>
-
-    <EditText
-        android:id="@+id/et_user_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="64dp"
-        android:layout_marginRight="64dp"
-        tools:text="some name" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_recently_user_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/et_user_name"
-        android:layout_alignEnd="@+id/btn_login_account"
-        android:layout_alignRight="@+id/btn_login_account"
-        android:paddingBottom="16dp"
-        android:paddingLeft="64dp"
-        android:paddingRight="64dp"
-        android:paddingTop="16dp"
-        app:reverseLayout="true"
-        app:stackFromEnd="true"
-        tools:listitem="@layout/include_account_short_prompt">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/btn_login_account"
-        android:layout_width="64dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/et_user_name"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:text="Go" />
-
-    <TextView
-        android:id="@+id/tv_prompt_create_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_user_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:text="Not a member yet? Enter name and hit NEW" />
-
-    <Button
-        android:id="@+id/btn_start_create_account"
-        android:layout_width="64dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/et_user_name"
-        android:layout_alignBottom="@+id/et_user_name"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="New" />
-
-</RelativeLayout>
+</FrameLayout>

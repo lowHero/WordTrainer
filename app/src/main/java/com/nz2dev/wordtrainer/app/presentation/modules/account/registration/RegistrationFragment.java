@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountActivity;
+import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountNavigation;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 
 import javax.inject.Inject;
@@ -25,9 +27,15 @@ import butterknife.OnClick;
  */
 public class RegistrationFragment extends DialogFragment implements RegistrationView {
 
+    private static final String KEY_TYPED_NAME = "TypedName";
+
     public static RegistrationFragment newInstance(String typedName) {
-        // TODO add typedName to bundle
-        return new RegistrationFragment();
+        Bundle arguments = new Bundle();
+        arguments.putString(KEY_TYPED_NAME, typedName);
+
+        RegistrationFragment fragment = new RegistrationFragment();
+        fragment.setArguments(arguments);
+        return fragment;
     }
 
     @BindView(R.id.et_registration_name)
@@ -40,6 +48,7 @@ public class RegistrationFragment extends DialogFragment implements Registration
     EditText regPasswordEditor;
 
     @Inject RegistrationPresenter presenter;
+    @Inject AccountNavigation accountNavigation;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +62,7 @@ public class RegistrationFragment extends DialogFragment implements Registration
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_registration, container, false);
         ButterKnife.bind(this, root);
-        // TODO pull typedName from bundle and fill edit text as it typedName and request focus
+        setRegNameEditorFromBundle();
         return root;
     }
 
@@ -77,12 +86,22 @@ public class RegistrationFragment extends DialogFragment implements Registration
     @OnClick(R.id.btn_create_account)
     public void onCreateClick() {
         String name = regNameEditor.getText().toString();
-        String password = needPasswordChecker.isChecked() ? regPasswordEditor.getText().toString() : null;
+        String password = regPasswordEditor.getText().toString();
         presenter.register(name, password);
+    }
+
+    @Override
+    public void showRegistrationFailed(String errorMessage) {
+        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void endRegistration() {
         dismiss();
+        accountNavigation.doRegistrationAttempt(true);
+    }
+
+    private void setRegNameEditorFromBundle() {
+        regNameEditor.setText(getArguments().getString(KEY_TYPED_NAME));
     }
 }

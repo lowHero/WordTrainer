@@ -1,5 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.home;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +17,16 @@ import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
  */
 public class HomeActivity extends AppCompatActivity implements HasDependencies<HomeComponent> {
 
+    public static Intent getCallingIntent(Context context) {
+        return new Intent(context, HomeActivity.class);
+    }
+
     private HomeComponent dependencies;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_default);
         dependencies = DaggerHomeComponent.builder()
                 .appComponent(DependenciesUtils.getAppDependenciesFrom(this))
                 .build();
@@ -33,4 +40,5 @@ public class HomeActivity extends AppCompatActivity implements HasDependencies<H
     public HomeComponent getDependencies() {
         return dependencies;
     }
+
 }

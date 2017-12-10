@@ -3,7 +3,7 @@ package com.nz2dev.wordtrainer.app.presentation;
 import android.app.Activity;
 
 import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountActivity;
-import com.nz2dev.wordtrainer.domain.models.Account;
+import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,7 +19,8 @@ public class Navigator {
     }
 
     public void navigateHomeFrom(Activity source) {
-        // use target static method getCallingIntent
+        // TODO perform some animation
+        source.startActivity(HomeActivity.getCallingIntent(source));
     }
 
     public void navigateAccount(Activity source) {

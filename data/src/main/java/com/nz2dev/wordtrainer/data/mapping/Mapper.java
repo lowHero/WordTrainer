@@ -1,9 +1,12 @@
 package com.nz2dev.wordtrainer.data.mapping;
 
+import android.text.TextUtils;
+
 import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
+import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
 import com.nz2dev.wordtrainer.data.ultralightmapper.UltraLightMapper;
 import com.nz2dev.wordtrainer.domain.models.Account;
-import com.nz2dev.wordtrainer.domain.models.Credentials;
+import com.nz2dev.wordtrainer.domain.models.AccountHistory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,7 +22,10 @@ public class Mapper extends UltraLightMapper {
 
     @Override
     protected void configure() {
-        bind(AccountEntity.class).to(dao -> new Account(dao.getName()));
-        bind(Credentials.class).to(model -> new AccountEntity(model.getLogin(), model.getPassword()));
+        bind(AccountEntity.class).to(dto -> new Account(dto.getId(), dto.getName(), !TextUtils.isEmpty(dto.getPassword())));
+        bind(Account.class).to(model -> new AccountEntity(model.getName()));
+
+        bind(AccountHistoryEntity.class).to(dto -> new AccountHistory(dto.getAccountName(), dto.getLoginDates()));
+        bind(AccountHistory.class).to(model -> new AccountHistoryEntity(model.getAccountName(), model.getLoginDate()));
     }
 }

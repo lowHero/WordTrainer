@@ -10,7 +10,9 @@ public abstract class UltraLightMapper {
 
     private HashMap<Class, Mapping> mappings = new HashMap<>();
 
-    protected UltraLightMapper() {}
+    protected UltraLightMapper() {
+        configure();
+    }
 
     protected abstract void configure();
 

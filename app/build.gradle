@@ -42,14 +42,17 @@ dependencies {
     implementation globalDependencies["butterKnife"]
     implementation globalDependencies["rxJava"]
     implementation globalDependencies["rxAndroid"]
+    implementation globalDependencies["androidArchRoom"]
 
     annotationProcessor globalDependencies["daggerCompiler"]
     annotationProcessor globalDependencies["butterKnifeCompiler"]
+    annotationProcessor globalDependencies["androidArchRoomCompiler"]
 
     def developmentDependencies = rootProject.ext.developmentDependencies
     implementation developmentDependencies["leakCanary"]
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    def testDependencies = rootProject.ext.testDependencies
+    testImplementation testDependencies["junit"]
+    androidTestImplementation testDependencies["testRunner"]
+    androidTestImplementation testDependencies["espressoCore"]
 }

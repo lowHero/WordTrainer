@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +19,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by nz2Dev on 06.12.2017
  */
 @Singleton
-public class AndroidBackgroundExecutor implements BackgroundExecutor {
+public class AndroidBackgroundExecutor implements BackgroundExecutor, Executor {
 
     private final ThreadPoolExecutor mThreadPoolExecutor;
 
@@ -28,7 +29,7 @@ public class AndroidBackgroundExecutor implements BackgroundExecutor {
     }
 
     @Override
-    public Scheduler getSubscribeScheduler() {
+    public Scheduler getScheduler() {
         return Schedulers.from(this);
     }
 

@@ -11,7 +11,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class AccountEntity {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
     @ColumnInfo
@@ -21,9 +21,14 @@ public class AccountEntity {
     private String password;
 
     @Ignore
-    public AccountEntity(String name, String password) {
+    public AccountEntity(String name) {
         this.name = name;
-        this.password = password;
+        this.password = "";
+    }
+
+    public AccountEntity() {
+        this.name = "";
+        this.password = "";
     }
 
     public int getId() {
@@ -48,5 +53,10 @@ public class AccountEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public AccountEntity withPassword(String password) {
+        this.password = password;
+        return this;
     }
 }

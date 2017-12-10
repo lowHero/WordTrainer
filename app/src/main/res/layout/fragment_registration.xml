@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true">
+    android:layout_height="match_parent" >
 
     <EditText
         android:id="@+id/et_registration_name"
@@ -14,8 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:inputType="textPersonName" />
 
     <CheckBox
         android:id="@+id/cb_need_password"
@@ -25,7 +23,7 @@
         android:layout_alignStart="@+id/et_registration_name"
         android:layout_below="@+id/et_registration_name"
         android:layout_marginTop="8dp"
-        android:text="need password?" />
+        android:text="@string/prompt_need_password" />
 
     <EditText
         android:id="@+id/et_registration_password"
@@ -35,8 +33,7 @@
         android:layout_alignRight="@+id/et_registration_name"
         android:layout_below="@+id/cb_need_password"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Password"
+        android:inputType="textPassword"
         android:visibility="gone"
         tools:visibility="visible" />
 
@@ -47,5 +44,5 @@
         android:layout_below="@+id/et_registration_password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Create" />
+        android:text="@string/action_create" />
 </RelativeLayout>
