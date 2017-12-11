@@ -9,6 +9,7 @@ import com.nz2dev.wordtrainer.domain.execution.ExecutionManager;
 import com.nz2dev.wordtrainer.domain.interactors.AccountHistoryInteractor;
 import com.nz2dev.wordtrainer.domain.interactors.AccountInteractor;
 import com.nz2dev.wordtrainer.domain.interactors.TrainerInteractor;
+import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
 
 import javax.inject.Singleton;
 
@@ -26,6 +27,7 @@ public interface AppComponent {
     Navigator navigator();
 
     TrainerInteractor trainerInteractor();
+    WordInteractor wordInteractor();
     AccountInteractor accountInteractor();
     AccountHistoryInteractor accountHistoryInteractor();
 }

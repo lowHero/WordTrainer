@@ -3,7 +3,9 @@ package com.nz2dev.wordtrainer.app.presentation.modules.home;
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.domain.interactors.TrainerInteractor;
+import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
+import com.nz2dev.wordtrainer.app.utils.UncheckedObserver;
+import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
 import com.nz2dev.wordtrainer.domain.models.Word;
 
 import java.util.Collection;
@@ -18,29 +20,39 @@ import io.reactivex.observers.DisposableSingleObserver;
 @PerActivity
 public class HomePresenter extends BasePresenter<HomeView> {
 
-    private TrainerInteractor trainer;
+    private WordInteractor wordInteractor;
     private AccountPreferences accountPreferences;
 
     @Inject
-    public HomePresenter(TrainerInteractor trainer, AccountPreferences accountPreferences) {
-        this.trainer = trainer;
+    public HomePresenter(WordInteractor wordInteractor, AccountPreferences accountPreferences) {
+        this.wordInteractor = wordInteractor;
         this.accountPreferences = accountPreferences;
     }
 
     @Override
     protected void onViewReady() {
         super.onViewReady();
-        trainer.loadAllWords(new DisposableSingleObserver<Collection<Word>>() {
+        wordInteractor.loadWords(new DisposableSingleObserver<Collection<Word>>() {
             @Override
             public void onSuccess(Collection<Word> words) {
-                getView().showAllWords(words);
+                getView().showWords(words);
             }
 
             @Override
             public void onError(Throwable e) {
-                // show errors
+                getView().showError(ErrorHandler.describe(e));
             }
         });
+        wordInteractor.attachRepoObserver(new UncheckedObserver<Collection<Word>>() {
+            @Override
+            public void onNext(Collection<Word> words) {
+                getView().showWords(words);
+            }
+        });
+    }
+
+    public void addWordClick() {
+        getView().navigateWordAdding();
     }
 
     public void signOutSelected() {

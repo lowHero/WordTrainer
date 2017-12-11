@@ -9,6 +9,10 @@ import java.util.Collection;
  */
 public interface HomeView {
 
-    void showAllWords(Collection<Word> words);
+    void showError(String describe);
+    void showWords(Collection<Word> words);
+
     void navigateAccount();
+    void navigateWordAdding();
+
 }

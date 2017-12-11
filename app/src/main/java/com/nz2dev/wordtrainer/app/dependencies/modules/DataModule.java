@@ -6,6 +6,7 @@ import android.content.Context;
 import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.core.dao.AccountDao;
 import com.nz2dev.wordtrainer.data.core.dao.AccountHistoryDao;
+import com.nz2dev.wordtrainer.data.core.dao.WordDao;
 import com.nz2dev.wordtrainer.data.repositories.RoomAccountHistoryRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomAccountRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomWordRepository;
@@ -42,6 +43,12 @@ public class DataModule {
     @Singleton
     AccountHistoryDao provideAccountHistoryDao(WordTrainerDatabase database) {
         return database.accountHistoryDao();
+    }
+
+    @Provides
+    @Singleton
+    WordDao provideWordDao(WordTrainerDatabase database) {
+        return database.wordDao();
     }
 
     @Singleton

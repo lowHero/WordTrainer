@@ -6,6 +6,7 @@ import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,7 +29,17 @@ public class TrainerInteractor {
         this.executionManager = executionManager;
     }
 
-    public void loadAllWords(DisposableSingleObserver<Collection<Word>> observer) {
-        executionManager.executeInBackground(wordsRepository.getAllWords(), observer);
+    public void loadNextTrainingWord(DisposableSingleObserver<Word> observer) {
+        executionManager.executeInBackground(wordsRepository.getAllWords()
+                .map(words -> {
+                    // with special algorithm helping find one word that is most important to ask now
+                    // but now just return first word form database
+                    Iterator<Word> wordIterator = words.iterator();
+                    if (wordIterator.hasNext()) {
+                        return words.iterator().next();
+                    } else {
+                        throw new RuntimeException("No one word exist");
+                    }
+                }), observer);
     }
 }

@@ -90,13 +90,14 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
                 accountPreferences.signIn(userName, password);
                 historyInteractor.createRecord(account, new DisposableSingleObserver<Boolean>() {
                     @Override
-                    public void onSuccess(Boolean result) {}
+                    public void onSuccess(Boolean result) {
+                        getView().navigateHome();
+                    }
                     @Override
                     public void onError(Throwable e) {
                         getView().showError("Error creating history: " + ErrorHandler.describe(e));
                     }
                 });
-                getView().navigateHome();
             }
 
             @Override

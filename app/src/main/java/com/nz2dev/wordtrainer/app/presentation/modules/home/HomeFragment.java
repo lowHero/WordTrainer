@@ -3,24 +3,34 @@ package com.nz2dev.wordtrainer.app.presentation.modules.home;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.home.renderers.WordRenderer;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.models.Word;
+import com.pedrogomez.renderers.RVRendererAdapter;
+import com.pedrogomez.renderers.RendererBuilder;
 
 import java.util.Collection;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 /**
  * Created by nz2Dev on 30.11.2017
@@ -31,14 +41,20 @@ public class HomeFragment extends Fragment implements HomeView {
         return new HomeFragment();
     }
 
+    @BindView(R.id.rv_words_list)
+    RecyclerView wordsList;
+
     @Inject HomePresenter presenter;
     @Inject Navigator navigator;
+
+    private RVRendererAdapter<Word> adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
+        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new WordRenderer()));
     }
 
     @Nullable
@@ -46,6 +62,8 @@ public class HomeFragment extends Fragment implements HomeView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, root);
+        wordsList.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
+        wordsList.setAdapter(adapter);
         return root;
     }
 
@@ -76,13 +94,29 @@ public class HomeFragment extends Fragment implements HomeView {
         return false;
     }
 
+    @OnClick(R.id.btn_add_word)
+    public void onAddWordClick() {
+        presenter.addWordClick();
+    }
+
     @Override
-    public void showAllWords(Collection<Word> words) {
-        Log.d("DEFAULT", "showed all words");
+    public void showError(String describe) {
+        Toast.makeText(getContext(), describe, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showWords(Collection<Word> words) {
+        adapter.addAll(words);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void navigateAccount() {
         navigator.navigateAccount(getActivity());
+    }
+
+    @Override
+    public void navigateWordAdding() {
+        AddWordFragment.newInstance().show(getFragmentManager(), "AddWord");
     }
 }
