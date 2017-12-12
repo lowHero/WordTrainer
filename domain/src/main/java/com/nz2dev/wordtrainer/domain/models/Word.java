@@ -5,12 +5,22 @@ package com.nz2dev.wordtrainer.domain.models;
  */
 public class Word {
 
+    private int accountId;
     private String original;
     private String translate;
 
-    public Word(String original, String translate) {
+    public Word(int accountId, String original, String translate) {
+        this.accountId = accountId;
         this.original = original;
         this.translate = translate;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public String getOriginal() {

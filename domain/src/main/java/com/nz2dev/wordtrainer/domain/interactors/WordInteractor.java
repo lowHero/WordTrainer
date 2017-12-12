@@ -43,8 +43,8 @@ public class WordInteractor {
                 .subscribe(resultObserver);
     }
 
-    public void loadWords(SingleObserver<Collection<Word>> observer) {
-        wordsRepository.getAllWords()
+    public void loadWords(int accountId, SingleObserver<Collection<Word>> observer) {
+        wordsRepository.getAllWords(accountId)
                 .subscribeOn(backgroundExecutor.getScheduler())
                 .observeOn(uiExecutor.getScheduler())
                 .subscribe(observer);

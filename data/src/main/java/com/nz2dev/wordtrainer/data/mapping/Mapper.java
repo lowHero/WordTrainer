@@ -30,7 +30,7 @@ public class Mapper extends UltraLightMapper {
         bind(AccountHistoryEntity.class).to(dto -> new AccountHistory(dto.getAccountName(), dto.getLoginDates()));
         bind(AccountHistory.class).to(model -> new AccountHistoryEntity(model.getAccountName(), model.getLoginDate()));
 
-        bind(WordEntity.class).to(dto -> new Word(dto.getOriginal(), dto.getTranslate()));
-        bind(Word.class).to(model -> new WordEntity(model.getOriginal(), model.getTranslate()));
+        bind(WordEntity.class).to(dto -> new Word(dto.getAccountId(), dto.getOriginal(), dto.getTranslate()));
+        bind(Word.class).to(model -> new WordEntity(model.getAccountId(), model.getOriginal(), model.getTranslate()));
     }
 }

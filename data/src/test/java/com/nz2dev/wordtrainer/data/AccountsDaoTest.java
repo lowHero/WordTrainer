@@ -8,6 +8,7 @@ import com.nz2dev.wordtrainer.data.core.dao.AccountDao;
 import com.nz2dev.wordtrainer.data.core.dao.AccountHistoryDao;
 import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
 import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
+import com.nz2dev.wordtrainer.domain.models.Account;
 
 import org.assertj.core.api.Condition;
 import org.junit.After;
@@ -30,7 +31,7 @@ import static org.assertj.core.api.Assertions.atIndex;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
-public class DatabaseTest {
+public class AccountsDaoTest {
 
     private AccountDao accountDao;
     private AccountHistoryDao accountHistoryDao;
@@ -107,21 +108,14 @@ public class DatabaseTest {
     }
 
     @Test
-    public void addAccount_WithNullPassword_ShouldGetByCredentialsWithNullOrEmptyString() {
-        accountDao.Register(new AccountEntity("name1"));
-        accountDao.Register(new AccountEntity("name2").withPassword(""));
-        accountDao.Register(new AccountEntity("name3").withPassword(null));
-        accountDao.Register(new AccountEntity("name4").withPassword("asd"));
+    public void addAccount_WithNullPassword_ShouldGetByCredentialsOnlyWhenPasswordIsNull() {
+        accountDao.Register(new AccountEntity("name1").withPassword(null));
 
-        AccountEntity account1 = accountDao.getByCredentials("name1", "");
-        AccountEntity account1_a = accountDao.getByCredentials("name1", null);
-        AccountEntity account3 = accountDao.getByCredentials("name3", "");
-        AccountEntity account3_a = accountDao.getByCredentials("name3", null);
+        AccountEntity account = accountDao.getByCredentials("name1", "");
+        AccountEntity accountNullPassword = accountDao.getByCredentials("name1", null);
 
-//        assertThat(account1).isNotNull();
-//        assertThat(account1_a).isNotNull();
-        assertThat(account3).isNotNull();
-        assertThat(account3_a).isNotNull();
+        assertThat(account).isNull();
+        assertThat(accountNullPassword).isNotNull();
 
         Cursor cursor = database.getOpenHelper().getReadableDatabase().query("SELECT * FROM AccountEntity");
         while(cursor.moveToNext()) {

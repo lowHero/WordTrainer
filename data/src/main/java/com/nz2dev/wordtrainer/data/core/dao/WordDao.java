@@ -5,7 +5,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
 import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
-import com.nz2dev.wordtrainer.domain.models.Word;
 
 import java.util.List;
 
@@ -15,8 +14,8 @@ import java.util.List;
 @Dao
 public interface WordDao {
 
-    @Query("SELECT * FROM WordEntity")
-    List<WordEntity> getAllWords();
+    @Query("SELECT * FROM WordEntity WHERE accountId = :accountId")
+    List<WordEntity> getAllWords(int accountId);
 
     @Insert
     long addWord(WordEntity word);

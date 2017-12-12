@@ -2,6 +2,7 @@ package com.nz2dev.wordtrainer.data.core.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -13,13 +14,17 @@ public class WordEntity {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @ForeignKey(entity = AccountEntity.class, parentColumns = "id", childColumns = "accountId")
+    private int accountId;
+
     @ColumnInfo
     private String original;
 
     @ColumnInfo
     private String translate;
 
-    public WordEntity(String original, String translate) {
+    public WordEntity(int accountId, String original, String translate) {
+        this.accountId = accountId;
         this.original = original;
         this.translate = translate;
     }
@@ -30,6 +35,14 @@ public class WordEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public String getOriginal() {

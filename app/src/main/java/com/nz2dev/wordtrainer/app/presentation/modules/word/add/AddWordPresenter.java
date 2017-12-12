@@ -1,6 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.add;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
+import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
 import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
@@ -19,10 +20,18 @@ public class AddWordPresenter extends BasePresenter<AddWordView> {
     private final WordInteractor wordInteractor;
 
     private DisposableSingleObserver<Boolean> disposable;
+    private int accountId;
 
     @Inject
-    public AddWordPresenter(WordInteractor wordInteractor) {
+    public AddWordPresenter(WordInteractor wordInteractor, AccountPreferences accountPreferences) {
         this.wordInteractor = wordInteractor;
+        this.accountId = accountPreferences.getSignedAccountId();
+    }
+
+    @Override
+    protected void onViewReady() {
+        super.onViewReady();
+
     }
 
     @Override
@@ -35,7 +44,7 @@ public class AddWordPresenter extends BasePresenter<AddWordView> {
 
     public void insertWordClick(String original, String translate) {
         // TODO check strings
-        wordInteractor.addWord(new Word(original, translate), disposable = new DisposableSingleObserver<Boolean>() {
+        wordInteractor.addWord(new Word(accountId, original, translate), disposable = new DisposableSingleObserver<Boolean>() {
             @Override
             public void onSuccess(Boolean aBoolean) {
                 getView().showWordSuccessfulAdded();

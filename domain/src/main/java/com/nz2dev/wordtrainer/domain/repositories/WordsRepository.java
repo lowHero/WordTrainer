@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 public interface WordsRepository {
 
     Single<Boolean> addWord(Word word);
-    Single<Collection<Word>> getAllWords();
+    Single<Collection<Word>> getAllWords(int accountId);
 
     /**
      * listen to any data INSERT/REMOVE operation in repository during lifetime

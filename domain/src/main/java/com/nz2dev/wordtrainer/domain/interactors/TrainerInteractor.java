@@ -29,8 +29,8 @@ public class TrainerInteractor {
         this.executionManager = executionManager;
     }
 
-    public void loadNextTrainingWord(DisposableSingleObserver<Word> observer) {
-        executionManager.executeInBackground(wordsRepository.getAllWords()
+    public void loadNextTrainingWord(int accountId, DisposableSingleObserver<Word> observer) {
+        executionManager.executeInBackground(wordsRepository.getAllWords(accountId)
                 .map(words -> {
                     // with special algorithm helping find one word that is most important to ask now
                     // but now just return first word form database
