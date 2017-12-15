@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nz2dev.wordtrainer.app">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
         android:name=".core.WordTrainerApp"
         android:allowBackup="true"
@@ -21,12 +23,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".presentation.modules.home.HomeActivity" />
-        <activity
-            android:name=".presentation.modules.account.AccountActivity"
+        <activity android:name=".presentation.modules.account.AccountActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
-        <activity android:name=".presentation.modules.test.TestActivity" />
+
+        <service android:name=".services.check.CheckDatabaseService" />
+        <service android:name=".services.AlarmService" />
+        <service android:name=".services.TestService" />
+
+        <receiver android:name=".services.AlarmReceiver" />
     </application>
 
 </manifest>

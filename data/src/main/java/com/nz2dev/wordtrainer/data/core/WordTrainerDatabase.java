@@ -13,7 +13,7 @@ import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
 /**
  * Created by nz2Dev on 28.11.2017
  */
-@Database(entities = {AccountEntity.class, AccountHistoryEntity.class, WordEntity.class}, version = 4)
+@Database(entities = {AccountEntity.class, AccountHistoryEntity.class, WordEntity.class}, version = 5)
 public abstract class WordTrainerDatabase extends RoomDatabase {
 
     public abstract AccountDao accountDao();

@@ -3,6 +3,8 @@ package com.nz2dev.wordtrainer.app.presentation.modules.home;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -90,6 +92,15 @@ public class HomeFragment extends Fragment implements HomeView {
             case R.id.item_sign_out:
                 presenter.signOutSelected();
                 return true;
+            case R.id.item_start_schedule:
+                presenter.startTestSchedule();
+                return true;
+            case R.id.item_stop_schedule:
+                presenter.stopTestSchedule();
+                return true;
+            case R.id.item_manual_call_service:
+                presenter.manualCallService();
+                return true;
         }
         return false;
     }
@@ -119,4 +130,5 @@ public class HomeFragment extends Fragment implements HomeView {
     public void navigateWordAdding() {
         AddWordFragment.newInstance().show(getFragmentManager(), "AddWord");
     }
+
 }
