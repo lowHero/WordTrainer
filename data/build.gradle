@@ -33,13 +33,15 @@ dependencies {
     implementation globalDependencies["androidArchRoom"]
     implementation globalDependencies["javaxInject"]
     implementation globalDependencies["rxJava"]
-
+    implementation globalDependencies["rxAndroid"]
+    implementation globalDependencies["androidArchRoomRx"]
     annotationProcessor globalDependencies["androidArchRoomCompiler"]
 
     def testDependencies = rootProject.ext.testDependencies
     testImplementation testDependencies["junit"]
     testImplementation testDependencies["assertj"]
     testImplementation testDependencies["robolectric"]
+    testImplementation testDependencies["androidArchRoomRxTest"]
     androidTestImplementation testDependencies["testRunner"]
     androidTestImplementation testDependencies["espressoCore"]
 }

@@ -28,8 +28,6 @@ public class RoomWordRepository implements WordsRepository {
     private final WordDao wordDao;
     private final Mapper mapper;
 
-    private final PublishSubject<Collection<Word>> changesSubject = PublishSubject.create();
-
     @Inject
     public RoomWordRepository(WordDao wordDao, Mapper mapper) {
         this.wordDao = wordDao;
@@ -37,14 +35,10 @@ public class RoomWordRepository implements WordsRepository {
     }
 
     @Override
-    public Single<Boolean> addWord(Word word) {
-        return Single.<Boolean>create(emitter -> {
+    public Single<Long> addWord(Word word) {
+        return Single.create(emitter -> {
             WordEntity entity = mapper.map(word, WordEntity.class);
-            emitter.onSuccess(wordDao.addWord(entity) != -1);
-        }).doOnSuccess(result -> {
-            if (result) {
-                changesSubject.onNext(Collections.singleton(word));
-            }
+            emitter.onSuccess(wordDao.addWord(entity));
         });
     }
 
@@ -58,8 +52,11 @@ public class RoomWordRepository implements WordsRepository {
     }
 
     @Override
-    public void listenChanges(Observer<Collection<Word>> changesObserver, UIExecutor uiExecutor) {
-        // TODO check if changesObserver is instance of DisposableSingleObserver and manage it's disposing
-        changesSubject.observeOn(uiExecutor.getScheduler()).subscribe(changesObserver);
+    public Single<Collection<Word>> getPartOfWord(int accountId, int fromWordId, int limit) {
+        return Single.create(emitter -> {
+            List<WordEntity> entityList = wordDao.getPartOfWords(accountId, fromWordId, limit);
+            List<Word> words = mapper.mapList(entityList, new ArrayList<>(entityList.size()), Word.class);
+            emitter.onSuccess(words);
+        });
     }
 }

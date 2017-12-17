@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 /**
  * Created by nz2Dev on 11.12.2017
  */
@@ -14,7 +16,7 @@ public class WordEntity {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ForeignKey(entity = AccountEntity.class, parentColumns = "id", childColumns = "accountId")
+    @ForeignKey(entity = AccountEntity.class, parentColumns = "id", childColumns = "accountId", onDelete = CASCADE)
     private int accountId;
 
     @ColumnInfo

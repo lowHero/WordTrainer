@@ -5,6 +5,7 @@ import com.nz2dev.wordtrainer.app.dependencies.modules.DataModule;
 import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.startup.StartupActivity;
+import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.domain.execution.ExecutionManager;
 import com.nz2dev.wordtrainer.domain.interactors.AccountHistoryInteractor;
 import com.nz2dev.wordtrainer.domain.interactors.AccountInteractor;
@@ -25,6 +26,7 @@ public interface AppComponent {
 
     AccountPreferences accountPreferences();
     Navigator navigator();
+    WordTrainerDatabase database();
 
     TrainerInteractor trainerInteractor();
     WordInteractor wordInteractor();

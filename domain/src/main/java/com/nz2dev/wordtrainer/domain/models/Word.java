@@ -5,6 +5,7 @@ package com.nz2dev.wordtrainer.domain.models;
  */
 public class Word {
 
+    private int id;
     private int accountId;
     private String original;
     private String translate;
@@ -13,6 +14,22 @@ public class Word {
         this.accountId = accountId;
         this.original = original;
         this.translate = translate;
+    }
+
+    // TODO remove this constructor
+    public Word(int id, int accountId, String original, String translate) {
+        this.id = id;
+        this.accountId = accountId;
+        this.original = original;
+        this.translate = translate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getAccountId() {

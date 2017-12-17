@@ -27,6 +27,7 @@
             android:name=".presentation.modules.account.AccountActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity android:name=".presentation.modules.test.TestActivity" />
+        <activity android:name=".presentation.modules.word.train.TrainWordActivity" />
     </application>
 
 </manifest>

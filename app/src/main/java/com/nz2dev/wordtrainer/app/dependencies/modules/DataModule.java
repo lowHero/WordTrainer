@@ -6,12 +6,15 @@ import android.content.Context;
 import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.core.dao.AccountDao;
 import com.nz2dev.wordtrainer.data.core.dao.AccountHistoryDao;
+import com.nz2dev.wordtrainer.data.core.dao.TrainingDao;
 import com.nz2dev.wordtrainer.data.core.dao.WordDao;
 import com.nz2dev.wordtrainer.data.repositories.RoomAccountHistoryRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomAccountRepository;
+import com.nz2dev.wordtrainer.data.repositories.RoomTrainingRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomWordRepository;
 import com.nz2dev.wordtrainer.domain.repositories.AccountHistoryRepository;
 import com.nz2dev.wordtrainer.domain.repositories.AccountRepository;
+import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
 import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
 
 import javax.inject.Singleton;
@@ -51,6 +54,12 @@ public class DataModule {
         return database.wordDao();
     }
 
+    @Provides
+    @Singleton
+    TrainingDao provideTrainingDao(WordTrainerDatabase database) {
+        return database.trainingDao();
+    }
+
     @Singleton
     @Provides
     AccountRepository provideAccountRepository(RoomAccountRepository repository) {
@@ -58,13 +67,20 @@ public class DataModule {
     }
 
     @Singleton
-    @Provides AccountHistoryRepository provideAccountHistoryRepository(RoomAccountHistoryRepository repository) {
+    @Provides
+    AccountHistoryRepository provideAccountHistoryRepository(RoomAccountHistoryRepository repository) {
         return repository;
     }
 
     @Singleton
     @Provides
     WordsRepository provideWordsRepository(RoomWordRepository repository) {
+        return repository;
+    }
+
+    @Singleton
+    @Provides
+    TrainingsRepository provideTrainingsRepository(RoomTrainingRepository repository) {
         return repository;
     }
 }

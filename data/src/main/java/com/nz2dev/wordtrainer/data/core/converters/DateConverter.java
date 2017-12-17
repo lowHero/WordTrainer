@@ -20,6 +20,9 @@ public class DateConverter {
 
     @TypeConverter
     public static long fromDate(Date date) {
+        if (date == null) {
+            return 0;
+        }
         return date.getTime();
     }
 }

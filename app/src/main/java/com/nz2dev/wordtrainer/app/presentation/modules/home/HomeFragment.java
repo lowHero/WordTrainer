@@ -15,10 +15,12 @@ import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
-import com.nz2dev.wordtrainer.app.presentation.modules.home.renderers.WordRenderer;
+import com.nz2dev.wordtrainer.app.presentation.modules.home.renderers.TrainingRenderer;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.train.TrainWordFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
-import com.nz2dev.wordtrainer.domain.models.Word;
+import com.nz2dev.wordtrainer.app.utils.OnItemClickListener;
+import com.nz2dev.wordtrainer.domain.models.Training;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;
 
@@ -35,7 +37,7 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 /**
  * Created by nz2Dev on 30.11.2017
  */
-public class HomeFragment extends Fragment implements HomeView {
+public class HomeFragment extends Fragment implements HomeView, OnItemClickListener<Training> {
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -47,14 +49,14 @@ public class HomeFragment extends Fragment implements HomeView {
     @Inject HomePresenter presenter;
     @Inject Navigator navigator;
 
-    private RVRendererAdapter<Word> adapter;
+    private RVRendererAdapter<Training> adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
-        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new WordRenderer()));
+        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new TrainingRenderer(this)));
     }
 
     @Nullable
@@ -90,8 +92,16 @@ public class HomeFragment extends Fragment implements HomeView {
             case R.id.item_sign_out:
                 presenter.signOutSelected();
                 return true;
+            case R.id.item_populate:
+                presenter.populateWords();
+                return true;
         }
         return false;
+    }
+
+    @Override
+    public void onItemClick(Training training) {
+        presenter.trainWordClick(training);
     }
 
     @OnClick(R.id.btn_add_word)
@@ -105,8 +115,8 @@ public class HomeFragment extends Fragment implements HomeView {
     }
 
     @Override
-    public void showWords(Collection<Word> words) {
-        adapter.addAll(words);
+    public void showTrainings(Collection<Training> trainings) {
+        adapter.addAll(trainings);
         adapter.notifyDataSetChanged();
     }
 
@@ -117,6 +127,11 @@ public class HomeFragment extends Fragment implements HomeView {
 
     @Override
     public void navigateWordAdding() {
-        AddWordFragment.newInstance().show(getFragmentManager(), "AddWord");
+        AddWordFragment.newInstance().show(getChildFragmentManager(), "AddWord");
+    }
+
+    @Override
+    public void navigateWordTraining(int trainingId) {
+        TrainWordFragment.newInstance(trainingId).show(getChildFragmentManager(), "TrainWord");
     }
 }

@@ -87,7 +87,7 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
         accountInteractor.loadIfPasswordExist(userName, password, new DisposableSingleObserver<Account>() {
             @Override
             public void onSuccess(Account account) {
-                accountPreferences.signIn(userName, password);
+                accountPreferences.signIn(account, password);
                 historyInteractor.createRecord(account, new DisposableSingleObserver<Boolean>() {
                     @Override
                     public void onSuccess(Boolean result) {

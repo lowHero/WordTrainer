@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.data;
+package com.nz2dev.wordtrainer.data.core.dao;
 
 import android.arch.persistence.room.Room;
 import android.database.Cursor;

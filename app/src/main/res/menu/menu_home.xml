@@ -3,4 +3,9 @@
     <item
         android:id="@+id/item_sign_out"
         android:title="@string/action_sign_out_short" />
+
+    <item
+        android:id="@+id/item_populate"
+        android:title="Populate Test Words" />
+
 </menu>

@@ -6,7 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.domain.models.Word;
+import com.nz2dev.wordtrainer.app.utils.OnItemClickListener;
+import com.nz2dev.wordtrainer.domain.models.Training;
 import com.pedrogomez.renderers.Renderer;
 
 import butterknife.BindView;
@@ -15,10 +16,16 @@ import butterknife.ButterKnife;
 /**
  * Created by nz2Dev on 11.12.2017
  */
-public class WordRenderer extends Renderer<Word> {
+public class TrainingRenderer extends Renderer<Training> {
 
     @BindView(R.id.tv_word)
     TextView wordText;
+
+    private final OnItemClickListener<Training> trainingClickListener;
+
+    public TrainingRenderer(OnItemClickListener<Training> trainingClickListener) {
+        this.trainingClickListener = trainingClickListener;
+    }
 
     @Override
     protected void setUpView(View rootView) {
@@ -26,15 +33,17 @@ public class WordRenderer extends Renderer<Word> {
     }
 
     @Override
-    protected void hookListeners(View rootView) {}
+    protected void hookListeners(View rootView) {
+        rootView.setOnClickListener(view -> trainingClickListener.onItemClick(getContent()));
+    }
 
     @Override
     protected View inflate(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.include_word_item, parent, false);
+        return inflater.inflate(R.layout.include_training_item, parent, false);
     }
 
     @Override
     public void render() {
-        wordText.setText(getContent().getOriginal());
+        wordText.setText(getContent().getWord().getOriginal());
     }
 }

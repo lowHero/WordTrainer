@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.data;
+package com.nz2dev.wordtrainer.data.core;
 
 import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;

@@ -1,5 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.home;
 
+import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
 
 import java.util.Collection;
@@ -10,9 +11,9 @@ import java.util.Collection;
 public interface HomeView {
 
     void showError(String describe);
-    void showWords(Collection<Word> words);
+    void showTrainings(Collection<Training> words);
 
     void navigateAccount();
     void navigateWordAdding();
-
+    void navigateWordTraining(int trainingId);
 }
