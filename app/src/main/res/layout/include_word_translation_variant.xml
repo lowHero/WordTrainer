@@ -7,6 +7,7 @@
     android:padding="4dp">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/cv_word_translation_variant_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardBackgroundColor="@color/secondaryLightColor">

@@ -1,5 +1,8 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.train.renderers;
 
+import android.content.res.ColorStateList;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +24,15 @@ public class WordTranslationVariantRenderer extends Renderer<Word> {
         void onVariantSelected(Word word);
     }
 
+    @BindView(R.id.cv_word_translation_variant_background)
+    CardView translationVariantBackground;
+
     @BindView(R.id.tv_word_translation_variant)
     TextView translationVariantText;
 
     private final VariantListener listener;
+
+    private ColorStateList originalCardBackgroundColor;
 
     public WordTranslationVariantRenderer(VariantListener listener) {
         this.listener = listener;
@@ -33,6 +41,7 @@ public class WordTranslationVariantRenderer extends Renderer<Word> {
     @Override
     protected void setUpView(View rootView) {
         ButterKnife.bind(this, rootView);
+        originalCardBackgroundColor = translationVariantBackground.getCardBackgroundColor();
     }
 
     @Override
@@ -43,6 +52,15 @@ public class WordTranslationVariantRenderer extends Renderer<Word> {
     @Override
     protected View inflate(LayoutInflater inflater, ViewGroup parent) {
         return inflater.inflate(R.layout.include_word_translation_variant, parent, false);
+    }
+
+    public void highlightIsCorrect(boolean condition) {
+        int color = condition ? R.color.highlightPositive : R.color.highlightNegative;
+        translationVariantBackground.setCardBackgroundColor(ContextCompat.getColor(getContext(), color));
+    }
+
+    public void reset() {
+        translationVariantBackground.setCardBackgroundColor(originalCardBackgroundColor);
     }
 
     @Override

@@ -54,6 +54,19 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 getView().showTrainings(trainings);
             }
         });
+        trainerInteractor.attachRepoItemObserver(new UncheckedObserver<Training>() {
+            @Override
+            public void onNext(Training training) {
+                getView().updateTraining(training);
+            }
+        });
+    }
+
+    @Override
+    public void detachView() {
+        super.detachView();
+//        TODO write detach repo observer method to prevent memory leak and exceptions
+//        trainerInteractor.detachRepoObserver();
     }
 
     public void addWordClick() {

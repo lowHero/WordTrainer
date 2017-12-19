@@ -9,20 +9,20 @@ import java.util.List;
  */
 public class Exercise {
 
-    private Training originalWordTraining;
+    private Training training;
     private List<Word> translationVariants;
 
-    public Exercise(Training originalWordTraining, Collection<Word> translationVariants) {
-        this.originalWordTraining = originalWordTraining;
+    public Exercise(Training training, Collection<Word> translationVariants) {
+        this.training = training;
         this.translationVariants = new ArrayList<>(translationVariants);
     }
 
-    public Training getOriginalWordTraining() {
-        return originalWordTraining;
+    public Training getTraining() {
+        return training;
     }
 
-    public void setOriginalWordTraining(Training originalWordTraining) {
-        this.originalWordTraining = originalWordTraining;
+    public void setTraining(Training training) {
+        this.training = training;
     }
 
     public void setTranslationVariants(Collection<Word> translationVariants) {

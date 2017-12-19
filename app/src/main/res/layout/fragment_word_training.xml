@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:textSize="24sp"
+        android:textStyle="bold"
         tools:text="Some Word" />
 
     <android.support.v7.widget.RecyclerView

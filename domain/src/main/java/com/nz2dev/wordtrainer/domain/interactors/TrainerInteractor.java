@@ -8,12 +8,9 @@ import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
 import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,7 +20,6 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
-import io.reactivex.observers.DisposableSingleObserver;
 
 /**
  * Created by nz2Dev on 30.11.2017
@@ -51,6 +47,10 @@ public class TrainerInteractor {
 
     public void attachRepoObserver(Observer<Collection<Training>> trainingRepoObserver) {
         trainingsRepository.listenChanges(trainingRepoObserver, uiExecutor);
+    }
+
+    public void attachRepoItemObserver(Observer<Training> itemObserver) {
+        trainingsRepository.listenUpdates(itemObserver, uiExecutor);
     }
 
     public void loadAllTrainings(int accountId, SingleObserver<Collection<Training>> observer) {
@@ -81,7 +81,7 @@ public class TrainerInteractor {
 
     private Single<Boolean> updateExercise(Exercise exercise, boolean correct) {
         return Single.create(emitter -> {
-            Training training = exercise.getOriginalWordTraining();
+            Training training = exercise.getTraining();
             final int exerciseProgress = correct ? DEFAULT_UNIT_PROGRESS : 0;
 
             // progress should depends from a lot of factors, such as lastTrainingDate
@@ -90,8 +90,7 @@ public class TrainerInteractor {
             training.setProgress(training.getProgress() + exerciseProgress);
             training.setLastTrainingDate(new Date());
 
-            trainingsRepository.updateTraining(training);
-            emitter.onSuccess(true);
+            emitter.onSuccess(trainingsRepository.updateTraining(training).blockingGet());
         });
     }
 

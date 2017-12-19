@@ -21,6 +21,9 @@ public class TrainingRenderer extends Renderer<Training> {
     @BindView(R.id.tv_word)
     TextView wordText;
 
+    @BindView(R.id.tv_training_progress)
+    TextView trainingProgressText;
+
     private final OnItemClickListener<Training> trainingClickListener;
 
     public TrainingRenderer(OnItemClickListener<Training> trainingClickListener) {
@@ -45,5 +48,9 @@ public class TrainingRenderer extends Renderer<Training> {
     @Override
     public void render() {
         wordText.setText(getContent().getWord().getOriginal());
+        trainingProgressText.setText(String.valueOf(getContent().getProgress()));
+
+        // TODO maybe it will be good idea to add colorful background witch color
+        // influence by last training date to indicate witch training is done recently and so one.
     }
 }

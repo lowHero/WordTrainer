@@ -19,6 +19,15 @@ public class Training {
         this.progress = progress;
     }
 
+    public void setData(Training training) {
+        if (training.getId() != this.id) {
+            throw new RuntimeException("training id's aren't the same");
+        }
+        setProgress(training.getProgress());
+        setLastTrainingDate(training.getLastTrainingDate());
+        setWord(training.getWord());
+    }
+
     public int getId() {
         return id;
     }

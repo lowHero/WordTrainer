@@ -121,6 +121,16 @@ public class HomeFragment extends Fragment implements HomeView, OnItemClickListe
     }
 
     @Override
+    public void updateTraining(Training training) {
+        for (int position = 0; position < adapter.getItemCount(); position++) {
+            if (adapter.getItem(position).getId() == training.getId()) {
+                adapter.getItem(position).setData(training);
+                adapter.notifyItemChanged(position);
+            }
+        }
+    }
+
+    @Override
     public void navigateAccount() {
         navigator.navigateAccount(getActivity());
     }
@@ -132,6 +142,6 @@ public class HomeFragment extends Fragment implements HomeView, OnItemClickListe
 
     @Override
     public void navigateWordTraining(int trainingId) {
-        TrainWordFragment.newInstance(trainingId).show(getChildFragmentManager(), "TrainWord");
+        TrainWordFragment.newInstance(trainingId).show(getFragmentManager(), TrainWordFragment.FRAGMENT_TAG);
     }
 }

@@ -8,16 +8,18 @@ import com.nz2dev.wordtrainer.domain.interactors.TrainerInteractor;
 import com.nz2dev.wordtrainer.domain.models.Exercise;
 import com.nz2dev.wordtrainer.domain.models.Word;
 
-import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 
 /**
  * Created by nz2Dev on 16.12.2017
  */
-@PerActivity
+@PerActivity // TODO try to use @PerFragment annotation
 public class TrainWordPresenter extends BasePresenter<TrainWordView> {
 
     private TrainerInteractor trainer;
@@ -36,10 +38,12 @@ public class TrainWordPresenter extends BasePresenter<TrainWordView> {
                 new DisposableSingleObserver<Exercise>() {
                     @Override
                     public void onSuccess(Exercise exercise) {
-                        // TODO maybe add checking if pendingExercise is not null then its mean that exercise isn't ended.
-                        pendingExercise = exercise;
+                        if (!isViewAttached()) {
+                            return;
+                        }
 
-                        getView().showMainWord(exercise.getOriginalWordTraining().getWord());
+                        pendingExercise = exercise;
+                        getView().showTargetWord(exercise.getTraining().getWord());
                         getView().showVariants(exercise.getTranslationVariants());
                     }
 
@@ -51,13 +55,26 @@ public class TrainWordPresenter extends BasePresenter<TrainWordView> {
     }
 
     public void answer(Word word) {
-        boolean correctAnswer = pendingExercise.getOriginalWordTraining().getWord().getId() == word.getId();
-        // TODO show some feedback to user about their answer (correct or not)
+        int correctWordId = pendingExercise.getTraining().getWord().getId();
+        boolean isCorrectAnswer = correctWordId == word.getId();
 
-        trainer.commitExercise(pendingExercise, correctAnswer, new DisposableSingleObserver<Boolean>() {
+        getView().highlightCorrectWord(correctWordId);
+        if (isCorrectAnswer) {
+            getView().notifyCorrectAnswer();
+        }
+
+        trainer.commitExercise(pendingExercise, isCorrectAnswer, new DisposableSingleObserver<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
-                getView().notifyExerciseSaved();
+                // TODO based on what user want to do next (train other word or finish app) that defined in
+                // methods such as getView().getNextBehaviour() or something else that return strategy what to do next
+                // and perform that actions there, or notify about error passing this exercise.
+
+                Single.timer(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()).subscribe(time -> {
+                    if (isViewAttached()) {
+                        getView().hideTrainings();
+                    }
+                });
             }
 
             @Override
@@ -65,5 +82,9 @@ public class TrainWordPresenter extends BasePresenter<TrainWordView> {
                 getView().showError(ErrorHandler.describe(e));
             }
         });
+    }
+
+    public void cancelExercising() {
+        getView().hideTrainings();
     }
 }

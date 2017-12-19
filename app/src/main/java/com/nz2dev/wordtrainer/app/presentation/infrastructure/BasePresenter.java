@@ -25,6 +25,10 @@ public abstract class BasePresenter<V> {
         return view;
     }
 
+    public boolean isViewAttached() {
+        return view != null;
+    }
+
     /**
      * Should be called from fragment somewhere inside {@link android.app.Fragment#onDestroy} method
      * where it's detached from activity and can't still receive call
@@ -45,7 +49,7 @@ public abstract class BasePresenter<V> {
     }
 
     protected void checkViewReady() {
-        if (view == null) {
+        if (!isViewAttached()) {
             throw new NullPointerException("view == null");
         }
     }

@@ -6,6 +6,7 @@ import com.nz2dev.wordtrainer.data.core.entity.joined.TrainingAndWordJoin;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
+import com.nz2dev.wordtrainer.domain.repositories.infrastructure.RxObservableAdapter;
 import com.nz2dev.wordtrainer.domain.repositories.infrastructure.RxObservableRepository;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import io.reactivex.Single;
  * Created by nz2Dev on 16.12.2017
  */
 @Singleton
-public class RoomTrainingRepository extends RxObservableRepository<Training> implements TrainingsRepository {
+public class RoomTrainingRepository extends RxObservableAdapter<Training> implements TrainingsRepository {
 
     private TrainingDao trainingDao;
     private Mapper mapper;
@@ -53,6 +54,10 @@ public class RoomTrainingRepository extends RxObservableRepository<Training> imp
     public Single<Boolean> updateTraining(Training training) {
         return Single.create(emitter -> {
             trainingDao.updateTraining(mapper.map(training, TrainingEntity.class));
+            // TODO requestChanges there too, because if something changed then the list of all trainings
+            // should changes in any cases. Or define some algorithm in interactor/ presenter that
+            // will be swap two items in list.
+            requestItemChanged(training);
             emitter.onSuccess(true);
         });
     }

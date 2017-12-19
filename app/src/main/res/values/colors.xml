@@ -9,5 +9,7 @@
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
 
+    <color name="highlightPositive">#388e3c</color>
+    <color name="highlightNegative">#b71c1c</color>
     <color name="backgroundTransparent">#be000000</color>
 </resources>

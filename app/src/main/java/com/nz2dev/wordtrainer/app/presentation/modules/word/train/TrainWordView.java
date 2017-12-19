@@ -10,9 +10,13 @@ import java.util.List;
  */
 public interface TrainWordView {
 
-    void showMainWord(Word mainWord);
+    void showTargetWord(Word mainWord);
     void showVariants(Collection<Word> translationVariants);
     void showError(String error);
 
-    void notifyExerciseSaved();
+    void highlightCorrectWord(int correctWordId);
+    void notifyCorrectAnswer();
+
+    void hideTrainings();
+
 }
