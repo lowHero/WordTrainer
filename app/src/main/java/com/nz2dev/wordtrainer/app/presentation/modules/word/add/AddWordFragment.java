@@ -86,6 +86,7 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
     @Override
     public void showWordSuccessfulAdded() {
         Toast.makeText(getContext(), "word added", Toast.LENGTH_SHORT).show();
+        // TODO provide the same interface as in TrainWordFragment for handling finishing in activity
         dismiss();
     }
 

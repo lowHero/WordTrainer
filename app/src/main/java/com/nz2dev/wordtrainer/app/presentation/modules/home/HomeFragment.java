@@ -3,6 +3,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.home;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -64,7 +65,13 @@ public class HomeFragment extends Fragment implements HomeView, OnItemClickListe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, root);
-        wordsList.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), VERTICAL, false);
+        wordsList.setLayoutManager(layoutManager);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(wordsList.getContext(), VERTICAL);
+        wordsList.addItemDecoration(dividerItemDecoration);
+
         wordsList.setAdapter(adapter);
         return root;
     }
@@ -126,6 +133,7 @@ public class HomeFragment extends Fragment implements HomeView, OnItemClickListe
             if (adapter.getItem(position).getId() == training.getId()) {
                 adapter.getItem(position).setData(training);
                 adapter.notifyItemChanged(position);
+                break;
             }
         }
     }
