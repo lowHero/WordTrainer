@@ -1,6 +1,9 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.add;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -54,6 +57,14 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
         return root;
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setTitle(R.string.action_add_word);
+        return dialog;
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -75,6 +86,7 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
     @Override
     public void showWordSuccessfulAdded() {
         Toast.makeText(getContext(), "word added", Toast.LENGTH_SHORT).show();
+        // TODO provide the same interface as in TrainWordFragment for handling finishing in activity
         dismiss();
     }
 

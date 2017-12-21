@@ -17,6 +17,9 @@ public interface WordDao {
     @Query("SELECT * FROM WordEntity WHERE accountId = :accountId")
     List<WordEntity> getAllWords(int accountId);
 
+    @Query("SELECT * FROM WordEntity WHERE accountId = :accountId AND id BETWEEN :fromWordId - :limit / 2 AND :fromWordId + :limit / 2 LIMIT :limit")
+    List<WordEntity> getPartOfWords(int accountId, int fromWordId, int limit);
+
     @Insert
     long addWord(WordEntity word);
 

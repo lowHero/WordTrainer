@@ -48,6 +48,7 @@ ext {
             androidConstraintLayout   : "com.android.support.constraint:constraint-layout:${androidConstraintLayoutVersion}",
 
             androidArchRoom           : "android.arch.persistence.room:runtime:${androidArchVersion}",
+            androidArchRoomRx         : "android.arch.persistence.room:rxjava2:1.0.0-alpha5",
             androidArchRoomCompiler   : "android.arch.persistence.room:compiler:${androidArchVersion}",
 
             gson                      : "com.google.code.gson:gson:${gsonVersion}",
@@ -94,6 +95,8 @@ ext {
             junit                   : "junit:junit:${junitVersion}",
             assertj                 : "org.assertj:assertj-core:${assertjVersion}",
             robolectric             : "org.robolectric:robolectric:${robolectricVersion}",
+
+            androidArchRoomRxTest   : "android.arch.core:core-testing:1.0.0-alpha9-1"
     ]
 
     developmentDependencies = [

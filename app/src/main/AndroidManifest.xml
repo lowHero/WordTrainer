@@ -32,6 +32,7 @@
         <service android:name=".services.TestService" />
 
         <receiver android:name=".services.AlarmReceiver" />
+        <activity android:name=".presentation.modules.word.train.TrainWordActivity" />
     </application>
 
 </manifest>

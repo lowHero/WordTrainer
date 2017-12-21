@@ -3,6 +3,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.home;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,10 +18,12 @@ import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
-import com.nz2dev.wordtrainer.app.presentation.modules.home.renderers.WordRenderer;
+import com.nz2dev.wordtrainer.app.presentation.modules.home.renderers.TrainingRenderer;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.train.TrainWordFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
-import com.nz2dev.wordtrainer.domain.models.Word;
+import com.nz2dev.wordtrainer.app.utils.OnItemClickListener;
+import com.nz2dev.wordtrainer.domain.models.Training;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;
 
@@ -37,7 +40,7 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 /**
  * Created by nz2Dev on 30.11.2017
  */
-public class HomeFragment extends Fragment implements HomeView {
+public class HomeFragment extends Fragment implements HomeView, OnItemClickListener<Training> {
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -49,14 +52,14 @@ public class HomeFragment extends Fragment implements HomeView {
     @Inject HomePresenter presenter;
     @Inject Navigator navigator;
 
-    private RVRendererAdapter<Word> adapter;
+    private RVRendererAdapter<Training> adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
-        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new WordRenderer()));
+        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new TrainingRenderer(this)));
     }
 
     @Nullable
@@ -64,7 +67,13 @@ public class HomeFragment extends Fragment implements HomeView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, root);
-        wordsList.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), VERTICAL, false);
+        wordsList.setLayoutManager(layoutManager);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(wordsList.getContext(), VERTICAL);
+        wordsList.addItemDecoration(dividerItemDecoration);
+
         wordsList.setAdapter(adapter);
         return root;
     }
@@ -101,8 +110,16 @@ public class HomeFragment extends Fragment implements HomeView {
             case R.id.item_manual_call_service:
                 presenter.manualCallService();
                 return true;
+            case R.id.item_populate:
+                presenter.populateWords();
+                return true;
         }
         return false;
+    }
+
+    @Override
+    public void onItemClick(Training training) {
+        presenter.trainWordClick(training);
     }
 
     @OnClick(R.id.btn_add_word)
@@ -116,9 +133,20 @@ public class HomeFragment extends Fragment implements HomeView {
     }
 
     @Override
-    public void showWords(Collection<Word> words) {
-        adapter.addAll(words);
+    public void showTrainings(Collection<Training> trainings) {
+        adapter.addAll(trainings);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateTraining(Training training) {
+        for (int position = 0; position < adapter.getItemCount(); position++) {
+            if (adapter.getItem(position).getId() == training.getId()) {
+                adapter.getItem(position).setData(training);
+                adapter.notifyItemChanged(position);
+                break;
+            }
+        }
     }
 
     @Override
@@ -128,7 +156,12 @@ public class HomeFragment extends Fragment implements HomeView {
 
     @Override
     public void navigateWordAdding() {
-        AddWordFragment.newInstance().show(getFragmentManager(), "AddWord");
+        AddWordFragment.newInstance().show(getChildFragmentManager(), "AddWord");
+    }
+
+    @Override
+    public void navigateWordTraining(int trainingId) {
+        TrainWordFragment.newInstance(trainingId).show(getFragmentManager(), TrainWordFragment.FRAGMENT_TAG);
     }
 
 }

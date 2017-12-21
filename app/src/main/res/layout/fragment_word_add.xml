@@ -14,7 +14,7 @@
             android:id="@+id/et_word_original"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/prompt_original_word"
+            android:hint="@string/prompt_word_original"
             android:inputType="text" />
 
     </android.support.design.widget.TextInputLayout>
@@ -29,7 +29,7 @@
             android:id="@+id/et_word_translate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/prompt_original_word"
+            android:hint="@string/prompt_word_translation"
             android:inputType="text" />
 
     </android.support.design.widget.TextInputLayout>

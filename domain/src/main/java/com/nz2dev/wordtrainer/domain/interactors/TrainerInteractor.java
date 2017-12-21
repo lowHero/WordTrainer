@@ -1,18 +1,25 @@
 package com.nz2dev.wordtrainer.domain.interactors;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionManager;
+import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
+import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
+import com.nz2dev.wordtrainer.domain.models.Exercise;
+import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
+import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
 import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.Single;
-import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.SingleObserver;
 
 /**
  * Created by nz2Dev on 30.11.2017
@@ -20,26 +27,98 @@ import io.reactivex.observers.DisposableSingleObserver;
 @Singleton
 public class TrainerInteractor {
 
+    private static final int DEFAULT_UNIT_PROGRESS = 50;
+    private static final int MINIMUM_WORDS_FOR_EXERCISING = 2;
+    private static final int WORDS_FOR_EXERCISING = 4;
+    private static final int EXERCISING_WORDS_VARIANT_RANGE = 50;
+
     private WordsRepository wordsRepository;
-    private ExecutionManager executionManager;
+    private TrainingsRepository trainingsRepository;
+    private UIExecutor uiExecutor;
+    private BackgroundExecutor backgroundExecutor;
 
     @Inject
-    public TrainerInteractor(WordsRepository wordsRepository, ExecutionManager executionManager) {
+    public TrainerInteractor(WordsRepository wordsRepository, TrainingsRepository trainingsRepository, UIExecutor uiExecutor, BackgroundExecutor backgroundExecutor) {
         this.wordsRepository = wordsRepository;
-        this.executionManager = executionManager;
+        this.trainingsRepository = trainingsRepository;
+        this.uiExecutor = uiExecutor;
+        this.backgroundExecutor = backgroundExecutor;
     }
 
-    public void loadNextTrainingWord(int accountId, DisposableSingleObserver<Word> observer) {
-        executionManager.executeInBackground(wordsRepository.getAllWords(accountId)
-                .map(words -> {
-                    // with special algorithm helping find one word that is most important to ask now
-                    // but now just return first word form database
-                    Iterator<Word> wordIterator = words.iterator();
-                    if (wordIterator.hasNext()) {
-                        return words.iterator().next();
-                    } else {
-                        throw new RuntimeException("No one word exist");
-                    }
-                }), observer);
+    public void attachRepoObserver(Observer<Collection<Training>> trainingRepoObserver) {
+        trainingsRepository.listenChanges(trainingRepoObserver, uiExecutor);
+    }
+
+    public void attachRepoItemObserver(Observer<Training> itemObserver) {
+        trainingsRepository.listenUpdates(itemObserver, uiExecutor);
+    }
+
+    public void loadAllTrainings(int accountId, SingleObserver<Collection<Training>> observer) {
+        trainingsRepository.getSortedTrainings(accountId)
+                .subscribeOn(backgroundExecutor.getScheduler())
+                .observeOn(uiExecutor.getScheduler())
+                .subscribe(observer);
+    }
+
+    public void loadProposedExercise(int accountId, SingleObserver<Exercise> observer) {
+        makeExerciseFor(accountId, trainingsRepository.getFirstSortedTraining(accountId).subscribeOn(backgroundExecutor.getScheduler()))
+                .observeOn(uiExecutor.getScheduler())
+                .subscribe(observer);
+    }
+
+    public void loadNextExercise(int accountId, int trainingId, SingleObserver<Exercise> observer) {
+        makeExerciseFor(accountId, trainingsRepository.getTraining(trainingId).subscribeOn(backgroundExecutor.getScheduler()))
+                .observeOn(uiExecutor.getScheduler())
+                .subscribe(observer);
+    }
+
+    public void commitExercise(Exercise exercise, boolean correct, SingleObserver<Boolean> resultObserver) {
+        updateExercise(exercise, correct)
+                .subscribeOn(backgroundExecutor.getScheduler())
+                .observeOn(uiExecutor.getScheduler())
+                .subscribe(resultObserver);
+    }
+
+    private Single<Boolean> updateExercise(Exercise exercise, boolean correct) {
+        return Single.create(emitter -> {
+            Training training = exercise.getTraining();
+            final int exerciseProgress = correct ? DEFAULT_UNIT_PROGRESS : 0;
+
+            // progress should depends from a lot of factors, such as lastTrainingDate
+            // correct condition and maybe something else? for example how much is word difficult for user.
+
+            training.setProgress(training.getProgress() + exerciseProgress);
+            training.setLastTrainingDate(new Date());
+
+            emitter.onSuccess(trainingsRepository.updateTraining(training).blockingGet());
+        });
+    }
+
+    private Single<Exercise> makeExerciseFor(int accountId, Single<Training> targetTraining) {
+        return targetTraining.map(training -> {
+            Collection<Word> variants = wordsRepository
+                    .getPartOfWord(accountId, training.getWord().getId(), EXERCISING_WORDS_VARIANT_RANGE)
+                    .doOnSuccess(words -> {
+                        if (words.size() < MINIMUM_WORDS_FOR_EXERCISING) {
+                            throw new RuntimeException("not enough word wor training");
+                        }
+                    })
+                    .map(words -> Observable.fromIterable(words)
+                            .filter(word -> training.getWord().getId() != word.getId())
+                            .toList()
+                            .map(rawWords -> {
+                                Collections.shuffle(rawWords);
+                                List<Word> finallyWords = Observable.fromIterable(rawWords)
+                                        .take(WORDS_FOR_EXERCISING)
+                                        .toList()
+                                        .blockingGet();
+                                finallyWords.add(training.getWord());
+                                Collections.shuffle(finallyWords);
+                                return finallyWords;
+                            })
+                            .blockingGet())
+                    .blockingGet();
+            return new Exercise(training, variants);
+        });
     }
 }

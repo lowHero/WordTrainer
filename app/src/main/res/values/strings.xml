@@ -2,19 +2,22 @@
     <string name="app_name">Word Trainer</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_enter_password">Enter password</string>
+    <string name="title_train_word">Train the word</string>
 
     <string name="prompt_need_password">need password?</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_word_original">Original</string>
+    <string name="prompt_word_translation">Translation</string>
 
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_add_word">Add New Word</string>
     <string name="action_sign_out_short">Sign Out</string>
     <string name="action_create">Create</string>
+    <string name="action_insert_word">Insert Word</string>
+    <string name="action_cancel">Cancel</string>
 
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="prompt_original_word">original</string>
-    <string name="action_insert_word">Insert Word</string>
 </resources>

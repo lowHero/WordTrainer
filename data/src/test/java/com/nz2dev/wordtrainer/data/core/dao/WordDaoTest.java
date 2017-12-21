@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.data;
+package com.nz2dev.wordtrainer.data.core.dao;
 
 import android.arch.persistence.room.Room;
 
@@ -62,5 +62,21 @@ public class WordDaoTest {
                 return value.getAccountId() == 1 && value.getOriginal().equals("na");
             }
         }, atIndex(0));
+    }
+
+    @Test
+    public void getPartOfWord_withMiddleId_shouldReturnInLimitRange() {
+        for (int i = 0; i < 10; i++) {
+            wordDao.addWord(new WordEntity(1, "na", "sd"));
+        }
+
+        List<WordEntity> words = wordDao.getPartOfWords(1, 1, 50);
+        assertThat(words).hasSize(10);
+        assertThat(words).areExactly(1, new Condition<WordEntity>() {
+            @Override
+            public boolean matches(WordEntity value) {
+                return value.getId() == 1;
+            }
+        });
     }
 }

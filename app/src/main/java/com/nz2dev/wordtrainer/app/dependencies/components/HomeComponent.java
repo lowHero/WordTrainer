@@ -3,6 +3,7 @@ package com.nz2dev.wordtrainer.app.dependencies.components;
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.train.TrainWordFragment;
 
 import dagger.Component;
 
@@ -14,4 +15,5 @@ import dagger.Component;
 public interface HomeComponent {
     void inject(HomeFragment homeFragment);
     void inject(AddWordFragment addWordFragment);
+    void inject(TrainWordFragment trainWordFragment);
 }

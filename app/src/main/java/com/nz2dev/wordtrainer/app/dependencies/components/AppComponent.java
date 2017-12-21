@@ -9,6 +9,7 @@ import com.nz2dev.wordtrainer.app.presentation.Navigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.startup.StartupActivity;
 import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
+import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.domain.execution.ExecutionManager;
 import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
 import com.nz2dev.wordtrainer.domain.interactors.AccountHistoryInteractor;
