@@ -3,7 +3,7 @@ package com.nz2dev.wordtrainer.app.services.training;
 import com.nz2dev.wordtrainer.app.dependencies.PerService;
 import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
 import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
-import com.nz2dev.wordtrainer.domain.interactors.TrainerInteractor;
+import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
 import com.nz2dev.wordtrainer.domain.models.Exercise;
 
 import javax.inject.Inject;
@@ -17,14 +17,14 @@ import io.reactivex.observers.DisposableSingleObserver;
 public class TrainingScheduleController {
 
     private final AccountPreferences accountPreferences;
-    private final TrainerInteractor trainerInteractor;
+    private final ExerciseInteractor exerciseInteractor;
 
     private TrainingScheduleHandler handler;
 
     @Inject
-    public TrainingScheduleController(AccountPreferences accountPreferences, TrainerInteractor trainerInteractor) {
+    public TrainingScheduleController(AccountPreferences accountPreferences, ExerciseInteractor exerciseInteractor) {
         this.accountPreferences = accountPreferences;
-        this.trainerInteractor = trainerInteractor;
+        this.exerciseInteractor = exerciseInteractor;
     }
 
     public void setHandler(TrainingScheduleHandler handler) {
@@ -35,7 +35,7 @@ public class TrainingScheduleController {
         // fetch data, analise it, look at restriction,
         // make exercise and remember last time in preferences or somewhere else
         // and show notification
-        trainerInteractor.loadProposedExercise(accountPreferences.getSignedAccountId(), new DisposableSingleObserver<Exercise>() {
+        exerciseInteractor.loadProposedExercise(accountPreferences.getSignedAccountId(), new DisposableSingleObserver<Exercise>() {
             @Override
             public void onSuccess(Exercise exercise) {
                 // TODO notify Exercise with variants and pass exercise model to the Intent extras

@@ -25,7 +25,7 @@ import io.reactivex.SingleObserver;
  * Created by nz2Dev on 30.11.2017
  */
 @Singleton
-public class TrainerInteractor {
+public class ExerciseInteractor {
 
     private static final int DEFAULT_UNIT_PROGRESS = 50;
     private static final int MINIMUM_WORDS_FOR_EXERCISING = 2;
@@ -38,26 +38,11 @@ public class TrainerInteractor {
     private BackgroundExecutor backgroundExecutor;
 
     @Inject
-    public TrainerInteractor(WordsRepository wordsRepository, TrainingsRepository trainingsRepository, UIExecutor uiExecutor, BackgroundExecutor backgroundExecutor) {
+    public ExerciseInteractor(WordsRepository wordsRepository, TrainingsRepository trainingsRepository, UIExecutor uiExecutor, BackgroundExecutor backgroundExecutor) {
         this.wordsRepository = wordsRepository;
         this.trainingsRepository = trainingsRepository;
         this.uiExecutor = uiExecutor;
         this.backgroundExecutor = backgroundExecutor;
-    }
-
-    public void attachRepoObserver(Observer<Collection<Training>> trainingRepoObserver) {
-        trainingsRepository.listenChanges(trainingRepoObserver, uiExecutor);
-    }
-
-    public void attachRepoItemObserver(Observer<Training> itemObserver) {
-        trainingsRepository.listenUpdates(itemObserver, uiExecutor);
-    }
-
-    public void loadAllTrainings(int accountId, SingleObserver<Collection<Training>> observer) {
-        trainingsRepository.getSortedTrainings(accountId)
-                .subscribeOn(backgroundExecutor.getScheduler())
-                .observeOn(uiExecutor.getScheduler())
-                .subscribe(observer);
     }
 
     public void loadProposedExercise(int accountId, SingleObserver<Exercise> observer) {

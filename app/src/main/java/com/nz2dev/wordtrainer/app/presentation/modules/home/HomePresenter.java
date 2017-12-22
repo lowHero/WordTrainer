@@ -1,14 +1,14 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.home;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
 import com.nz2dev.wordtrainer.app.utils.UncheckedObserver;
-import com.nz2dev.wordtrainer.domain.interactors.TrainerInteractor;
+import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
+import com.nz2dev.wordtrainer.domain.interactors.TrainingInteractor;
 import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
@@ -26,28 +26,21 @@ import io.reactivex.observers.DisposableSingleObserver;
 @PerActivity
 public class HomePresenter extends BasePresenter<HomeView> {
 
-    private static final long HALF_MINUTE = 30 * 1000;
-
-    private final TrainerInteractor trainerInteractor;
+    private final TrainingInteractor trainingInteractor;
     private final AccountPreferences accountPreferences;
     private final WordInteractor wordInteractor;
-    private final Context appContext;
-
-    private int accountId;
 
     @Inject
-    public HomePresenter(TrainerInteractor trainerInteractor, AccountPreferences accountPreferences, WordInteractor wordInteractor, Context appContext) {
-        this.trainerInteractor = trainerInteractor;
+    public HomePresenter(TrainingInteractor trainingInteractor, AccountPreferences accountPreferences, WordInteractor wordInteractor, Context appContext) {
+        this.trainingInteractor = trainingInteractor;
         this.wordInteractor = wordInteractor;
         this.accountPreferences = accountPreferences;
-        this.accountId = accountPreferences.getSignedAccountId();
-        this.appContext = appContext;
     }
 
     @Override
     protected void onViewReady() {
         super.onViewReady();
-        trainerInteractor.loadAllTrainings(accountPreferences.getSignedAccountId(), new DisposableSingleObserver<Collection<Training>>() {
+        trainingInteractor.loadAllTrainings(accountPreferences.getSignedAccountId(), new DisposableSingleObserver<Collection<Training>>() {
             @Override
             public void onSuccess(Collection<Training> trainings) {
                 getView().showTrainings(trainings);
@@ -57,13 +50,13 @@ public class HomePresenter extends BasePresenter<HomeView> {
                 getView().showError(ErrorHandler.describe(e));
             }
         });
-        trainerInteractor.attachRepoObserver(new UncheckedObserver<Collection<Training>>() {
+        trainingInteractor.attachRepoObserver(new UncheckedObserver<Collection<Training>>() {
             @Override
             public void onNext(Collection<Training> trainings) {
                 getView().showTrainings(trainings);
             }
         });
-        trainerInteractor.attachRepoItemObserver(new UncheckedObserver<Training>() {
+        trainingInteractor.attachRepoItemObserver(new UncheckedObserver<Training>() {
             @Override
             public void onNext(Training training) {
                 getView().updateTraining(training);

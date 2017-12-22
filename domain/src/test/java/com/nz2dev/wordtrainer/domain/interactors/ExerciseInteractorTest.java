@@ -17,7 +17,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
@@ -32,7 +31,7 @@ import static org.mockito.Mockito.when;
  * Created by nz2Dev on 17.12.2017
  */
 @RunWith(MockitoJUnitRunner.class)
-public class TrainerInteractorTest {
+public class ExerciseInteractorTest {
 
     @Mock WordsRepository wordsRepository;
     @Mock TrainingsRepository trainingsRepository;
@@ -41,7 +40,7 @@ public class TrainerInteractorTest {
 
     private TestScheduler testScheduler;
 
-    private TrainerInteractor interactor;
+    private ExerciseInteractor interactor;
 
     private static Word[] wordsDummy = new Word[]{
             new Word(0, 1, "A", "N"),
@@ -57,7 +56,7 @@ public class TrainerInteractorTest {
 
         when(uiExecutor.getScheduler()).thenReturn(Schedulers.trampoline());
         when(backgroundExecutor.getScheduler()).thenReturn(Schedulers.trampoline());
-        interactor = new TrainerInteractor(wordsRepository, trainingsRepository, uiExecutor, backgroundExecutor);
+        interactor = new ExerciseInteractor(wordsRepository, trainingsRepository, uiExecutor, backgroundExecutor);
     }
 
     @Test

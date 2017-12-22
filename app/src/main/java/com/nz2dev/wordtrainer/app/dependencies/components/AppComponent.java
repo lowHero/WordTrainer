@@ -9,12 +9,11 @@ import com.nz2dev.wordtrainer.app.presentation.Navigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.startup.StartupActivity;
 import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
-import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionManager;
 import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
 import com.nz2dev.wordtrainer.domain.interactors.AccountHistoryInteractor;
 import com.nz2dev.wordtrainer.domain.interactors.AccountInteractor;
-import com.nz2dev.wordtrainer.domain.interactors.TrainerInteractor;
+import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
+import com.nz2dev.wordtrainer.domain.interactors.TrainingInteractor;
 import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
 
 import javax.inject.Singleton;
@@ -37,7 +36,8 @@ public interface AppComponent {
     AccountPreferences accountPreferences();
     Navigator navigator();
 
-    TrainerInteractor trainerInteractor();
+    TrainingInteractor trainingInteractor();
+    ExerciseInteractor exerciseInteractor();
     WordInteractor wordInteractor();
     AccountInteractor accountInteractor();
     AccountHistoryInteractor accountHistoryInteractor();
