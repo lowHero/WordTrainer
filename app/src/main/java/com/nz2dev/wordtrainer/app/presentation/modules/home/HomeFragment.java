@@ -101,15 +101,6 @@ public class HomeFragment extends Fragment implements HomeView, OnItemClickListe
             case R.id.item_sign_out:
                 presenter.signOutSelected();
                 return true;
-            case R.id.item_start_schedule:
-                presenter.startTestSchedule();
-                return true;
-            case R.id.item_stop_schedule:
-                presenter.stopTestSchedule();
-                return true;
-            case R.id.item_manual_call_service:
-                presenter.manualCallService();
-                return true;
             case R.id.item_populate:
                 presenter.populateWords();
                 return true;

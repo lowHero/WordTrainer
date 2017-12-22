@@ -24,15 +24,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.modules.home.HomeActivity" />
+        <activity android:name=".presentation.modules.word.train.TrainWordActivity" />
         <activity android:name=".presentation.modules.account.AccountActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <service android:name=".services.check.CheckDatabaseService" />
         <service android:name=".services.AlarmService" />
         <service android:name=".services.TestService" />
+        <service android:name=".services.training.TrainingScheduleService" />
 
         <receiver android:name=".services.AlarmReceiver" />
-        <activity android:name=".presentation.modules.word.train.TrainWordActivity" />
     </application>
 
 </manifest>

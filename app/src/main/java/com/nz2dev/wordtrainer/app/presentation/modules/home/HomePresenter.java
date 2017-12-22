@@ -6,8 +6,6 @@ import android.content.Intent;
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.services.AlarmService;
-import com.nz2dev.wordtrainer.app.services.check.CheckDatabaseService;
 import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
 import com.nz2dev.wordtrainer.app.utils.UncheckedObserver;
 import com.nz2dev.wordtrainer.domain.interactors.TrainerInteractor;
@@ -91,23 +89,6 @@ public class HomePresenter extends BasePresenter<HomeView> {
     public void signOutSelected() {
         accountPreferences.signOut();
         getView().navigateAccount();
-    }
-
-    public void startTestSchedule() {
-        Intent serviceIntent = new Intent(appContext, AlarmService.class);
-        serviceIntent.putExtra(AlarmService.EXTRA_START_ALARM, true);
-        appContext.startService(serviceIntent);
-    }
-
-    public void stopTestSchedule() {
-        Intent serviceIntent = new Intent(appContext, AlarmService.class);
-        serviceIntent.putExtra(AlarmService.EXTRA_START_ALARM, false);
-        appContext.startService(serviceIntent);
-    }
-
-    public void manualCallService() {
-        Intent serviceIntent = new Intent(appContext, CheckDatabaseService.class);
-        appContext.startService(serviceIntent);
     }
 
     public void populateWords() {
