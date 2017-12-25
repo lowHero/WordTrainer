@@ -54,6 +54,8 @@ dependencies {
 
     def testDependencies = rootProject.ext.testDependencies
     testImplementation testDependencies["junit"]
+    testImplementation testDependencies["assertj"]
+    testImplementation testDependencies["robolectric"]
     androidTestImplementation testDependencies["testRunner"]
     androidTestImplementation testDependencies["espressoCore"]
 }

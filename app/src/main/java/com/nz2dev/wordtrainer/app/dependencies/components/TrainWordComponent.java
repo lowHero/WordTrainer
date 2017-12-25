@@ -1,7 +1,7 @@
 package com.nz2dev.wordtrainer.app.dependencies.components;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.presentation.modules.word.train.TrainWordFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment;
 
 import dagger.Component;
 
@@ -11,5 +11,5 @@ import dagger.Component;
 @PerActivity
 @Component(dependencies = AppComponent.class)
 public interface TrainWordComponent {
-    void inject(TrainWordFragment trainWordFragment);
+    void inject(ExerciseTrainingFragment exerciseTrainingFragment);
 }

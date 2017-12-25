@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.word.train;
+package com.nz2dev.wordtrainer.app.presentation.modules.training.exercising;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -11,6 +11,7 @@ import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.dependencies.HasDependencies;
 import com.nz2dev.wordtrainer.app.dependencies.components.DaggerTrainWordComponent;
 import com.nz2dev.wordtrainer.app.dependencies.components.TrainWordComponent;
+import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment.ExerciseTrainingHandler;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
@@ -18,14 +19,15 @@ import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 /**
  * Created by nz2Dev on 15.12.2017
  */
-public class TrainWordActivity extends AppCompatActivity implements HasDependencies<TrainWordComponent> {
+public class ExerciseTrainingActivity extends AppCompatActivity implements HasDependencies<TrainWordComponent>, ExerciseTrainingHandler {
 
-    private static final int REQUEST_CODE = 1;
+    private static final int REQUEST_CODE = 0;
 
     private static final String EXTRA_TRAINING_ID = "TrainingId";
 
     public static Intent getCallingIntent(Context context, int trainingId) {
-        Intent intent = new Intent(context, TrainWordActivity.class);
+        Intent intent = new Intent(context, ExerciseTrainingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_TRAINING_ID, trainingId);
         return intent;
     }
@@ -48,7 +50,7 @@ public class TrainWordActivity extends AppCompatActivity implements HasDependenc
             .build();
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_default, TrainWordFragment.newInstance(getTrainingId()))
+                .replace(R.id.fl_default, ExerciseTrainingFragment.newInstance(getTrainingId()))
                 .commit();
     }
 
@@ -59,5 +61,10 @@ public class TrainWordActivity extends AppCompatActivity implements HasDependenc
 
     private int getTrainingId() {
         return getIntent().getIntExtra(EXTRA_TRAINING_ID, -1);
+    }
+
+    @Override
+    public void onTrainingFinished() {
+        finish();
     }
 }

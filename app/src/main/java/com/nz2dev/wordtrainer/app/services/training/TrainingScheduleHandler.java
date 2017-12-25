@@ -11,4 +11,6 @@ public interface TrainingScheduleHandler {
     void handleError(String error);
     void finishWork();
 
+    void scheduleNextTime(long nextScheduledTime);
+    void stopSchedule();
 }

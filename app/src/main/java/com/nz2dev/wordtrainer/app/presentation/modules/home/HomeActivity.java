@@ -10,14 +10,15 @@ import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.dependencies.HasDependencies;
 import com.nz2dev.wordtrainer.app.dependencies.components.DaggerHomeComponent;
 import com.nz2dev.wordtrainer.app.dependencies.components.HomeComponent;
-import com.nz2dev.wordtrainer.app.presentation.modules.word.train.TrainWordFragment;
-import com.nz2dev.wordtrainer.app.presentation.modules.word.train.TrainWordFragment.TrainWordHandler;
+import com.nz2dev.wordtrainer.app.presentation.modules.debug.DebugFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment.ExerciseTrainingHandler;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 
 /**
  * Created by nz2Dev on 30.11.2017
  */
-public class HomeActivity extends AppCompatActivity implements HasDependencies<HomeComponent>, TrainWordHandler {
+public class HomeActivity extends AppCompatActivity implements HasDependencies<HomeComponent>, ExerciseTrainingHandler {
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, HomeActivity.class);
@@ -36,6 +37,10 @@ public class HomeActivity extends AppCompatActivity implements HasDependencies<H
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fl_default, HomeFragment.newInstance())
                 .commit();
+
+        getSupportFragmentManager().beginTransaction()
+                .add(DebugFragment.newInstance(), "DEBUG")
+                .commit();
     }
 
     @Override
@@ -45,11 +50,11 @@ public class HomeActivity extends AppCompatActivity implements HasDependencies<H
 
     @Override
     public void onTrainingFinished() {
-        TrainWordFragment trainWordFragment = (TrainWordFragment) getSupportFragmentManager()
-                .findFragmentByTag(TrainWordFragment.FRAGMENT_TAG);
+        ExerciseTrainingFragment exerciseTrainingFragment = (ExerciseTrainingFragment) getSupportFragmentManager()
+                .findFragmentByTag(ExerciseTrainingFragment.FRAGMENT_TAG);
 
-        if (trainWordFragment.isVisible()) {
-            trainWordFragment.dismiss();
+        if (exerciseTrainingFragment.isVisible()) {
+            exerciseTrainingFragment.dismiss();
         }
 
         // TODO get homeFragment and call refreshData with Training model object?

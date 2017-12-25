@@ -3,6 +3,8 @@
     <string name="title_activity_login">Sign in</string>
     <string name="title_enter_password">Enter password</string>
     <string name="title_train_word">Train the word</string>
+    <string name="title_exercises">Exercises</string>
+    <string name="title_trainer">Trainer</string>
 
     <string name="prompt_need_password">need password?</string>
     <string name="prompt_email">Email</string>
@@ -16,8 +18,11 @@
     <string name="action_create">Create</string>
     <string name="action_insert_word">Insert Word</string>
     <string name="action_cancel">Cancel</string>
+    <string name="action_start_scheduling">Start Scheduling</string>
+    <string name="action_stop_scheduling">Stop Scheduling</string>
 
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_next_time_unspecified">--:--</string>
 </resources>

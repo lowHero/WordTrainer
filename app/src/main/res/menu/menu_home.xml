@@ -3,19 +3,5 @@
     <item
         android:id="@+id/item_sign_out"
         android:title="@string/action_sign_out_short" />
-    <item
-        android:id="@+id/item_start_schedule"
-        android:title="Start Schedule" />
-    <item
-        android:id="@+id/item_stop_schedule"
-        android:title="Stop Schedule" />
-
-    <item
-        android:id="@+id/item_manual_call_service"
-        android:title="Call Check Service" />
-
-    <item
-        android:id="@+id/item_populate"
-        android:title="Populate Test Words" />
 
 </menu>

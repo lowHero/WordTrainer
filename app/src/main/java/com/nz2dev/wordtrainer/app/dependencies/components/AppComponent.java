@@ -5,6 +5,7 @@ import android.content.Context;
 import com.nz2dev.wordtrainer.app.dependencies.modules.AppModule;
 import com.nz2dev.wordtrainer.app.dependencies.modules.DataModule;
 import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
+import com.nz2dev.wordtrainer.app.preferences.SchedulingPreferences;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.startup.StartupActivity;
 import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
@@ -34,6 +35,7 @@ public interface AppComponent {
 
     WordTrainerDatabase database();
     AccountPreferences accountPreferences();
+    SchedulingPreferences schedulingPreferences();
     Navigator navigator();
 
     TrainingInteractor trainingInteractor();

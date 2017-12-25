@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.word.train;
+package com.nz2dev.wordtrainer.app.presentation.modules.training.exercising;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
-import com.nz2dev.wordtrainer.app.presentation.modules.word.train.renderers.WordTranslationVariantRenderer;
+import com.nz2dev.wordtrainer.app.presentation.renderers.WordTranslationVariantRenderer;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.pedrogomez.renderers.RVRendererAdapter;
@@ -34,9 +34,9 @@ import butterknife.OnClick;
 /**
  * Created by nz2Dev on 16.12.2017
  */
-public class TrainWordFragment extends DialogFragment implements TrainWordView, WordTranslationVariantRenderer.VariantListener {
+public class ExerciseTrainingFragment extends DialogFragment implements ExerciseTrainingView, WordTranslationVariantRenderer.VariantListener {
 
-    public interface TrainWordHandler {
+    public interface ExerciseTrainingHandler {
 
         void onTrainingFinished();
 
@@ -45,11 +45,11 @@ public class TrainWordFragment extends DialogFragment implements TrainWordView, 
     public static final String FRAGMENT_TAG = "TrainWord";
     private static final String KEY_TRAINING_ID = "training_id";
 
-    public static TrainWordFragment newInstance(int trainingId) {
+    public static ExerciseTrainingFragment newInstance(int trainingId) {
         Bundle args = new Bundle();
         args.putInt(KEY_TRAINING_ID, trainingId);
 
-        TrainWordFragment fragment = new TrainWordFragment();
+        ExerciseTrainingFragment fragment = new ExerciseTrainingFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,21 +60,21 @@ public class TrainWordFragment extends DialogFragment implements TrainWordView, 
     @BindView(R.id.rv_words_translation_variants)
     RecyclerView translationVariantsRecycleView;
 
-    @Inject TrainWordPresenter presenter;
+    @Inject ExerciseTrainingPresenter presenter;
 
     private RVRendererAdapter<Word> variantsAdapter;
-    private TrainWordHandler trainingHandler;
+    private ExerciseTrainingHandler trainingHandler;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            trainingHandler = (TrainWordHandler) context;
+            trainingHandler = (ExerciseTrainingHandler) context;
         } catch (ClassCastException e) {
             throw new RuntimeException(String.format(
                     "Activity that contain %s should implements %s interface",
                     getClass().getSimpleName(),
-                    TrainWordHandler.class.getSimpleName()));
+                    ExerciseTrainingHandler.class.getSimpleName()));
         }
     }
 
@@ -98,7 +98,7 @@ public class TrainWordFragment extends DialogFragment implements TrainWordView, 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_word_training, container, false);
+        View root = inflater.inflate(R.layout.fragment_training_exercising, container, false);
         ButterKnife.bind(this, root);
         translationVariantsRecycleView.setAdapter(variantsAdapter);
         translationVariantsRecycleView.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -169,8 +169,8 @@ public class TrainWordFragment extends DialogFragment implements TrainWordView, 
     }
 
     private void provideInjections() {
-        if (getActivity() instanceof  TrainWordActivity) {
-            DependenciesUtils.getFromActivity(this, TrainWordActivity.class).inject(this);
+        if (getActivity() instanceof ExerciseTrainingActivity) {
+            DependenciesUtils.getFromActivity(this, ExerciseTrainingActivity.class).inject(this);
         } else if (getActivity() instanceof HomeActivity){
             DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
         } else {

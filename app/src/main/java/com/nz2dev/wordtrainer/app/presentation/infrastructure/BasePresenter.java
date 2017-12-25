@@ -41,11 +41,8 @@ public abstract class BasePresenter<V> {
     /**
      * Called write after #setView method and indicate that view is properly loaded and can receive calls.
      * Override this method if you want to receive callback of this operation.
-     * <br>
-     * The default implementation is just to check if view != null
      */
     protected void onViewReady() {
-        checkViewReady();
     }
 
     protected void checkViewReady() {

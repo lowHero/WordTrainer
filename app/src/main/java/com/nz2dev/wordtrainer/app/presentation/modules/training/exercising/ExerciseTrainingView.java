@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.word.train;
+package com.nz2dev.wordtrainer.app.presentation.modules.training.exercising;
 
 import com.nz2dev.wordtrainer.domain.models.Word;
 
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by nz2Dev on 16.12.2017
  */
-public interface TrainWordView {
+public interface ExerciseTrainingView {
 
     void showTargetWord(Word mainWord);
     void showVariants(Collection<Word> translationVariants);

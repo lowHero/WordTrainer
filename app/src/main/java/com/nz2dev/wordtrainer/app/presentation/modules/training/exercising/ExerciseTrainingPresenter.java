@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.word.train;
+package com.nz2dev.wordtrainer.app.presentation.modules.training.exercising;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
@@ -20,7 +20,7 @@ import io.reactivex.observers.DisposableSingleObserver;
  * Created by nz2Dev on 16.12.2017
  */
 @PerActivity // TODO try to use @PerFragment annotation
-public class TrainWordPresenter extends BasePresenter<TrainWordView> {
+public class ExerciseTrainingPresenter extends BasePresenter<ExerciseTrainingView> {
 
     private ExerciseInteractor trainer;
     private AccountPreferences accountPreferences;
@@ -28,7 +28,7 @@ public class TrainWordPresenter extends BasePresenter<TrainWordView> {
     private Exercise pendingExercise;
 
     @Inject
-    public TrainWordPresenter(ExerciseInteractor trainer, AccountPreferences accountPreferences) {
+    public ExerciseTrainingPresenter(ExerciseInteractor trainer, AccountPreferences accountPreferences) {
         this.trainer = trainer;
         this.accountPreferences = accountPreferences;
     }

@@ -2,12 +2,11 @@ package com.nz2dev.wordtrainer.app.presentation.modules.home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,48 +17,68 @@ import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
-import com.nz2dev.wordtrainer.app.presentation.modules.home.renderers.TrainingRenderer;
-import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
-import com.nz2dev.wordtrainer.app.presentation.modules.word.train.TrainWordFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.settings.scheduling.SchedulingSettingsFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.training.overview.OverviewTrainingsFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
-import com.nz2dev.wordtrainer.app.utils.OnItemClickListener;
-import com.nz2dev.wordtrainer.domain.models.Training;
-import com.pedrogomez.renderers.RVRendererAdapter;
-import com.pedrogomez.renderers.RendererBuilder;
-
-import java.util.Collection;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-
-import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
 /**
  * Created by nz2Dev on 30.11.2017
  */
-public class HomeFragment extends Fragment implements HomeView, OnItemClickListener<Training> {
+public class HomeFragment extends Fragment implements HomeView {
+
+    private class HomePageAdapter extends FragmentPagerAdapter {
+
+        private HomePageAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0: return OverviewTrainingsFragment.newInstance();
+                case 1: return SchedulingSettingsFragment.newInstance();
+            }
+            return null;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0: return getContext().getString(R.string.title_exercises);
+                case 1: return getContext().getString(R.string.title_trainer);
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+    }
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
 
-    @BindView(R.id.rv_words_list)
-    RecyclerView wordsList;
+    @BindView(R.id.vp_home_pager)
+    ViewPager homeContentPager;
+
+    @BindView(R.id.tl_pager_tabs)
+    TabLayout tabs;
 
     @Inject HomePresenter presenter;
     @Inject Navigator navigator;
-
-    private RVRendererAdapter<Training> adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
-        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new TrainingRenderer(this)));
     }
 
     @Nullable
@@ -67,14 +86,8 @@ public class HomeFragment extends Fragment implements HomeView, OnItemClickListe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, root);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), VERTICAL, false);
-        wordsList.setLayoutManager(layoutManager);
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(wordsList.getContext(), VERTICAL);
-        wordsList.addItemDecoration(dividerItemDecoration);
-
-        wordsList.setAdapter(adapter);
+        homeContentPager.setAdapter(new HomePageAdapter(getChildFragmentManager()));
+        tabs.setupWithViewPager(homeContentPager);
         return root;
     }
 
@@ -101,21 +114,8 @@ public class HomeFragment extends Fragment implements HomeView, OnItemClickListe
             case R.id.item_sign_out:
                 presenter.signOutSelected();
                 return true;
-            case R.id.item_populate:
-                presenter.populateWords();
-                return true;
         }
         return false;
-    }
-
-    @Override
-    public void onItemClick(Training training) {
-        presenter.trainWordClick(training);
-    }
-
-    @OnClick(R.id.btn_add_word)
-    public void onAddWordClick() {
-        presenter.addWordClick();
     }
 
     @Override
@@ -124,35 +124,8 @@ public class HomeFragment extends Fragment implements HomeView, OnItemClickListe
     }
 
     @Override
-    public void showTrainings(Collection<Training> trainings) {
-        adapter.addAll(trainings);
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void updateTraining(Training training) {
-        for (int position = 0; position < adapter.getItemCount(); position++) {
-            if (adapter.getItem(position).getId() == training.getId()) {
-                adapter.getItem(position).setData(training);
-                adapter.notifyItemChanged(position);
-                break;
-            }
-        }
-    }
-
-    @Override
     public void navigateAccount() {
         navigator.navigateAccount(getActivity());
-    }
-
-    @Override
-    public void navigateWordAdding() {
-        AddWordFragment.newInstance().show(getChildFragmentManager(), "AddWord");
-    }
-
-    @Override
-    public void navigateWordTraining(int trainingId) {
-        TrainWordFragment.newInstance(trainingId).show(getFragmentManager(), TrainWordFragment.FRAGMENT_TAG);
     }
 
 }

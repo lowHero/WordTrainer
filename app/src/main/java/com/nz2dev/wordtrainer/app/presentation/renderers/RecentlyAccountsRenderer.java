@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.account.renderers;
+package com.nz2dev.wordtrainer.app.presentation.renderers;
 
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;

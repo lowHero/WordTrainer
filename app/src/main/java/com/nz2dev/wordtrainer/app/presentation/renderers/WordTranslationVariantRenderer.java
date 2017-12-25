@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.word.train.renderers;
+package com.nz2dev.wordtrainer.app.presentation.renderers;
 
 import android.content.res.ColorStateList;
 import android.support.v4.content.ContextCompat;

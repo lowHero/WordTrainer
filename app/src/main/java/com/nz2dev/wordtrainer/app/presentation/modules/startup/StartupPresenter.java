@@ -1,8 +1,12 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.startup;
 
+import android.app.Service;
+import android.content.Intent;
+
 import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
+import com.nz2dev.wordtrainer.app.services.training.TrainingScheduleService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -48,4 +52,18 @@ public class StartupPresenter extends BasePresenter<StartupView> {
                     }
                 });
     }
+
+//    TODO it can be useful to store name of services with should be started right after app starts
+//    private void initAutoStartedServices() {
+//        try {
+//            String autoStartedServiceName = TrainingScheduleService.class.getName();
+//            Class<?> clazz = Class.forName(autoStartedServiceName);
+//
+//            if (clazz.isAssignableFrom(Service.class)) {
+//                context.startService(new Intent(context, clazz));
+//            }
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

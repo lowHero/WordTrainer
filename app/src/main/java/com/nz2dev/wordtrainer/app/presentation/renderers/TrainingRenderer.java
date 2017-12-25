@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.home.renderers;
+package com.nz2dev.wordtrainer.app.presentation.renderers;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,9 @@ import android.widget.TextView;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.utils.OnItemClickListener;
 import com.nz2dev.wordtrainer.domain.models.Training;
+import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.Renderer;
+import com.pedrogomez.renderers.RendererBuilder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
