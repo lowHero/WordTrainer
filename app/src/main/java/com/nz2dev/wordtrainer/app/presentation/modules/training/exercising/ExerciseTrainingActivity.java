@@ -64,7 +64,7 @@ public class ExerciseTrainingActivity extends AppCompatActivity implements HasDe
     }
 
     @Override
-    public void onTrainingFinished() {
+    public void onTrainingFinished(ExerciseTrainingFragment fragment) {
         finish();
     }
 }

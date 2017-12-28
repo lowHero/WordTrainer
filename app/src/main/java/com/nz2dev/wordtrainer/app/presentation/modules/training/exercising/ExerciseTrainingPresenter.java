@@ -58,9 +58,9 @@ public class ExerciseTrainingPresenter extends BasePresenter<ExerciseTrainingVie
         int correctWordId = pendingExercise.getTraining().getWord().getId();
         boolean isCorrectAnswer = correctWordId == word.getId();
 
-        getView().highlightCorrectWord(correctWordId);
-        if (isCorrectAnswer) {
-            getView().notifyCorrectAnswer();
+        getView().highlightWord(correctWordId, true);
+        if (!isCorrectAnswer) {
+            getView().highlightWord(word.getId(), false);
         }
 
         trainer.commitExercise(pendingExercise, isCorrectAnswer, new DisposableSingleObserver<Boolean>() {
