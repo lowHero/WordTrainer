@@ -1,39 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/colorBackgroundFloating">
 
-    <TextView
-        android:id="@+id/tv_main_training_word"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        tools:text="Some Word" />
+        android:layout_gravity="center">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_words_translation_variants"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tv_main_training_word"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager"
-        tools:layout_height="200dp"
-        tools:listitem="@layout/include_word_translation_variant">
+        <TextView
+            android:id="@+id/tv_main_training_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="Some Word" />
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_words_translation_variants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tv_main_training_word"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            tools:layout_height="170dp"
+            tools:listitem="@layout/include_word_translation_variant">
 
-    <Button
-        android:id="@+id/btn_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rv_words_translation_variants"
-        android:layout_centerHorizontal="true"
-        android:text="@string/action_cancel" />
+        </android.support.v7.widget.RecyclerView>
 
-</RelativeLayout>
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rv_words_translation_variants"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/action_cancel"
+            android:textColor="@color/primaryTextColor"
+            android:theme="@style/Button.Accent" />
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -1,5 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.training.overview;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,9 +8,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -22,6 +20,7 @@ import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
 import com.nz2dev.wordtrainer.app.presentation.renderers.TrainingRenderer;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.app.utils.OnItemClickListener;
+import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;
@@ -41,6 +40,12 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
  */
 public class OverviewTrainingsFragment extends Fragment implements OverviewTrainingsView, OnItemClickListener<Training> {
 
+    public interface TrainingExhibitor {
+
+        void showTraining(ExerciseTrainingFragment fragment);
+
+    }
+
     public static OverviewTrainingsFragment newInstance() {
         return new OverviewTrainingsFragment();
     }
@@ -52,6 +57,17 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     @Inject Navigator navigator;
 
     private RVRendererAdapter<Training> adapter;
+    private TrainingExhibitor trainingExhibitor;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            trainingExhibitor = (TrainingExhibitor) context;
+        } catch (ClassCastException e) {
+            throw new RuntimeException("context should implement: " + TrainingExhibitor.class.getSimpleName());
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -132,7 +148,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
 
     @Override
     public void navigateWordTraining(int trainingId) {
-        ExerciseTrainingFragment.newInstance(trainingId).show(getActivity().getSupportFragmentManager(), ExerciseTrainingFragment.FRAGMENT_TAG);
+        trainingExhibitor.showTraining(ExerciseTrainingFragment.newInstance(trainingId));
     }
 
 }

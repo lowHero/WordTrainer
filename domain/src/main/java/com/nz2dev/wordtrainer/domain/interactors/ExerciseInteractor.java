@@ -29,7 +29,7 @@ public class ExerciseInteractor {
 
     private static final int DEFAULT_UNIT_PROGRESS = 50;
     private static final int MINIMUM_WORDS_FOR_EXERCISING = 2;
-    private static final int WORDS_FOR_EXERCISING = 4;
+    private static final int WORDS_FOR_EXERCISING = 3;
     private static final int EXERCISING_WORDS_VARIANT_RANGE = 50;
 
     private WordsRepository wordsRepository;

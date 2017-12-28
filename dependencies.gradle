@@ -4,7 +4,7 @@ ext {
     androidCompileSdkVersion = 26
     androidBuildToolsVersion = '26.0.2'
 
-    androidSupportVersion = '26.1.0'
+    androidSupportVersion = '27.0.2'
     androidConstraintLayoutVersion = '1.0.2'
 
     androidArchVersion = "1.0.0"

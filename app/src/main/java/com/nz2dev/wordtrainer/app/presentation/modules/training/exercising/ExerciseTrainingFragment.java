@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,15 +35,15 @@ import butterknife.OnClick;
 /**
  * Created by nz2Dev on 16.12.2017
  */
-public class ExerciseTrainingFragment extends DialogFragment implements ExerciseTrainingView, WordTranslationVariantRenderer.VariantListener {
+public class ExerciseTrainingFragment extends DialogFragment implements ExerciseTrainingView,
+        WordTranslationVariantRenderer.VariantListener {
 
     public interface ExerciseTrainingHandler {
 
-        void onTrainingFinished();
+        void onTrainingFinished(ExerciseTrainingFragment fragment);
 
     }
 
-    public static final String FRAGMENT_TAG = "TrainWord";
     private static final String KEY_TRAINING_ID = "training_id";
 
     public static ExerciseTrainingFragment newInstance(int trainingId) {
@@ -97,7 +98,7 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_training_exercising, container, false);
         ButterKnife.bind(this, root);
         translationVariantsRecycleView.setAdapter(variantsAdapter);
@@ -106,7 +107,7 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter.setView(this);
         presenter.beginExercise(getTrainingIdFromBundle());
@@ -130,7 +131,11 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
 
     @Override
     public void showTargetWord(Word mainWord) {
-        mainTrainingWordText.setText(mainWord.getOriginal());
+        if (getContext() == null) {
+            throw new NullPointerException("context == null");
+        }
+        String addition = getContext().getString(R.string.addition_asking_for_connection);
+        mainTrainingWordText.setText(String.format("%s %s", mainWord.getOriginal(), addition));
     }
 
     @Override
@@ -146,36 +151,34 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
     }
 
     @Override
-    public void notifyCorrectAnswer() {
-        Toast.makeText(getContext(), "Correct!", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void highlightCorrectWord(int correctWordId) {
-        for (int variantPosition = 0; variantPosition < variantsAdapter.getItemCount(); variantPosition++) {
-            WordTranslationVariantRenderer renderer = getVariantRendererInPosition(variantPosition);
-            if (variantsAdapter.getItem(variantPosition).getId() == correctWordId) {
-                renderer.highlightIsCorrect(true);
-            } else {
-                renderer.highlightIsCorrect(false);
-            }
-        }
+    public void highlightWord(int wordId, boolean correct) {
+        int adapterPosition = getAdapterPositionByWordId(wordId);
+        WordTranslationVariantRenderer renderer = getVariantRendererInPosition(adapterPosition);
+        renderer.highlightIsCorrect(correct);
     }
 
     @Override
     public void hideTrainings() {
-        dismiss();
-        trainingHandler.onTrainingFinished();
+        trainingHandler.onTrainingFinished(this);
     }
 
     private void provideInjections() {
         if (getActivity() instanceof ExerciseTrainingActivity) {
             DependenciesUtils.getFromActivity(this, ExerciseTrainingActivity.class).inject(this);
-        } else if (getActivity() instanceof HomeActivity){
+        } else if (getActivity() instanceof HomeActivity) {
             DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
         } else {
             throw new RuntimeException("can't inject dependencies from activity");
         }
+    }
+
+    private int getAdapterPositionByWordId(int wordId) {
+        for (int variantPosition = 0; variantPosition < variantsAdapter.getItemCount(); variantPosition++) {
+            if (variantsAdapter.getItem(variantPosition).getId() == wordId) {
+                return variantPosition;
+            }
+        }
+        throw new RuntimeException("wordId not found: " + wordId);
     }
 
     private WordTranslationVariantRenderer getVariantRendererInPosition(int adapterPosition) {
