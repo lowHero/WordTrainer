@@ -34,6 +34,7 @@
             android:layout_below="@+id/tv_main_training_word"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:overScrollMode="never"
             app:layoutManager="android.support.v7.widget.GridLayoutManager"
             tools:layout_height="170dp"
             tools:listitem="@layout/include_word_translation_variant">

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nz2dev.wordtrainer.app.R;
@@ -59,7 +59,7 @@ public class HomeActivity extends AppCompatActivity implements HasDependencies<H
             throw new RuntimeException("fragment != exerciseTrainingFragment");
         }
 
-        getSupportFragmentManager().popBackStack(backStackId, 0);
+        getSupportFragmentManager().popBackStack(backStackId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         // TODO get homeFragment and call refreshData with Training model object?
         // or use Room LiveData for managing this behaviour
