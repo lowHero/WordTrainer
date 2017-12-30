@@ -111,6 +111,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
 
     @Override
     public void showTrainings(Collection<Training> trainings) {
+        adapter.clear();
         adapter.addAll(trainings);
         adapter.notifyDataSetChanged();
     }
@@ -127,7 +128,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     }
 
     @Override
-    public void navigateWordTraining(int trainingId) {
+    public void navigateWordTraining(long trainingId) {
         trainingExhibitor.showTraining(ExerciseTrainingFragment.newInstance(trainingId));
     }
 

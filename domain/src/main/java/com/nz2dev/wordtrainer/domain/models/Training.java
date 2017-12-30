@@ -7,12 +7,33 @@ import java.util.Date;
  */
 public class Training {
 
-    private int id;
+    // Primitive in case when has relationship that replace modelId onto modelObject
+    // but the main model has same structure in data layer
+    public static class Primitive {
+
+        public static Primitive of(long id, long wordId, long time, long progress) {
+            return new Primitive(id, wordId, time, progress);
+        }
+
+        public final long id;
+        public final long wordId;
+        public final long time;
+        public final long progress;
+
+        private Primitive(long id, long wordId, long time, long progress) {
+            this.id = id;
+            this.wordId = wordId;
+            this.time = time;
+            this.progress = progress;
+        }
+    }
+
+    private long id;
     private Word word;
     private Date lastTrainingDate;
-    private int progress;
+    private long progress;
 
-    public Training(int id, Word word, Date lastTrainingDate, int progress) {
+    public Training(long id, Word word, Date lastTrainingDate, long progress) {
         this.id = id;
         this.word = word;
         this.lastTrainingDate = lastTrainingDate;
@@ -28,11 +49,11 @@ public class Training {
         setWord(training.getWord());
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -52,11 +73,11 @@ public class Training {
         this.lastTrainingDate = lastTrainingDate;
     }
 
-    public int getProgress() {
+    public long getProgress() {
         return progress;
     }
 
-    public void setProgress(int progress) {
+    public void setProgress(long progress) {
         this.progress = progress;
     }
 }

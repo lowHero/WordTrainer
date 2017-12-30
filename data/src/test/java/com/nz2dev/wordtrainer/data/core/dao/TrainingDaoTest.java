@@ -5,7 +5,7 @@ import android.arch.persistence.room.Room;
 import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
 import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
-import com.nz2dev.wordtrainer.data.core.entity.joined.TrainingAndWordJoin;
+import com.nz2dev.wordtrainer.data.core.relation.TrainingAndWordJoin;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.Training;
 
@@ -40,8 +40,8 @@ public class TrainingDaoTest {
                 .allowMainThreadQueries()
                 .build();
 
-        wordDao = database.wordDao();
-        trainingDao = database.trainingDao();
+        wordDao = database.getWordDao();
+        trainingDao = database.getTrainingDao();
     }
 
     @After
@@ -49,6 +49,18 @@ public class TrainingDaoTest {
         if (database != null) {
             database.close();
         }
+    }
+
+    @Test
+    public void addTraining_ByWordAddedId() {
+        long wordId = wordDao.addWord(new WordEntity(1, "A", "B"));
+        long trainingId = trainingDao.insertTraining(new TrainingEntity(wordId, null, 1));
+
+        assertThat(wordId).isEqualTo(1);
+        assertThat(trainingId).isEqualTo(1);
+
+        TrainingAndWordJoin training = trainingDao.getTrainingById(trainingId);
+        assertThat(training).isNotNull();
     }
 
     @Test

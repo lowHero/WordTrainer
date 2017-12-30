@@ -1,7 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.add;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
+import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
 import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
@@ -20,23 +20,16 @@ public class AddWordPresenter extends BasePresenter<AddWordView> {
     private static final int MIN_LENGTH = 2;
 
     private final WordInteractor wordInteractor;
+    private final AppPreferences appPreferences;
 
     private DisposableSingleObserver<Boolean> disposable;
-    private int accountId;
-
     private boolean originalValidated;
     private boolean translationValidated;
 
     @Inject
-    public AddWordPresenter(WordInteractor wordInteractor, AccountPreferences accountPreferences) {
+    public AddWordPresenter(WordInteractor wordInteractor, AppPreferences appPreferences) {
         this.wordInteractor = wordInteractor;
-        this.accountId = accountPreferences.getSignedAccountId();
-    }
-
-    @Override
-    protected void onViewReady() {
-        super.onViewReady();
-
+        this.appPreferences = appPreferences;
     }
 
     @Override
@@ -50,34 +43,36 @@ public class AddWordPresenter extends BasePresenter<AddWordView> {
     public void validateOriginalInputs(String original) {
         boolean previousCondition = isFullValidated();
         originalValidated = original.length() > MIN_LENGTH;
-        if (checkFullValidated(previousCondition)) {
-            // TODO there can notify witch one is not right, but I need some trigger after what time
-            // it would be normal to start notifying.
-        }
+
+        // TODO there can notify witch one is not right, but I need some trigger after what time
+        // TODO it would be normal to start notifying.
+        checkFullValidated(previousCondition);
     }
 
     public void validateTranslationInputs(String translation) {
         boolean previousCondition = isFullValidated();
         translationValidated = translation.length() > MIN_LENGTH;
+
         checkFullValidated(previousCondition);
     }
 
     public void closeClick() {
-        getView().showWordSuccessfulAdded();
+        getView().hideIt();
     }
 
     public void insertWordClick(String original, String translate) {
-        wordInteractor.addWord(new Word(accountId, original, translate), disposable = new DisposableSingleObserver<Boolean>() {
-            @Override
-            public void onSuccess(Boolean aBoolean) {
-                getView().showWordSuccessfulAdded();
-            }
+        wordInteractor.addWord(Word.unidentified(appPreferences.getSelectedCourseId(), original, translate),
+                disposable = new DisposableSingleObserver<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean aBoolean) {
+                        getView().showWordSuccessfulAdded();
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                getView().showError(ErrorHandler.describe(e));
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(ErrorHandler.describe(e));
+                    }
+                });
     }
 
     private boolean checkFullValidated(boolean isWasValidated) {

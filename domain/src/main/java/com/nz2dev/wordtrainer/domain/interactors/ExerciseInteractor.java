@@ -2,7 +2,7 @@ package com.nz2dev.wordtrainer.domain.interactors;
 
 import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
 import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
-import com.nz2dev.wordtrainer.domain.models.Exercise;
+import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
@@ -17,7 +17,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 
@@ -45,14 +44,14 @@ public class ExerciseInteractor {
         this.backgroundExecutor = backgroundExecutor;
     }
 
-    public void loadProposedExercise(int accountId, SingleObserver<Exercise> observer) {
-        makeExerciseFor(accountId, trainingsRepository.getFirstSortedTraining(accountId).subscribeOn(backgroundExecutor.getScheduler()))
+    public void loadProposedExercise(long courseId, SingleObserver<Exercise> observer) {
+        makeExerciseFor(trainingsRepository.getFirstSortedTraining(courseId).subscribeOn(backgroundExecutor.getScheduler()))
                 .observeOn(uiExecutor.getScheduler())
                 .subscribe(observer);
     }
 
-    public void loadNextExercise(int accountId, int trainingId, SingleObserver<Exercise> observer) {
-        makeExerciseFor(accountId, trainingsRepository.getTraining(trainingId).subscribeOn(backgroundExecutor.getScheduler()))
+    public void loadNextExercise(long trainingId, SingleObserver<Exercise> observer) {
+        makeExerciseFor(trainingsRepository.getTraining(trainingId).subscribeOn(backgroundExecutor.getScheduler()))
                 .observeOn(uiExecutor.getScheduler())
                 .subscribe(observer);
     }
@@ -79,10 +78,13 @@ public class ExerciseInteractor {
         });
     }
 
-    private Single<Exercise> makeExerciseFor(int accountId, Single<Training> targetTraining) {
+    private Single<Exercise> makeExerciseFor(Single<Training> targetTraining) {
         return targetTraining.map(training -> {
             Collection<Word> variants = wordsRepository
-                    .getPartOfWord(accountId, training.getWord().getId(), EXERCISING_WORDS_VARIANT_RANGE)
+                    .getPartOfWord(
+                            training.getWord().getCourseId(),
+                            training.getWord().getId(),
+                            EXERCISING_WORDS_VARIANT_RANGE)
                     .doOnSuccess(words -> {
                         if (words.size() < MINIMUM_WORDS_FOR_EXERCISING) {
                             throw new RuntimeException("not enough word wor training");

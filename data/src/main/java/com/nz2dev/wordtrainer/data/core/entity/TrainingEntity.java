@@ -17,47 +17,47 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 /**
  * Created by nz2Dev on 16.12.2017
  */
-@Entity
+@Entity(tableName = "trainings")
 public class TrainingEntity {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "tId")
-    private int id;
+    private long id;
 
     @ForeignKey(entity = WordEntity.class, parentColumns = "id", childColumns = "wordId", onDelete = CASCADE)
-    private int wordId;
+    private long wordId;
 
-    private int progress;
+    private long progress;
 
     @TypeConverters(DateConverter.class)
     private Date lastTrainingDate;
 
     @Ignore
-    public TrainingEntity(int wordId, Date lastTrainingDate, int progress) {
+    public TrainingEntity(long wordId, Date lastTrainingDate, long progress) {
         this.wordId = wordId;
         this.lastTrainingDate = lastTrainingDate;
         this.progress = progress;
     }
 
-    public TrainingEntity(int id, int wordId, Date lastTrainingDate, int progress) {
+    public TrainingEntity(long id, long wordId, Date lastTrainingDate, long progress) {
         this.id = id;
         this.wordId = wordId;
         this.lastTrainingDate = lastTrainingDate;
         this.progress = progress;
     }
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getWordId() {
+    public long getWordId() {
         return wordId;
     }
 
-    public void setWordId(int wordId) {
+    public void setWordId(long wordId) {
         this.wordId = wordId;
     }
 
@@ -69,11 +69,11 @@ public class TrainingEntity {
         this.lastTrainingDate = lastTrainingDate;
     }
 
-    public int getProgress() {
+    public long getProgress() {
         return progress;
     }
 
-    public void setProgress(int progress) {
+    public void setProgress(long progress) {
         this.progress = progress;
     }
 }

@@ -25,14 +25,14 @@ public class ExerciseTrainingActivity extends AppCompatActivity implements HasDe
 
     private static final String EXTRA_TRAINING_ID = "TrainingId";
 
-    public static Intent getCallingIntent(Context context, int trainingId) {
+    public static Intent getCallingIntent(Context context, long trainingId) {
         Intent intent = new Intent(context, ExerciseTrainingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_TRAINING_ID, trainingId);
         return intent;
     }
 
-    public static PendingIntent getPendingIntent(Context context, int trainingId) {
+    public static PendingIntent getPendingIntent(Context context, long trainingId) {
         return PendingIntent.getActivity(context,
                 REQUEST_CODE,
                 getCallingIntent(context, trainingId),

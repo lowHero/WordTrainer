@@ -10,14 +10,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.dependencies.HasDependencies;
 import com.nz2dev.wordtrainer.app.dependencies.components.DaggerHomeComponent;
 import com.nz2dev.wordtrainer.app.dependencies.components.HomeComponent;
+import com.nz2dev.wordtrainer.app.presentation.modules.courses.overview.CoursesOverviewFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.debug.DebugFragment;
-import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment.WordAdditionExhibitor;
+import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment.WordAdditionExhibitor;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment.ExerciseTrainingHandler;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.overview.OverviewTrainingsFragment.TrainingExhibitor;
@@ -59,14 +62,12 @@ public class HomeActivity extends AppCompatActivity implements HasDependencies<H
         }
 
         dependencies = DaggerHomeComponent.builder()
-                .appComponent(DependenciesUtils.getAppDependenciesFrom(this))
+                .appComponent(DependenciesUtils.appComponentFrom(this))
                 .build();
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_home_place, HomeFragment.newInstance())
-                .commit();
-
-        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_trainer_place, TrainerFragment.newInstance())
+                .replace(R.id.fl_navigation_place, CoursesOverviewFragment.newInstance())
                 .add(DebugFragment.newInstance(), "DEBUG")
                 .commit();
     }
@@ -88,12 +89,8 @@ public class HomeActivity extends AppCompatActivity implements HasDependencies<H
     }
 
     @Override
-    public void onAdditionFinished(AddWordFragment fragment) {
-        ValueAnimator animator = ValueAnimator.ofObject(new ArgbEvaluator(), ContextCompat.getColor(this, R.color.backgroundTransparentHard), 0);
-        animator.addUpdateListener(animation -> addingPlace.setBackgroundColor((Integer) animation.getAnimatedValue()));
-        animator.setDuration(300);
-        animator.start();
-
+    public void onWordAdditionFinished(AddWordFragment fragment) {
+        animateBackground(addingPlace, ContextCompat.getColor(this, R.color.backgroundTransparentHard), 0, 300);
         getSupportFragmentManager().popBackStack(backStackIdAdding, POP_BACK_STACK_INCLUSIVE);
     }
 
@@ -108,15 +105,18 @@ public class HomeActivity extends AppCompatActivity implements HasDependencies<H
 
     @Override
     public void showWordAddition(Fragment fragment) {
-        ValueAnimator animator = ValueAnimator.ofObject(new ArgbEvaluator(), 0, ContextCompat.getColor(this, R.color.backgroundTransparentHard));
-        animator.addUpdateListener(animation -> addingPlace.setBackgroundColor((Integer) animation.getAnimatedValue()));
-        animator.setDuration(300);
-        animator.start();
-
+        animateBackground(addingPlace, 0, ContextCompat.getColor(this, R.color.backgroundTransparentHard), 300);
         backStackIdAdding = getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.fade_in_full, R.anim.slide_up, R.anim.fade_in_full, R.anim.slide_up)
                 .replace(R.id.fl_adding_word_place, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private static void animateBackground(View view, int colorFrom, int colorTo, int duration) {
+        ValueAnimator animator = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        animator.addUpdateListener(animation -> view.setBackgroundColor((Integer) animation.getAnimatedValue()));
+        animator.setDuration(duration);
+        animator.start();
     }
 }

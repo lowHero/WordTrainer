@@ -3,9 +3,12 @@ package com.nz2dev.wordtrainer.domain.execution;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by nz2Dev on 06.12.2017
@@ -34,6 +37,18 @@ public class ExecutionManager {
                 .observeOn(uiExecutor.getScheduler());
 
         compositeDisposable.add(signedObservable.subscribeWith(observer));
+    }
+
+    public void handleDisposable(Disposable disposable) {
+        compositeDisposable.add(disposable);
+    }
+
+    public Scheduler work() {
+        return backgroundExecutor.getScheduler();
+    }
+
+    public Scheduler ui() {
+        return uiExecutor.getScheduler();
     }
 
     public void dispose() {

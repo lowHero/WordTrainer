@@ -1,7 +1,6 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.settings.scheduling;
+package com.nz2dev.wordtrainer.app.presentation.modules.training.scheduling;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +27,7 @@ import static com.nz2dev.wordtrainer.app.utils.Constants.INTERVAL_SECOND_IN_MILL
  * Created by nz2Dev on 23.12.2017
  */
 @PerActivity
-public class SchedulingSettingsPresenter extends BasePresenter<SchedulingSettingsView> {
+public class SchedulingTrainingsPresenter extends BasePresenter<SchedulingTrainingsView> {
 
     private static final long MIN_SCHEDULED_INTERVAL = INTERVAL_MINUTE_IN_MILLIS;
 
@@ -41,7 +40,7 @@ public class SchedulingSettingsPresenter extends BasePresenter<SchedulingSetting
     private BroadcastReceiver receiver;
 
     @Inject
-    public SchedulingSettingsPresenter(SchedulingPreferences schedulingPreferences, Context context) {
+    public SchedulingTrainingsPresenter(SchedulingPreferences schedulingPreferences, Context context) {
         this.schedulingPreferences = schedulingPreferences;
         this.context = context;
     }

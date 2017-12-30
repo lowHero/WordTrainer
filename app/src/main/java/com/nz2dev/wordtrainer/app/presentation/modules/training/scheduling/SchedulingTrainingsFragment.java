@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.settings.scheduling;
+package com.nz2dev.wordtrainer.app.presentation.modules.training.scheduling;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,7 +28,7 @@ import butterknife.OnClick;
 /**
  * Created by nz2Dev on 23.12.2017
  */
-public class SchedulingSettingsFragment extends Fragment implements SchedulingSettingsView {
+public class SchedulingTrainingsFragment extends Fragment implements SchedulingTrainingsView {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
@@ -36,8 +36,8 @@ public class SchedulingSettingsFragment extends Fragment implements SchedulingSe
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
-    public static SchedulingSettingsFragment newInstance() {
-        return new SchedulingSettingsFragment();
+    public static SchedulingTrainingsFragment newInstance() {
+        return new SchedulingTrainingsFragment();
     }
 
     @BindView(R.id.tv_next_training_time)
@@ -49,7 +49,7 @@ public class SchedulingSettingsFragment extends Fragment implements SchedulingSe
     @BindView(R.id.sb_training_interval)
     SeekBar trainingInterval;
 
-    @Inject SchedulingSettingsPresenter presenter;
+    @Inject SchedulingTrainingsPresenter presenter;
 
     private boolean launched = false;
 
@@ -62,7 +62,7 @@ public class SchedulingSettingsFragment extends Fragment implements SchedulingSe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_settings_scheduling, container, false);
+        View root = inflater.inflate(R.layout.fragment_trainings_scheduling, container, false);
         ButterKnife.bind(this, root);
         trainingInterval.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

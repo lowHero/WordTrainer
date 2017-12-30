@@ -3,7 +3,9 @@ package com.nz2dev.wordtrainer.app.presentation;
 import android.app.Activity;
 
 import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountActivity;
+import com.nz2dev.wordtrainer.app.presentation.modules.courses.creation.CreateCourseActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
+import com.nz2dev.wordtrainer.app.presentation.modules.startup.StartupActivity;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -23,7 +25,11 @@ public class Navigator {
         source.startActivity(HomeActivity.getCallingIntent(source));
     }
 
-    public void navigateAccount(Activity source) {
+    public void navigateAccountFrom(Activity source) {
         source.startActivity(AccountActivity.getCallingIntent(source));
+    }
+
+    public void navigateCourseCreationFrom(Activity source) {
+        source.startActivity(CreateCourseActivity.getCallingIntent(source));
     }
 }

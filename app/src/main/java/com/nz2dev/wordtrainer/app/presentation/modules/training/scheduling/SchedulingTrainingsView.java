@@ -1,9 +1,9 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.settings.scheduling;
+package com.nz2dev.wordtrainer.app.presentation.modules.training.scheduling;
 
 /**
  * Created by nz2Dev on 23.12.2017
  */
-public interface SchedulingSettingsView {
+public interface SchedulingTrainingsView {
 
     void showNextTrainingUnspecified();
 

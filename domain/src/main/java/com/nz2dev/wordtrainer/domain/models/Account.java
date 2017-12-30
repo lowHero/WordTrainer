@@ -5,7 +5,7 @@ package com.nz2dev.wordtrainer.domain.models;
  */
 public class Account {
 
-    private int id;
+    private long id;
     private String name;
     private boolean hasPassword;
 
@@ -13,17 +13,17 @@ public class Account {
         this(-1, name, false);
     }
 
-    public Account(int id, String name, boolean hasPassword) {
+    public Account(long id, String name, boolean hasPassword) {
         this.id = id;
         this.name = name;
         this.hasPassword = hasPassword;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

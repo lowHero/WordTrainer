@@ -1,11 +1,10 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.training.exercising;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
 import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
-import com.nz2dev.wordtrainer.domain.models.Exercise;
+import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
 import com.nz2dev.wordtrainer.domain.models.Word;
 
 import java.util.concurrent.TimeUnit;
@@ -23,39 +22,36 @@ import io.reactivex.observers.DisposableSingleObserver;
 public class ExerciseTrainingPresenter extends BasePresenter<ExerciseTrainingView> {
 
     private ExerciseInteractor trainer;
-    private AccountPreferences accountPreferences;
 
     private Exercise pendingExercise;
 
     @Inject
-    public ExerciseTrainingPresenter(ExerciseInteractor trainer, AccountPreferences accountPreferences) {
+    public ExerciseTrainingPresenter(ExerciseInteractor trainer) {
         this.trainer = trainer;
-        this.accountPreferences = accountPreferences;
     }
 
-    public void beginExercise(int trainingId) {
-        trainer.loadNextExercise(accountPreferences.getSignedAccountId(), trainingId,
-                new DisposableSingleObserver<Exercise>() {
-                    @Override
-                    public void onSuccess(Exercise exercise) {
-                        if (!isViewAttached()) {
-                            return;
-                        }
+    public void beginExercise(long trainingId) {
+        trainer.loadNextExercise(trainingId, new DisposableSingleObserver<Exercise>() {
+            @Override
+            public void onSuccess(Exercise exercise) {
+                if (!isViewAttached()) {
+                    return;
+                }
 
-                        pendingExercise = exercise;
-                        getView().showTargetWord(exercise.getTraining().getWord());
-                        getView().showVariants(exercise.getTranslationVariants());
-                    }
+                pendingExercise = exercise;
+                getView().showTargetWord(exercise.getTraining().getWord());
+                getView().showVariants(exercise.getTranslationVariants());
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().showError(ErrorHandler.describe(e));
-                    }
-                });
+            @Override
+            public void onError(Throwable e) {
+                getView().showError(ErrorHandler.describe(e));
+            }
+        });
     }
 
     public void answer(Word word) {
-        int correctWordId = pendingExercise.getTraining().getWord().getId();
+        long correctWordId = pendingExercise.getTraining().getWord().getId();
         boolean isCorrectAnswer = correctWordId == word.getId();
 
         getView().highlightWord(correctWordId, true);

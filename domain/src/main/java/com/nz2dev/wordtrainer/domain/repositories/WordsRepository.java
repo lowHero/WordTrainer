@@ -12,7 +12,7 @@ import io.reactivex.Single;
 public interface WordsRepository {
 
     Single<Long> addWord(Word word);
-    Single<Collection<Word>> getAllWords(int accountId);
-    Single<Collection<Word>> getPartOfWord(int accountId, int fromWordId, int limit);
+    Single<Collection<Word>> getAllWords(long courseId);
+    Single<Collection<Word>> getPartOfWord(long courseId, long fromWordId, long limit);
 
 }

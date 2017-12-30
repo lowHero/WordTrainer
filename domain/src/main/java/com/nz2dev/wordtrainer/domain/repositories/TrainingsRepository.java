@@ -1,8 +1,8 @@
 package com.nz2dev.wordtrainer.domain.repositories;
 
 import com.nz2dev.wordtrainer.domain.models.Training;
+import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.repositories.infrastructure.ObservableRepository;
-import com.nz2dev.wordtrainer.domain.repositories.infrastructure.StateObservableRepository;
 
 import java.util.Collection;
 
@@ -11,12 +11,12 @@ import io.reactivex.Single;
 /**
  * Created by nz2Dev on 16.12.2017
  */
-public interface TrainingsRepository extends ObservableRepository<Training>, StateObservableRepository<Training> {
+public interface TrainingsRepository extends ObservableRepository {
 
-    Single<Boolean> addTraining(int wordId);
+    Single<Boolean> addTraining(Word word);
     Single<Boolean> updateTraining(Training training);
-    Single<Training> getTraining(int id);
-    Single<Training> getFirstSortedTraining(int accountId);
-    Single<Collection<Training>> getSortedTrainings(int accountId);
+    Single<Training> getTraining(long id);
+    Single<Training> getFirstSortedTraining(long courseId);
+    Single<Collection<Training>> getSortedTrainings(long courseId);
 
 }

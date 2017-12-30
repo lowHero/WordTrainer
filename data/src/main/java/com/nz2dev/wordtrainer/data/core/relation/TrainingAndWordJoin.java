@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.data.core.entity.joined;
+package com.nz2dev.wordtrainer.data.core.relation;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.TypeConverters;

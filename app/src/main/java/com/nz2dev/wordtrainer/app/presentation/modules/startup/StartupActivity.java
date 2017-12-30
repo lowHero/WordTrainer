@@ -20,13 +20,18 @@ public class StartupActivity extends AppCompatActivity implements StartupView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.getAppDependenciesFrom(this).inject(this);
+        DependenciesUtils.appComponentFrom(this).inject(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         presenter.setView(this);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         presenter.detachView();
     }
 
@@ -36,7 +41,7 @@ public class StartupActivity extends AppCompatActivity implements StartupView {
     }
 
     @Override
-    public void navigateAccount() {
-        navigator.navigateAccount(this);
+    public void navigateCourseCreation() {
+        navigator.navigateCourseCreationFrom(this);
     }
 }

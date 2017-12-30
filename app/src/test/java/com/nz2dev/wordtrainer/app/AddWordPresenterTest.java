@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app;
 
-import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
+import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordPresenter;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordView;
 import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.times;
@@ -22,14 +21,14 @@ import static org.mockito.Mockito.verify;
 public class AddWordPresenterTest {
 
     @Mock AddWordView view;
-    @Mock AccountPreferences accountPreferences;
+    @Mock AppPreferences appPreferences;
     @Mock WordInteractor wordInteractor;
 
     private AddWordPresenter presenter;
 
     @Before
     public void init() {
-        presenter = new AddWordPresenter(wordInteractor, accountPreferences);
+        presenter = new AddWordPresenter(wordInteractor, appPreferences);
     }
 
     @Test

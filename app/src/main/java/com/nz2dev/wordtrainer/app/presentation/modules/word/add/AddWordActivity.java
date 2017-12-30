@@ -28,7 +28,7 @@ public class AddWordActivity extends AppCompatActivity implements HasDependencie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default);
         dependencies = DaggerAddWordComponent.builder()
-                .appComponent(DependenciesUtils.getAppDependenciesFrom(this))
+                .appComponent(DependenciesUtils.appComponentFrom(this))
                 .build();
     }
 

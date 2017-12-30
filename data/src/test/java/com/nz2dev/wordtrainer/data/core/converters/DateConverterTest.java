@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.data.core;
+package com.nz2dev.wordtrainer.data.core.converters;
 
 import com.nz2dev.wordtrainer.data.core.converters.DateConverter;
 

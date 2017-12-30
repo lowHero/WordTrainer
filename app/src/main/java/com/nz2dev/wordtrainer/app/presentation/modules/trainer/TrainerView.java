@@ -1,9 +1,9 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.home;
+package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
 
 /**
  * Created by nz2Dev on 30.11.2017
  */
-public interface HomeView {
+public interface TrainerView {
 
     void showError(String describe);
     void navigateAccount();

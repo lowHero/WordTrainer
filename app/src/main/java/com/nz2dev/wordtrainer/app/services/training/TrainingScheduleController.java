@@ -1,12 +1,12 @@
 package com.nz2dev.wordtrainer.app.services.training;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerService;
-import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
+import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.preferences.SchedulingPreferences;
 import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
 import com.nz2dev.wordtrainer.app.utils.TimeUtils;
 import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
-import com.nz2dev.wordtrainer.domain.models.Exercise;
+import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
 
 import java.util.Date;
 
@@ -20,15 +20,15 @@ import io.reactivex.observers.DisposableSingleObserver;
 @PerService
 public class TrainingScheduleController {
 
-    private final AccountPreferences accountPreferences;
+    private final AppPreferences appPreferences;
     private final ExerciseInteractor exerciseInteractor;
     private final SchedulingPreferences schedulingPreferences;
 
     private TrainingScheduleHandler handler;
 
     @Inject
-    public TrainingScheduleController(AccountPreferences accountPreferences, ExerciseInteractor exerciseInteractor, SchedulingPreferences schedulingPreferences) {
-        this.accountPreferences = accountPreferences;
+    public TrainingScheduleController(AppPreferences appPreferences, ExerciseInteractor exerciseInteractor, SchedulingPreferences schedulingPreferences) {
+        this.appPreferences = appPreferences;
         this.exerciseInteractor = exerciseInteractor;
         this.schedulingPreferences = schedulingPreferences;
     }
@@ -50,7 +50,7 @@ public class TrainingScheduleController {
         // fetch data, analise it, look at restriction,
         // make exercise and remember last time in preferences or somewhere else
         // and show notification
-        exerciseInteractor.loadProposedExercise(accountPreferences.getSignedAccountId(), new DisposableSingleObserver<Exercise>() {
+        exerciseInteractor.loadProposedExercise(appPreferences.getSignedAccountId(), new DisposableSingleObserver<Exercise>() {
             @Override
             public void onSuccess(Exercise exercise) {
                 // TODO notify Exercise with variants and pass exercise model to the Intent extras

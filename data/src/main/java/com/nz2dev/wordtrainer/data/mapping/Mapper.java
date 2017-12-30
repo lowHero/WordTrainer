@@ -6,7 +6,7 @@ import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
 import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
 import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
 import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
-import com.nz2dev.wordtrainer.data.core.entity.joined.TrainingAndWordJoin;
+import com.nz2dev.wordtrainer.data.core.relation.TrainingAndWordJoin;
 import com.nz2dev.wordtrainer.data.ultralightmapper.UltraLightMapper;
 import com.nz2dev.wordtrainer.domain.models.Account;
 import com.nz2dev.wordtrainer.domain.models.AccountHistory;
@@ -33,8 +33,8 @@ public class Mapper extends UltraLightMapper {
         bind(AccountHistoryEntity.class).to(dto -> new AccountHistory(dto.getAccountName(), dto.getLoginDates()));
         bind(AccountHistory.class).to(model -> new AccountHistoryEntity(model.getAccountName(), model.getLoginDate()));
 
-        bind(WordEntity.class).to(dto -> new Word(dto.getId(), dto.getAccountId(), dto.getOriginal(), dto.getTranslate()));
-        bind(Word.class).to(model -> new WordEntity(model.getAccountId(), model.getOriginal(), model.getTranslate()));
+        bind(WordEntity.class).to(dto -> new Word(dto.getId(), dto.getCourseId(), dto.getOriginal(), dto.getTranslate()));
+        bind(Word.class).to(model -> new WordEntity(model.getCourseId(), model.getOriginal(), model.getTranslation()));
 
         bind(TrainingAndWordJoin.class).to(dto ->
                 new Training(dto.tId,

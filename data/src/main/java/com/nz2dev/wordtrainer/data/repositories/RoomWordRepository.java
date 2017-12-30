@@ -43,18 +43,18 @@ public class RoomWordRepository implements WordsRepository {
     }
 
     @Override
-    public Single<Collection<Word>> getAllWords(int accountId) {
+    public Single<Collection<Word>> getAllWords(long courseId) {
         return Single.create(emitter -> {
-            List<WordEntity> entityList = wordDao.getAllWords(accountId);
+            List<WordEntity> entityList = wordDao.getAllWords(courseId);
             List<Word> words = mapper.mapList(entityList, new ArrayList<>(entityList.size()), Word.class);
             emitter.onSuccess(words);
         });
     }
 
     @Override
-    public Single<Collection<Word>> getPartOfWord(int accountId, int fromWordId, int limit) {
+    public Single<Collection<Word>> getPartOfWord(long courseId, long fromWordId, long limit) {
         return Single.create(emitter -> {
-            List<WordEntity> entityList = wordDao.getPartOfWords(accountId, fromWordId, limit);
+            List<WordEntity> entityList = wordDao.getPartOfWords(courseId, fromWordId, limit);
             List<Word> words = mapper.mapList(entityList, new ArrayList<>(entityList.size()), Word.class);
             emitter.onSuccess(words);
         });

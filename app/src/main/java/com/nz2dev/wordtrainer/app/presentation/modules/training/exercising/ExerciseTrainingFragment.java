@@ -45,9 +45,9 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
 
     private static final String KEY_TRAINING_ID = "training_id";
 
-    public static ExerciseTrainingFragment newInstance(int trainingId) {
+    public static ExerciseTrainingFragment newInstance(long trainingId) {
         Bundle args = new Bundle();
-        args.putInt(KEY_TRAINING_ID, trainingId);
+        args.putLong(KEY_TRAINING_ID, trainingId);
 
         ExerciseTrainingFragment fragment = new ExerciseTrainingFragment();
         fragment.setArguments(args);
@@ -150,7 +150,7 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
     }
 
     @Override
-    public void highlightWord(int wordId, boolean correct) {
+    public void highlightWord(long wordId, boolean correct) {
         int adapterPosition = getAdapterPositionByWordId(wordId);
         WordTranslationVariantRenderer renderer = getVariantRendererInPosition(adapterPosition);
         renderer.highlightIsCorrect(correct);
@@ -171,7 +171,7 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
         }
     }
 
-    private int getAdapterPositionByWordId(int wordId) {
+    private int getAdapterPositionByWordId(long wordId) {
         for (int variantPosition = 0; variantPosition < variantsAdapter.getItemCount(); variantPosition++) {
             if (variantsAdapter.getItem(variantPosition).getId() == wordId) {
                 return variantPosition;
@@ -186,7 +186,7 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
         return (WordTranslationVariantRenderer) rendererViewHolder.getRenderer();
     }
 
-    private int getTrainingIdFromBundle() {
-        return getArguments().getInt(KEY_TRAINING_ID);
+    private long getTrainingIdFromBundle() {
+        return getArguments().getLong(KEY_TRAINING_ID);
     }
 }

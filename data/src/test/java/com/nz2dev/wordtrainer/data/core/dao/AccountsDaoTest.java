@@ -4,11 +4,7 @@ import android.arch.persistence.room.Room;
 import android.database.Cursor;
 
 import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
-import com.nz2dev.wordtrainer.data.core.dao.AccountDao;
-import com.nz2dev.wordtrainer.data.core.dao.AccountHistoryDao;
 import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
-import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
-import com.nz2dev.wordtrainer.domain.models.Account;
 
 import org.assertj.core.api.Condition;
 import org.junit.After;
@@ -19,7 +15,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,7 +29,6 @@ import static org.assertj.core.api.Assertions.atIndex;
 public class AccountsDaoTest {
 
     private AccountDao accountDao;
-    private AccountHistoryDao accountHistoryDao;
     private WordTrainerDatabase database;
 
     @Before
@@ -42,8 +36,7 @@ public class AccountsDaoTest {
         database = Room.inMemoryDatabaseBuilder(RuntimeEnvironment.application, WordTrainerDatabase.class)
                 .allowMainThreadQueries()
                 .build();
-        accountDao = database.accountDao();
-        accountHistoryDao = database.accountHistoryDao();
+        accountDao = database.getAccountDao();
     }
 
     @After
@@ -97,14 +90,6 @@ public class AccountsDaoTest {
                 return value.getName().equals("name1");
             }
         }, atIndex(0));
-    }
-
-    @Test
-    public void getAllHistory() {
-        accountHistoryDao.add(new AccountHistoryEntity("name1", new Date()));
-        List<AccountHistoryEntity> histories = accountHistoryDao.getAllHistories();
-
-        assertThat(histories).hasSize(1);
     }
 
     @Test

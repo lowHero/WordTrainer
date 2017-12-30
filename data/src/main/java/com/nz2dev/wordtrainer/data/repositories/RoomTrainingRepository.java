@@ -2,11 +2,11 @@ package com.nz2dev.wordtrainer.data.repositories;
 
 import com.nz2dev.wordtrainer.data.core.dao.TrainingDao;
 import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
-import com.nz2dev.wordtrainer.data.core.entity.joined.TrainingAndWordJoin;
+import com.nz2dev.wordtrainer.data.core.relation.TrainingAndWordJoin;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.Training;
+import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
-import com.nz2dev.wordtrainer.domain.repositories.infrastructure.RxObservableAdapter;
 import com.nz2dev.wordtrainer.domain.repositories.infrastructure.RxObservableRepository;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import io.reactivex.Single;
  * Created by nz2Dev on 16.12.2017
  */
 @Singleton
-public class RoomTrainingRepository extends RxObservableAdapter<Training> implements TrainingsRepository {
+public class RoomTrainingRepository extends RxObservableRepository implements TrainingsRepository {
 
     private TrainingDao trainingDao;
     private Mapper mapper;
@@ -35,14 +35,13 @@ public class RoomTrainingRepository extends RxObservableAdapter<Training> implem
     }
 
     @Override
-    public Single<Boolean> addTraining(int wordId) {
+    public Single<Boolean> addTraining(Word word) {
         return Single.create(emitter -> {
-            TrainingEntity trainingEntity = new TrainingEntity(wordId, null, 0);
-            int resultId = (int) trainingDao.insertTraining(trainingEntity);
+            TrainingEntity trainingEntity = new TrainingEntity(word.getId(), null, 0);
+            long resultId = trainingDao.insertTraining(trainingEntity);
 
-            if (resultId != -1) {
-                TrainingAndWordJoin trainingAndWordEntity = trainingDao.getTrainingById(resultId);
-                requestChanges(Collections.singleton(mapper.map(trainingAndWordEntity, Training.class)));
+            if (resultId != -1L) {
+                requestChanges(State.Changed);
                 emitter.onSuccess(true);
             } else {
                 emitter.onSuccess(false);
@@ -54,16 +53,14 @@ public class RoomTrainingRepository extends RxObservableAdapter<Training> implem
     public Single<Boolean> updateTraining(Training training) {
         return Single.create(emitter -> {
             trainingDao.updateTraining(mapper.map(training, TrainingEntity.class));
-            // TODO requestChanges there too, because if something changed then the list of all trainings
-            // should changes in any cases. Or define some algorithm in interactor/ presenter that
-            // will be swap two items in list.
-            requestItemChanged(training);
+
+            requestChanges(State.Updated);
             emitter.onSuccess(true);
         });
     }
 
     @Override
-    public Single<Training> getTraining(int id) {
+    public Single<Training> getTraining(long id) {
         return Single.create(emitter -> {
             TrainingAndWordJoin trainingEntity = trainingDao.getTrainingById(id);
             Training training = mapper.map(trainingEntity, Training.class);
@@ -72,18 +69,18 @@ public class RoomTrainingRepository extends RxObservableAdapter<Training> implem
     }
 
     @Override
-    public Single<Training> getFirstSortedTraining(int accountId) {
+    public Single<Training> getFirstSortedTraining(long courseId) {
         return Single.create(emitter -> {
-            TrainingAndWordJoin trainingEntity = trainingDao.getFirstSortedTraining(accountId);
+            TrainingAndWordJoin trainingEntity = trainingDao.getFirstSortedTraining(courseId);
             Training training = mapper.map(trainingEntity, Training.class);
             emitter.onSuccess(training);
         });
     }
 
     @Override
-    public Single<Collection<Training>> getSortedTrainings(int accountId) {
+    public Single<Collection<Training>> getSortedTrainings(long courseId) {
         return Single.create(emitter -> {
-            List<TrainingAndWordJoin> sortedTrainingEntityList = trainingDao.getSortedTraining(accountId);
+            List<TrainingAndWordJoin> sortedTrainingEntityList = trainingDao.getSortedTraining(courseId);
             List<Training> sortedTrainings = mapper.mapList(sortedTrainingEntityList, new ArrayList<>(), Training.class);
             emitter.onSuccess(sortedTrainings);
         });

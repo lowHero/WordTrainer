@@ -65,6 +65,6 @@ public class WordTranslationVariantRenderer extends Renderer<Word> {
 
     @Override
     public void render() {
-        translationVariantText.setText(getContent().getTranslate());
+        translationVariantText.setText(getContent().getTranslation());
     }
 }

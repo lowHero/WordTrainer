@@ -1,7 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.account.authorization;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
+import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
 import com.nz2dev.wordtrainer.data.exceptions.AccountNotExistException;
@@ -23,15 +23,15 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
 
     private final AccountInteractor accountInteractor;
     private final AccountHistoryInteractor historyInteractor;
-    private final AccountPreferences accountPreferences;
+    private final AppPreferences appPreferences;
 
     private DisposableSingleObserver<Account> findAccountDisposable;
 
     @Inject
-    public AuthorizationPresenter(AccountInteractor accountInteractor, AccountHistoryInteractor historyInteractor, AccountPreferences accountPreferences) {
+    public AuthorizationPresenter(AccountInteractor accountInteractor, AccountHistoryInteractor historyInteractor, AppPreferences appPreferences) {
         this.accountInteractor = accountInteractor;
         this.historyInteractor = historyInteractor;
-        this.accountPreferences = accountPreferences;
+        this.appPreferences = appPreferences;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
         accountInteractor.loadIfPasswordExist(userName, password, new DisposableSingleObserver<Account>() {
             @Override
             public void onSuccess(Account account) {
-                accountPreferences.signIn(account, password);
+                appPreferences.signIn(account, password);
                 historyInteractor.createRecord(account, new DisposableSingleObserver<Boolean>() {
                     @Override
                     public void onSuccess(Boolean result) {

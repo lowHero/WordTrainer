@@ -1,27 +1,22 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.debug;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
+import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
-import com.nz2dev.wordtrainer.app.services.verifying.VerifyingService;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
 import com.nz2dev.wordtrainer.domain.models.Word;
 
 import javax.inject.Inject;
 
-import io.reactivex.SingleObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 
 /**
@@ -34,7 +29,7 @@ public class DebugFragment extends Fragment {
     }
 
     @Inject WordInteractor wordInteractor;
-    @Inject AccountPreferences accountPreferences;
+    @Inject AppPreferences appPreferences;
     @Inject Context context;
 
     @Override
@@ -55,50 +50,33 @@ public class DebugFragment extends Fragment {
             case R.id.item_populate:
                 populateWords();
                 return true;
-            case R.id.item_pref_from_service:
-                prefFromService();
-                return true;
-            case R.id.item_pref_from_activity:
-                prefFromActivity();
-                return true;
         }
         return false;
     }
 
-    private void prefFromService() {
-        context.startService(new Intent(context, VerifyingService.class));
-    }
-
-    private void prefFromActivity() {
-        SharedPreferences pref = getActivity().getSharedPreferences("NAME", Context.MODE_PRIVATE);
-        Toast.makeText(context, "From Activity: " + pref.getInt("KEY", -1), Toast.LENGTH_SHORT).show();
-    }
-
     public void populateWords() {
-        wordInteractor.addWord(makeWord("Nazar", "Назар"), makeObserver());
-        wordInteractor.addWord(makeWord("Oleg", "Олег"), makeObserver());
-        wordInteractor.addWord(makeWord("Max", "Макс"), makeObserver());
-        wordInteractor.addWord(makeWord("Car", "Машина"), makeObserver());
-        wordInteractor.addWord(makeWord("Dog", "Собака"), makeObserver());
-        wordInteractor.addWord(makeWord("Paper", "Перець"), makeObserver());
-        wordInteractor.addWord(makeWord("Unique", "Унікальний"), makeObserver());
-        wordInteractor.addWord(makeWord("Ukraine", "Україна"), makeObserver());
-        wordInteractor.addWord(makeWord("Soldier", "Солдат"), makeObserver());
+        just("Nazar", "Назар");
+        just("Oleg", "Олег");
+        just("Max", "Макс");
+        just("Car", "Машина");
+        just("Dog", "Собака");
+        just("Paper", "Перець");
+        just("Unique", "Унікальний");
+        just("Ukraine", "Україна");
+        just("Soldier", "Солдат");
     }
 
-    private Word makeWord(String original, String translation) {
-        return new Word(accountPreferences.getSignedAccountId(), original, translation);
+    private void just(String original, String translation) {
+        wordInteractor.addWord(
+                Word.unidentified(appPreferences.getSelectedCourseId(), original, translation),
+                new DisposableSingleObserver<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean aBoolean) {
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+                });
     }
 
-    private SingleObserver<Boolean> makeObserver() {
-        return new DisposableSingleObserver<Boolean>() {
-            @Override
-            public void onSuccess(Boolean result) {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-        };
-    }
 }

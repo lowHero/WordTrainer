@@ -18,10 +18,6 @@ public class DependenciesUtils {
         return ((WordTrainerApp) context.getApplicationContext()).getDependenciesComponent();
     }
 
-    public static AppComponent getAppDependenciesFrom(Activity activity) {
-        return ((WordTrainerApp) activity.getApplicationContext()).getDependenciesComponent();
-    }
-
     @NonNull
     public static <C, A extends Activity & HasDependencies<C>> C fromAttachedActivity(Fragment f, Class<A> type) {
         A activity = type.cast(f.getActivity());

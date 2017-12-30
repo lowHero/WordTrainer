@@ -1,17 +1,19 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.training.overview;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.preferences.AccountPreferences;
+import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
 import com.nz2dev.wordtrainer.app.utils.UncheckedObserver;
 import com.nz2dev.wordtrainer.domain.interactors.TrainingInteractor;
 import com.nz2dev.wordtrainer.domain.models.Training;
+import com.nz2dev.wordtrainer.domain.repositories.infrastructure.ObservableRepository;
 
 import java.util.Collection;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import io.reactivex.observers.DisposableSingleObserver;
 
 /**
@@ -21,42 +23,29 @@ import io.reactivex.observers.DisposableSingleObserver;
 public class OverviewTrainingsPresenter extends BasePresenter<OverviewTrainingsView> {
 
     private final TrainingInteractor trainingInteractor;
-    private final AccountPreferences accountPreferences;
+    private final AppPreferences appPreferences;
+
+    // TODO decide where this condition should changed
+    private boolean needToShowNow = true;
 
     @Inject
-    public OverviewTrainingsPresenter(TrainingInteractor trainingInteractor, AccountPreferences accountPreferences) {
+    public OverviewTrainingsPresenter(TrainingInteractor trainingInteractor, AppPreferences appPreferences) {
         this.trainingInteractor = trainingInteractor;
-        this.accountPreferences = accountPreferences;
+        this.appPreferences = appPreferences;
     }
 
     @Override
     protected void onViewReady() {
         super.onViewReady();
-        trainingInteractor.loadAllTrainings(accountPreferences.getSignedAccountId(),
-                new DisposableSingleObserver<Collection<Training>>() {
-                    @Override
-                    public void onSuccess(Collection<Training> trainings) {
-                        getView().showTrainings(trainings);
+        updateTrainingList();
+        trainingInteractor.attachRepoObserver(state -> {
+            switch (state) {
+                case Updated:
+                case Changed:
+                    if (needToShowNow) {
+                        updateTrainingList();
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().showError(ErrorHandler.describe(e));
-                    }
-                });
-
-        // TODO Should I merge this functionality together and use only RepoObserver?
-        trainingInteractor.attachRepoObserver(new UncheckedObserver<Collection<Training>>() {
-            @Override
-            public void onNext(Collection<Training> trainings) {
-                getView().showTrainings(trainings);
-            }
-        });
-
-        trainingInteractor.attachRepoItemObserver(new UncheckedObserver<Training>() {
-            @Override
-            public void onNext(Training training) {
-                getView().updateTraining(training);
+                    break;
             }
         });
     }
@@ -70,6 +59,21 @@ public class OverviewTrainingsPresenter extends BasePresenter<OverviewTrainingsV
 
     public void trainWordClick(Training training) {
         getView().navigateWordTraining(training.getId());
+    }
+
+    private void updateTrainingList() {
+        trainingInteractor.loadAllTrainings(appPreferences.getSelectedCourseId(),
+                new DisposableSingleObserver<Collection<Training>>() {
+                    @Override
+                    public void onSuccess(Collection<Training> trainings) {
+                        getView().showTrainings(trainings);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getView().showError(ErrorHandler.describe(e));
+                    }
+                });
     }
 
 }

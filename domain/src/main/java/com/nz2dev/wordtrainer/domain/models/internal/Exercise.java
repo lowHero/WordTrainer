@@ -1,4 +1,7 @@
-package com.nz2dev.wordtrainer.domain.models;
+package com.nz2dev.wordtrainer.domain.models.internal;
+
+import com.nz2dev.wordtrainer.domain.models.Training;
+import com.nz2dev.wordtrainer.domain.models.Word;
 
 import java.util.ArrayList;
 import java.util.Collection;

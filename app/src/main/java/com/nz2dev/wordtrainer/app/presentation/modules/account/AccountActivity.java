@@ -17,10 +17,6 @@ import com.nz2dev.wordtrainer.app.presentation.modules.account.authorization.Aut
 import com.nz2dev.wordtrainer.app.presentation.modules.account.registration.RegistrationFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
-
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.subjects.PublishSubject;
 
@@ -41,7 +37,7 @@ public class AccountActivity extends AppCompatActivity implements HasDependencie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         dependencies = DaggerAccountComponent.builder()
-                .appComponent(DependenciesUtils.getAppDependenciesFrom(this))
+                .appComponent(DependenciesUtils.appComponentFrom(this))
                 .accountModule(AccountModule.from(this))
                 .build();
 

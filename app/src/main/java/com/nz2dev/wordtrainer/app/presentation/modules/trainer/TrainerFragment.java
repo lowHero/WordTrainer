@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.modules.home;
+package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 
@@ -31,7 +32,7 @@ import butterknife.ButterKnife;
 /**
  * Created by nz2Dev on 30.11.2017
  */
-public class HomeFragment extends Fragment implements HomeView {
+public class TrainerFragment extends Fragment implements TrainerView {
 
     public interface WordAdditionExhibitor {
 
@@ -39,8 +40,8 @@ public class HomeFragment extends Fragment implements HomeView {
 
     }
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
+    public static TrainerFragment newInstance() {
+        return new TrainerFragment();
     }
 
     @BindView(R.id.vp_home_pager)
@@ -52,7 +53,7 @@ public class HomeFragment extends Fragment implements HomeView {
     @BindView(R.id.tl_pager_tabs)
     TabLayout tabs;
 
-    @Inject HomePresenter presenter;
+    @Inject TrainerPresenter presenter;
     @Inject Navigator navigator;
 
     private WordAdditionExhibitor exhibitor;
@@ -77,7 +78,7 @@ public class HomeFragment extends Fragment implements HomeView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        View root = inflater.inflate(R.layout.fragment_trainer, container, false);
         ButterKnife.bind(this, root);
         return root;
     }
@@ -85,7 +86,7 @@ public class HomeFragment extends Fragment implements HomeView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        homeContentPager.setAdapter(HomePageAdapter.of(this));
+        homeContentPager.setAdapter(TrainerPageAdapter.of(this));
         tabs.setupWithViewPager(homeContentPager);
 
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
@@ -108,9 +109,6 @@ public class HomeFragment extends Fragment implements HomeView {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item_sign_out:
-                presenter.signOutSelected();
-                return true;
             case R.id.item_init_adding:
                 showAddingVariantDialog();
                 return true;
@@ -125,7 +123,7 @@ public class HomeFragment extends Fragment implements HomeView {
 
     @Override
     public void navigateAccount() {
-        navigator.navigateAccount(getActivity());
+        navigator.navigateAccountFrom(getActivity());
     }
 
     @Override

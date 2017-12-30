@@ -7,7 +7,6 @@ import com.nz2dev.wordtrainer.domain.repositories.AccountRepository;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Single;
 import io.reactivex.observers.DisposableSingleObserver;
 
 /**

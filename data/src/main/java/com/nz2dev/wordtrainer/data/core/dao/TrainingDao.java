@@ -4,10 +4,11 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.RoomWarnings;
 import android.arch.persistence.room.Update;
 
 import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
-import com.nz2dev.wordtrainer.data.core.entity.joined.TrainingAndWordJoin;
+import com.nz2dev.wordtrainer.data.core.relation.TrainingAndWordJoin;
 
 import java.util.List;
 
@@ -23,13 +24,25 @@ public interface TrainingDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateTraining(TrainingEntity training);
 
-    @Query("SELECT * FROM TrainingEntity INNER JOIN WordEntity ON TrainingEntity.wordId = WordEntity.id WHERE TrainingEntity.tId = :trainingId")
-    TrainingAndWordJoin getTrainingById(int trainingId);
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query("SELECT * FROM trainings " +
+            "INNER JOIN words ON trainings.wordId = words.id " +
+            "WHERE trainings.tId = :trainingId")
+    TrainingAndWordJoin getTrainingById(long trainingId);
 
-    @Query("SELECT * FROM TrainingEntity INNER JOIN WordEntity ON TrainingEntity.wordId = WordEntity.id WHERE :accountId = accountId ORDER BY lastTrainingDate LIMIT 1")
-    TrainingAndWordJoin getFirstSortedTraining(int accountId);
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query("SELECT * FROM trainings " +
+            "INNER JOIN words ON trainings.wordId = words.id " +
+            "WHERE courseId = :courseId " +
+            "ORDER BY lastTrainingDate " +
+            "LIMIT 1")
+    TrainingAndWordJoin getFirstSortedTraining(long courseId);
 
-    @Query("SELECT * FROM TrainingEntity INNER JOIN WordEntity ON TrainingEntity.wordId = WordEntity.id WHERE :accountId = accountId ORDER BY lastTrainingDate")
-    List<TrainingAndWordJoin> getSortedTraining(int accountId);
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query("SELECT * FROM trainings " +
+            "INNER JOIN words ON trainings.wordId = words.id " +
+            "WHERE courseId = :courseId " +
+            "ORDER BY lastTrainingDate")
+    List<TrainingAndWordJoin> getSortedTraining(long courseId);
 
 }

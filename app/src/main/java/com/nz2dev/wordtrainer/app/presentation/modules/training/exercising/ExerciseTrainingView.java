@@ -14,7 +14,7 @@ public interface ExerciseTrainingView {
     void showVariants(Collection<Word> translationVariants);
     void showError(String error);
 
-    void highlightWord(int wordId, boolean correct);
+    void highlightWord(long wordId, boolean correct);
 
     void hideTrainings();
 

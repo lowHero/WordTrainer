@@ -4,6 +4,7 @@ import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
 import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
+import com.nz2dev.wordtrainer.domain.repositories.infrastructure.ObservableRepository;
 
 import java.util.Collection;
 
@@ -11,7 +12,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observer;
+import io.reactivex.Single;
 import io.reactivex.SingleObserver;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by nz2Dev on 22.12.2017
@@ -30,16 +33,12 @@ public class TrainingInteractor {
         this.backgroundExecutor = backgroundExecutor;
     }
 
-    public void attachRepoObserver(Observer<Collection<Training>> trainingRepoObserver) {
-        trainingsRepository.listenChanges(trainingRepoObserver, uiExecutor);
+    public void attachRepoObserver(Consumer<ObservableRepository.State> stateConsumer) {
+        trainingsRepository.listenChanges(stateConsumer, uiExecutor);
     }
 
-    public void attachRepoItemObserver(Observer<Training> itemObserver) {
-        trainingsRepository.listenUpdates(itemObserver, uiExecutor);
-    }
-
-    public void loadAllTrainings(int accountId, SingleObserver<Collection<Training>> observer) {
-        trainingsRepository.getSortedTrainings(accountId)
+    public void loadAllTrainings(long courseId, SingleObserver<Collection<Training>> observer) {
+        trainingsRepository.getSortedTrainings(courseId)
                 .subscribeOn(backgroundExecutor.getScheduler())
                 .observeOn(uiExecutor.getScheduler())
                 .subscribe(observer);

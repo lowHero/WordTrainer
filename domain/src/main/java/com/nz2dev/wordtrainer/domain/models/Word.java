@@ -5,39 +5,36 @@ package com.nz2dev.wordtrainer.domain.models;
  */
 public class Word {
 
-    private int id;
-    private int accountId;
+    public static Word unidentified(long courseId, String original, String translation) {
+        return new Word(0L, courseId, original, translation);
+    }
+
+    private long id;
+    private long courseId;
     private String original;
-    private String translate;
+    private String translation;
 
-    public Word(int accountId, String original, String translate) {
-        this.accountId = accountId;
-        this.original = original;
-        this.translate = translate;
-    }
-
-    // TODO remove this constructor
-    public Word(int id, int accountId, String original, String translate) {
+    public Word(long id, long courseId, String original, String translation) {
         this.id = id;
-        this.accountId = accountId;
+        this.courseId = courseId;
         this.original = original;
-        this.translate = translate;
+        this.translation = translation;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getAccountId() {
-        return accountId;
+    public long getCourseId() {
+        return courseId;
     }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
     }
 
     public String getOriginal() {
@@ -48,11 +45,12 @@ public class Word {
         this.original = original;
     }
 
-    public String getTranslate() {
-        return translate;
+    public String getTranslation() {
+        return translation;
     }
 
-    public void setTranslate(String translate) {
-        this.translate = translate;
+    public void setTranslation(String translation) {
+        this.translation = translation;
     }
+
 }

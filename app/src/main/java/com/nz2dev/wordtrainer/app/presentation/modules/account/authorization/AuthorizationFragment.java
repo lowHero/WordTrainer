@@ -85,7 +85,7 @@ public class AuthorizationFragment extends Fragment implements AuthorizationView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_authorization, container, false);
+        View root = inflater.inflate(R.layout.fragment_account_authorization, container, false);
         ButterKnife.bind(this, root);
         userNameEditor.addTextChangedListener(new DefaultTextWatcher() {
             @Override

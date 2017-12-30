@@ -60,7 +60,7 @@ public class RegistrationFragment extends DialogFragment implements Registration
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_registration, container, false);
+        View root = inflater.inflate(R.layout.fragment_account_registration, container, false);
         ButterKnife.bind(this, root);
         setRegNameEditorFromBundle();
         return root;

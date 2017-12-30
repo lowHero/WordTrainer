@@ -38,7 +38,7 @@ public class WordDaoTest {
                 .allowMainThreadQueries()
                 .build();
 
-        wordDao = database.wordDao();
+        wordDao = database.getWordDao();
     }
 
     @After
@@ -59,7 +59,7 @@ public class WordDaoTest {
         assertThat(allWords).has(new Condition<WordEntity>() {
             @Override
             public boolean matches(WordEntity value) {
-                return value.getAccountId() == 1 && value.getOriginal().equals("na");
+                return value.getCourseId() == 1 && value.getOriginal().equals("na");
             }
         }, atIndex(0));
     }

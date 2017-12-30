@@ -1,7 +1,5 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
-import android.support.annotation.NonNull;
-
 import com.nz2dev.wordtrainer.data.core.dao.AccountDao;
 import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
 import com.nz2dev.wordtrainer.data.exceptions.AccountNotExistException;

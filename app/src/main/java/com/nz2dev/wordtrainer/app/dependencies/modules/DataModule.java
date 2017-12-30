@@ -10,10 +10,14 @@ import com.nz2dev.wordtrainer.data.core.dao.TrainingDao;
 import com.nz2dev.wordtrainer.data.core.dao.WordDao;
 import com.nz2dev.wordtrainer.data.repositories.RoomAccountHistoryRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomAccountRepository;
+import com.nz2dev.wordtrainer.data.repositories.RoomCourseRepository;
+import com.nz2dev.wordtrainer.data.repositories.RoomSchedulingRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomTrainingRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomWordRepository;
 import com.nz2dev.wordtrainer.domain.repositories.AccountHistoryRepository;
 import com.nz2dev.wordtrainer.domain.repositories.AccountRepository;
+import com.nz2dev.wordtrainer.domain.repositories.CourseRepository;
+import com.nz2dev.wordtrainer.domain.repositories.SchedulingRepository;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
 import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
 
@@ -39,25 +43,25 @@ public class DataModule {
     @Provides
     @Singleton
     AccountDao provideAccountDao(WordTrainerDatabase database) {
-        return database.accountDao();
+        return database.getAccountDao();
     }
 
     @Provides
     @Singleton
     AccountHistoryDao provideAccountHistoryDao(WordTrainerDatabase database) {
-        return database.accountHistoryDao();
+        return database.getAccountHistoryDao();
     }
 
     @Provides
     @Singleton
     WordDao provideWordDao(WordTrainerDatabase database) {
-        return database.wordDao();
+        return database.getWordDao();
     }
 
     @Provides
     @Singleton
     TrainingDao provideTrainingDao(WordTrainerDatabase database) {
-        return database.trainingDao();
+        return database.getTrainingDao();
     }
 
     @Singleton
@@ -81,6 +85,17 @@ public class DataModule {
     @Singleton
     @Provides
     TrainingsRepository provideTrainingsRepository(RoomTrainingRepository repository) {
+        return repository;
+    }
+
+    @Singleton
+    @Provides
+    CourseRepository provideCourseRepository(RoomCourseRepository repository) {
+        return repository;
+    }
+
+    @Singleton
+    @Provides SchedulingRepository provideSchedulingRepository(RoomSchedulingRepository repository) {
         return repository;
     }
 }

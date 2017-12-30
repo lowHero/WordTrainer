@@ -1,6 +1,5 @@
 package com.nz2dev.wordtrainer.data.core.entity;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
@@ -10,41 +9,38 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 /**
  * Created by nz2Dev on 11.12.2017
  */
-@Entity
+@Entity(tableName = "words")
 public class WordEntity {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
-    @ForeignKey(entity = AccountEntity.class, parentColumns = "id", childColumns = "accountId", onDelete = CASCADE)
-    private int accountId;
+    @ForeignKey(entity = CourseEntity.class, parentColumns = "id", childColumns = "courseId", onDelete = CASCADE)
+    private long courseId;
 
-    @ColumnInfo
     private String original;
-
-    @ColumnInfo
     private String translate;
 
-    public WordEntity(int accountId, String original, String translate) {
-        this.accountId = accountId;
+    public WordEntity(long courseId, String original, String translate) {
+        this.courseId = courseId;
         this.original = original;
         this.translate = translate;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getAccountId() {
-        return accountId;
+    public long getCourseId() {
+        return courseId;
     }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
     }
 
     public String getOriginal() {

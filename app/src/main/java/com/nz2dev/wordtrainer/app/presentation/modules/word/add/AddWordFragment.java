@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,7 @@ import butterknife.OnClick;
 public class AddWordFragment extends DialogFragment implements AddWordView {
 
     public interface AddWordHandler {
-        void onAdditionFinished(AddWordFragment fragment);
+        void onWordAdditionFinished(AddWordFragment fragment);
     }
 
     public static AddWordFragment newInstance() {
@@ -114,7 +113,7 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
     public void onDestroyView() {
         super.onDestroyView();
         forceHideKeyboard();
-        fragmentHandler.onAdditionFinished(this);
+        fragmentHandler.onWordAdditionFinished(this);
         presenter.detachView();
     }
 
@@ -184,7 +183,7 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
 
     @Override
     public void hideIt() {
-        fragmentHandler.onAdditionFinished(this);
+        fragmentHandler.onWordAdditionFinished(this);
     }
 
     private void forceShowKeyboard() {

@@ -5,12 +5,12 @@ import android.arch.persistence.room.RoomDatabase;
 
 import com.nz2dev.wordtrainer.data.core.dao.AccountDao;
 import com.nz2dev.wordtrainer.data.core.dao.AccountHistoryDao;
-import com.nz2dev.wordtrainer.data.core.dao.TestDao;
+import com.nz2dev.wordtrainer.data.core.dao.CourseDao;
 import com.nz2dev.wordtrainer.data.core.dao.TrainingDao;
 import com.nz2dev.wordtrainer.data.core.dao.WordDao;
 import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
 import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
-import com.nz2dev.wordtrainer.data.core.entity.TestEntity;
+import com.nz2dev.wordtrainer.data.core.entity.CourseEntity;
 import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
 import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
 
@@ -20,20 +20,16 @@ import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
 @Database(entities = {
         AccountEntity.class,
         AccountHistoryEntity.class,
-        WordEntity.class,
+        CourseEntity.class,
         TrainingEntity.class,
-        TestEntity.class
-}, version = 9)
+        WordEntity.class
+}, version = 11)
 public abstract class WordTrainerDatabase extends RoomDatabase {
 
-    public abstract AccountDao accountDao();
-
-    public abstract AccountHistoryDao accountHistoryDao();
-
-    public abstract WordDao wordDao();
-
-    public abstract TrainingDao trainingDao();
-
-    public abstract TestDao testDao();
+    public abstract AccountDao getAccountDao();
+    public abstract AccountHistoryDao getAccountHistoryDao();
+    public abstract CourseDao getCourseDao();
+    public abstract TrainingDao getTrainingDao();
+    public abstract WordDao getWordDao();
 
 }

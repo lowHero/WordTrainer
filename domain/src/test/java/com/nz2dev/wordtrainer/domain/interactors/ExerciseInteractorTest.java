@@ -2,7 +2,7 @@ package com.nz2dev.wordtrainer.domain.interactors;
 
 import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
 import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
-import com.nz2dev.wordtrainer.domain.models.Exercise;
+import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
@@ -70,7 +70,7 @@ public class ExerciseInteractorTest {
         when(trainingsRepository.getTraining(trainingId)).thenReturn(Single.just(new Training(trainingId, wordsDummy[trainingId], new Date(), 0)));
         TestObserver<Exercise> testObserver = new TestObserver<>();
 
-        interactor.loadNextExercise(accountId, trainingId, testObserver);
+        interactor.loadNextExercise(trainingId, testObserver);
 
 //        testObserver.await(1, TimeUnit.SECONDS);
         testObserver.assertNoErrors();

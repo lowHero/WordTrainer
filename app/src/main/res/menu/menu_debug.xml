@@ -2,26 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item_start_schedule"
-        android:title="Start Schedule" />
-    <item
-        android:id="@+id/item_stop_schedule"
-        android:title="Stop Schedule" />
-
-    <item
-        android:id="@+id/item_manual_call_service"
-        android:title="Call Check Service" />
-
-    <item
         android:id="@+id/item_populate"
         android:title="Populate Test Words" />
-
-    <item
-        android:id="@+id/item_pref_from_service"
-        android:title="Pref from Service" />
-
-    <item
-        android:id="@+id/item_pref_from_activity"
-        android:title="Pref from Activity" />
 
 </menu>

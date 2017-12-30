@@ -35,14 +35,17 @@ public class WordInteractor {
     public void addWord(Word word, SingleObserver<Boolean> resultObserver) {
         wordsRepository.addWord(word)
                 .subscribeOn(backgroundExecutor.getScheduler())
-                .to(wordId -> trainingsRepository.addTraining(wordId.blockingGet().intValue()))
+                .to(wordId -> {
+                    word.setId(wordId.blockingGet());
+                    return trainingsRepository.addTraining(word);
+                })
                 .subscribeOn(backgroundExecutor.getScheduler())
                 .observeOn(uiExecutor.getScheduler())
                 .subscribe(resultObserver);
     }
 
-    public void loadWords(int accountId, SingleObserver<Collection<Word>> observer) {
-        wordsRepository.getAllWords(accountId)
+    public void loadWords(long courseId, SingleObserver<Collection<Word>> observer) {
+        wordsRepository.getAllWords(courseId)
                 .subscribeOn(backgroundExecutor.getScheduler())
                 .observeOn(uiExecutor.getScheduler())
                 .subscribe(observer);

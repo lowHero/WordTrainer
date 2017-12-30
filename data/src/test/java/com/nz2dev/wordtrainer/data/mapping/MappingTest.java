@@ -1,9 +1,11 @@
-package com.nz2dev.wordtrainer.data.core;
+package com.nz2dev.wordtrainer.data.mapping;
 
 import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
-import com.nz2dev.wordtrainer.data.core.entity.joined.TrainingAndWordJoin;
+import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
+import com.nz2dev.wordtrainer.data.core.relation.TrainingAndWordJoin;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.Account;
+import com.nz2dev.wordtrainer.domain.models.Training;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +22,16 @@ public class MappingTest {
     @Before
     public void init() {
         mapper = new Mapper();
+    }
+
+    @Test
+    public void mapNotNull_TrainingAndWordJoinToTraining_WithoutExceptions() {
+        TrainingAndWordJoin trainingAndWordJoin = new TrainingAndWordJoin(1, new WordEntity(1, "", ""), null, 0);
+
+        Training training = mapper.map(trainingAndWordJoin, Training.class);
+
+        assertThat(training).isNotNull();
+        assertThat(mapper.map(null, Training.class)).isNull();
     }
 
     @Test
