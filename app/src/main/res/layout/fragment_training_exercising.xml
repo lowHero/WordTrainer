@@ -41,9 +41,9 @@
 
         </android.support.v7.widget.RecyclerView>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_cancel"
+        <Button
             style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rv_words_translation_variants"

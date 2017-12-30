@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -164,9 +163,9 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
 
     private void provideInjections() {
         if (getActivity() instanceof ExerciseTrainingActivity) {
-            DependenciesUtils.getFromActivity(this, ExerciseTrainingActivity.class).inject(this);
+            DependenciesUtils.fromAttachedActivity(this, ExerciseTrainingActivity.class).inject(this);
         } else if (getActivity() instanceof HomeActivity) {
-            DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
+            DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
         } else {
             throw new RuntimeException("can't inject dependencies from activity");
         }

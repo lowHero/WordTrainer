@@ -41,7 +41,7 @@ public class DebugFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
+        DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
     }
 
     @Override

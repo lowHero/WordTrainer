@@ -13,14 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.Navigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment;
-import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
 import com.nz2dev.wordtrainer.app.presentation.renderers.TrainingRenderer;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.app.utils.OnItemClickListener;
-import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;
@@ -31,7 +28,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 
@@ -42,7 +38,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
 
     public interface TrainingExhibitor {
 
-        void showTraining(ExerciseTrainingFragment fragment);
+        void showTraining(Fragment fragment);
 
     }
 
@@ -54,7 +50,6 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     RecyclerView wordsList;
 
     @Inject OverviewTrainingsPresenter presenter;
-    @Inject Navigator navigator;
 
     private RVRendererAdapter<Training> adapter;
     private TrainingExhibitor trainingExhibitor;
@@ -72,7 +67,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
+        DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
         adapter = new RVRendererAdapter<>(new RendererBuilder<>(new TrainingRenderer(this)));
     }
 
@@ -109,11 +104,6 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
         presenter.trainWordClick(training);
     }
 
-    @OnClick(R.id.btn_add_word)
-    public void onAddWordClick() {
-        presenter.addWordClick();
-    }
-
     @Override
     public void showError(String describe) {
         Toast.makeText(getContext(), describe, Toast.LENGTH_SHORT).show();
@@ -134,16 +124,6 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
                 break;
             }
         }
-    }
-
-    @Override
-    public void navigateAccount() {
-        navigator.navigateAccount(getActivity());
-    }
-
-    @Override
-    public void navigateWordAdding() {
-        AddWordFragment.newInstance().show(getChildFragmentManager(), "AddWord");
     }
 
     @Override

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_insert_actions_container"
+    android:layout_width="match_parent"
+    android:layout_height="96dp"
+    android:layout_alignParentBottom="true">
+
+    <ImageView
+        android:id="@+id/btn_add_word"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:contentDescription="@string/action_insert_word"
+        android:focusable="true"
+        android:padding="24dp"
+        app:srcCompat="@drawable/ic_create_simple_black" />
+
+    <ImageView
+        android:id="@+id/btn_import_word"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:contentDescription="@string/action_insert_word"
+        android:focusable="true"
+        android:padding="24dp"
+        app:srcCompat="@drawable/ic_import_simple_black" />
+
+</LinearLayout>

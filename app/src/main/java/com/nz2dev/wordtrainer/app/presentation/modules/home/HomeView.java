@@ -8,4 +8,5 @@ public interface HomeView {
     void showError(String describe);
     void navigateAccount();
 
+    void navigateWordAddition();
 }

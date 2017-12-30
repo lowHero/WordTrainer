@@ -56,6 +56,7 @@ dependencies {
     testImplementation testDependencies["junit"]
     testImplementation testDependencies["assertj"]
     testImplementation testDependencies["robolectric"]
+    testImplementation testDependencies["mockito"]
     androidTestImplementation testDependencies["testRunner"]
     androidTestImplementation testDependencies["espressoCore"]
 }

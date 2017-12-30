@@ -23,7 +23,7 @@ public class DependenciesUtils {
     }
 
     @NonNull
-    public static <C, A extends Activity & HasDependencies<C>> C getFromActivity(Fragment f, Class<A> type) {
+    public static <C, A extends Activity & HasDependencies<C>> C fromAttachedActivity(Fragment f, Class<A> type) {
         A activity = type.cast(f.getActivity());
         if (activity == null) {
             throw new RuntimeException("fragment activity isn't " + type.toString());

@@ -3,7 +3,6 @@ package com.nz2dev.wordtrainer.app.presentation.modules.settings.scheduling;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,7 +141,7 @@ public class SchedulingSettingsFragment extends Fragment implements SchedulingSe
 
     private void injectDependencies() {
         if (getActivity() instanceof HomeActivity) {
-            DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
+            DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
         }
     }
 }

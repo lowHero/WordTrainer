@@ -2,8 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="36dp"
+    android:layout_marginRight="36dp"
+    android:layout_marginTop="36dp"
+    android:background="?attr/colorBackgroundFloating"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingTop="24dp"
+    tools:background="#d6d6d6">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/TextInputLayout1"
@@ -16,7 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/prompt_word_original"
-            android:inputType="text" />
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:nextFocusForward="@+id/et_word_translate" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -36,12 +49,31 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <Button
+    <ImageView
         android:id="@+id/btn_insert_word"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_below="@+id/TextInputLayout2"
         android:layout_centerHorizontal="true"
-        android:text="@string/action_insert_word" />
+        android:layout_marginTop="24dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:contentDescription="@string/action_insert_word"
+        android:focusable="true"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_create_simple_black" />
+
+    <ImageView
+        android:id="@+id/btn_close_insert_word"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignLeft="@+id/btn_insert_word"
+        android:layout_alignStart="@+id/btn_insert_word"
+        android:layout_alignTop="@+id/btn_insert_word"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:contentDescription="@string/action_cancel"
+        android:focusable="true"
+        app:srcCompat="@drawable/ic_close_simple_black" />
 
 </RelativeLayout>

@@ -24,4 +24,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
         getView().navigateAccount();
     }
 
+    public void addWordClick() {
+        getView().navigateWordAddition();
+    }
 }

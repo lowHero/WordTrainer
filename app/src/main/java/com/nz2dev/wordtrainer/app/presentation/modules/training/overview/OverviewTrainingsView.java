@@ -13,8 +13,6 @@ public interface OverviewTrainingsView {
     void showTrainings(Collection<Training> words);
     void updateTraining(Training training);
 
-    void navigateAccount();
-    void navigateWordAdding();
     void navigateWordTraining(int trainingId);
 
 }

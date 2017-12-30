@@ -14,7 +14,7 @@
         android:layout_marginStart="8dp"
         android:layout_toLeftOf="@+id/tv_training_progress"
         android:layout_toStartOf="@+id/tv_training_progress"
-        android:textSize="18sp"
+        android:textSize="16sp"
         tools:text="Word" />
 
     <TextView

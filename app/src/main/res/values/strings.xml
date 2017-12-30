@@ -4,7 +4,7 @@
     <string name="title_enter_password">Enter password</string>
     <string name="title_train_word">Train the word</string>
     <string name="title_exercises">Exercises</string>
-    <string name="title_trainer">Trainer</string>
+    <string name="title_scheduling">Scheduling</string>
 
     <string name="prompt_need_password">need password?</string>
     <string name="prompt_email">Email</string>
@@ -22,6 +22,8 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_start_scheduling">Start Scheduling</string>
     <string name="action_stop_scheduling">Stop Scheduling</string>
+    <string name="action_add">Add</string>
+    <string name="action_import">Import</string>
 
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>

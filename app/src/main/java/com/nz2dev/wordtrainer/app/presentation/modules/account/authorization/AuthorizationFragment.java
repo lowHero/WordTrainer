@@ -78,7 +78,7 @@ public class AuthorizationFragment extends Fragment implements AuthorizationView
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.getFromActivity(this, AccountActivity.class).inject(this);
+        DependenciesUtils.fromAttachedActivity(this, AccountActivity.class).inject(this);
         rendererAdapter = new RVRendererAdapter<>(new RendererBuilder<>(new RecentlyAccountsRenderer(this)));
     }
 

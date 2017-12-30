@@ -1,12 +1,15 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.home;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,8 +20,7 @@ import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
-import com.nz2dev.wordtrainer.app.presentation.modules.settings.scheduling.SchedulingSettingsFragment;
-import com.nz2dev.wordtrainer.app.presentation.modules.training.overview.OverviewTrainingsFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 
 import javax.inject.Inject;
@@ -31,34 +33,10 @@ import butterknife.ButterKnife;
  */
 public class HomeFragment extends Fragment implements HomeView {
 
-    private class HomePageAdapter extends FragmentPagerAdapter {
+    public interface WordAdditionExhibitor {
 
-        private HomePageAdapter(FragmentManager fm) {
-            super(fm);
-        }
+        void showWordAddition(Fragment fragment);
 
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0: return OverviewTrainingsFragment.newInstance();
-                case 1: return SchedulingSettingsFragment.newInstance();
-            }
-            return null;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0: return getContext().getString(R.string.title_exercises);
-                case 1: return getContext().getString(R.string.title_trainer);
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
     }
 
     public static HomeFragment newInstance() {
@@ -68,32 +46,51 @@ public class HomeFragment extends Fragment implements HomeView {
     @BindView(R.id.vp_home_pager)
     ViewPager homeContentPager;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     @BindView(R.id.tl_pager_tabs)
     TabLayout tabs;
 
     @Inject HomePresenter presenter;
     @Inject Navigator navigator;
 
+    private WordAdditionExhibitor exhibitor;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            exhibitor = (WordAdditionExhibitor) context;
+        } catch (ClassCastException e) {
+            throw new RuntimeException("should implement: " + WordAdditionExhibitor.class);
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        DependenciesUtils.getFromActivity(this, HomeActivity.class).inject(this);
+        DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, root);
-        homeContentPager.setAdapter(new HomePageAdapter(getChildFragmentManager()));
-        tabs.setupWithViewPager(homeContentPager);
         return root;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        homeContentPager.setAdapter(HomePageAdapter.of(this));
+        tabs.setupWithViewPager(homeContentPager);
+
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+        appCompatActivity.setSupportActionBar(toolbar);
+
         presenter.setView(this);
     }
 
@@ -114,6 +111,9 @@ public class HomeFragment extends Fragment implements HomeView {
             case R.id.item_sign_out:
                 presenter.signOutSelected();
                 return true;
+            case R.id.item_init_adding:
+                showAddingVariantDialog();
+                return true;
         }
         return false;
     }
@@ -126,6 +126,21 @@ public class HomeFragment extends Fragment implements HomeView {
     @Override
     public void navigateAccount() {
         navigator.navigateAccount(getActivity());
+    }
+
+    @Override
+    public void navigateWordAddition() {
+        exhibitor.showWordAddition(AddWordFragment.newInstance());
+    }
+
+    private void showAddingVariantDialog() {
+        BottomSheetDialog dialog = new BottomSheetDialog(getContext());
+        dialog.setContentView(R.layout.dialog_words_addition_variants);
+        dialog.findViewById(R.id.btn_add_word).setOnClickListener(v -> {
+            dialog.dismiss();
+            presenter.addWordClick();
+        });
+        dialog.show();
     }
 
 }

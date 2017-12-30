@@ -23,11 +23,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.modules.home.HomeActivity" />
-        <activity android:name=".presentation.modules.training.exercising.ExerciseTrainingActivity"
-            android:theme="@style/AppTheme.Training"/>
-        <activity android:name=".presentation.modules.account.AccountActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".presentation.modules.home.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.modules.training.exercising.ExerciseTrainingActivity"
+            android:theme="@style/AppTheme.Training"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.modules.account.AccountActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <service android:name=".services.training.TrainingScheduleService" />
         <service android:name=".services.verifying.VerifyingService" />

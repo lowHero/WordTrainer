@@ -54,7 +54,7 @@ public class RegistrationFragment extends DialogFragment implements Registration
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, 0);
-        DependenciesUtils.getFromActivity(this, AccountActivity.class).inject(this);
+        DependenciesUtils.fromAttachedActivity(this, AccountActivity.class).inject(this);
     }
 
     @Nullable
