@@ -58,6 +58,10 @@ public class OverviewTrainingsPresenter extends BasePresenter<OverviewTrainingsV
         getView().navigateWordTraining(training.getId());
     }
 
+    public void addWordClick() {
+        getView().navigateWordAddition();
+    }
+
     private void updateTrainingList() {
         trainingInteractor.loadAllTrainings(appPreferences.getSelectedCourseId(),
                 new DisposableSingleObserver<Collection<Training>>() {

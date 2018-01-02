@@ -12,14 +12,8 @@ import javax.inject.Inject;
 @PerActivity
 public class TrainerPresenter extends BasePresenter<TrainerView> {
 
-    private final AppPreferences appPreferences;
-
     @Inject
-    public TrainerPresenter(AppPreferences appPreferences) {
-        this.appPreferences = appPreferences;
+    public TrainerPresenter() {
     }
 
-    public void addWordClick() {
-        getView().navigateWordAddition();
-    }
 }

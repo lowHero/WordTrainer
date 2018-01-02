@@ -14,5 +14,5 @@ public interface OverviewTrainingsView {
     void updateTraining(Training training);
 
     void navigateWordTraining(long trainingId);
-
+    void navigateWordAddition();
 }

@@ -6,7 +6,5 @@ package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
 public interface TrainerView {
 
     void showError(String describe);
-    void navigateAccount();
 
-    void navigateWordAddition();
 }

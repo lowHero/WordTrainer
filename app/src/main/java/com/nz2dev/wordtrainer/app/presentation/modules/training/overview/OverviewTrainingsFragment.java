@@ -3,11 +3,15 @@ package com.nz2dev.wordtrainer.app.presentation.modules.training.overview;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -15,6 +19,7 @@ import android.widget.Toast;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
 import com.nz2dev.wordtrainer.app.presentation.renderers.TrainingRenderer;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.app.utils.helpers.OnItemClickListener;
@@ -36,9 +41,10 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
  */
 public class OverviewTrainingsFragment extends Fragment implements OverviewTrainingsView, OnItemClickListener<Training> {
 
-    public interface TrainingExhibitor {
+    public interface FragmentExhibitor {
 
         void showTraining(Fragment fragment);
+        void showWordAddition(Fragment fragment);
 
     }
 
@@ -52,21 +58,22 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     @Inject OverviewTrainingsPresenter presenter;
 
     private RVRendererAdapter<Training> adapter;
-    private TrainingExhibitor trainingExhibitor;
+    private FragmentExhibitor fragmentExhibitor;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            trainingExhibitor = (TrainingExhibitor) context;
+            fragmentExhibitor = (FragmentExhibitor) context;
         } catch (ClassCastException e) {
-            throw new RuntimeException("context should implement: " + TrainingExhibitor.class.getSimpleName());
+            throw new RuntimeException("context should implement: " + FragmentExhibitor.class.getSimpleName());
         }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
         adapter = new RVRendererAdapter<>(new RendererBuilder<>(new TrainingRenderer(this)));
     }
@@ -88,6 +95,11 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_home, menu);
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter.setView(this);
@@ -97,6 +109,16 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     public void onDestroyView() {
         super.onDestroyView();
         presenter.detachView();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_init_adding:
+                showAddingVariantDialog();
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -129,7 +151,22 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
 
     @Override
     public void navigateWordTraining(long trainingId) {
-        trainingExhibitor.showTraining(ExerciseTrainingFragment.newInstance(trainingId));
+        fragmentExhibitor.showTraining(ExerciseTrainingFragment.newInstance(trainingId));
+    }
+
+    @Override
+    public void navigateWordAddition() {
+        fragmentExhibitor.showWordAddition(AddWordFragment.newInstance());
+    }
+
+    private void showAddingVariantDialog() {
+        BottomSheetDialog dialog = new BottomSheetDialog(getContext());
+        dialog.setContentView(R.layout.dialog_words_addition_variants);
+        dialog.findViewById(R.id.btn_add_word).setOnClickListener(v -> {
+            dialog.dismiss();
+            presenter.addWordClick();
+        });
+        dialog.show();
     }
 
 }

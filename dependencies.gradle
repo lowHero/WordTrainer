@@ -63,6 +63,8 @@ ext {
             commonsIO                 : "commons-io:commons-io:${commonsIOVersion}",
             dotProgressBar            : "com.github.silvestrpredko:dot-progress-bar:${dotProgressBarVersion}",
             powerMenu                 : "com.github.skydoves:powermenu:${powerMenuVersion}",
+            smartTabLayout            : "com.ogaclejapan.smarttablayout:library:1.6.1@aar",
+            smartTabLayoutUtils       : "com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar",
 
             butterKnifeCompiler       : "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
             butterKnife               : "com.jakewharton:butterknife:${butterKnifeVersion}",

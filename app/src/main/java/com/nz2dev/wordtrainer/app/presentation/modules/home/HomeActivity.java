@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -20,13 +22,17 @@ import com.nz2dev.wordtrainer.app.dependencies.components.HomeComponent;
 import com.nz2dev.wordtrainer.app.presentation.modules.courses.overview.CoursesOverviewFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.debug.DebugFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment;
-import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment.WordAdditionExhibitor;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment.ExerciseTrainingHandler;
-import com.nz2dev.wordtrainer.app.presentation.modules.training.overview.OverviewTrainingsFragment.TrainingExhibitor;
+import com.nz2dev.wordtrainer.app.presentation.modules.training.overview.OverviewTrainingsFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.training.overview.OverviewTrainingsFragment.FragmentExhibitor;
+import com.nz2dev.wordtrainer.app.presentation.modules.training.scheduling.SchedulingTrainingsFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment.AddWordHandler;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,38 +44,56 @@ import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACK
  * Created by nz2Dev on 30.11.2017
  */
 public class HomeActivity extends AppCompatActivity implements HasDependencies<HomeComponent>,
-        ExerciseTrainingHandler, TrainingExhibitor,
-        AddWordHandler, WordAdditionExhibitor {
+        FragmentExhibitor, ExerciseTrainingHandler, AddWordHandler {
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, HomeActivity.class);
     }
 
+    @BindView(R.id.fl_adding_word_place)
+    FrameLayout addingPlace;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.tl_pager_tabs)
+    SmartTabLayout tabs;
+
+    @BindView(R.id.vp_home_pager)
+    ViewPager contentPager;
+
     private HomeComponent dependencies;
     private int backStackIdExercise;
     private int backStackIdAdding;
-
-    @BindView(R.id.fl_adding_word_place)
-    FrameLayout addingPlace;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        ButterKnife.bind(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         }
 
+        ButterKnife.bind(this);
         dependencies = DaggerHomeComponent.builder()
                 .appComponent(DependenciesUtils.appComponentFrom(this))
                 .build();
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_trainer_place, TrainerFragment.newInstance())
+//               TODO decide where to place TrainerFragment .replace(R.id.fl_trainer_place, TrainerFragment.newInstance())
                 .replace(R.id.fl_navigation_place, CoursesOverviewFragment.newInstance())
                 .add(DebugFragment.newInstance(), "DEBUG")
                 .commit();
+
+        contentPager.setAdapter(new FragmentPagerItemAdapter(
+                getSupportFragmentManager(),
+                FragmentPagerItems.with(this)
+                        .add(R.string.title_exercises, OverviewTrainingsFragment.class)
+                        .add(R.string.title_scheduling, SchedulingTrainingsFragment.class)
+                        .create()));
+
+        setSupportActionBar(toolbar);
+        tabs.setViewPager(contentPager);
     }
 
     @Override

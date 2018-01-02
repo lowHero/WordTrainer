@@ -41,6 +41,8 @@ dependencies {
     implementation globalDependencies["androidArchRoom"]
     implementation globalDependencies["dagger"]
     implementation globalDependencies["renderers"]
+    implementation globalDependencies["smartTabLayout"]
+    implementation globalDependencies["smartTabLayoutUtils"]
     implementation globalDependencies["butterKnife"]
     implementation globalDependencies["rxJava"]
     implementation globalDependencies["rxAndroid"]
