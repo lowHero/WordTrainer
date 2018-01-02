@@ -1,6 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.training.scheduling;
 
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,12 @@ public class SchedulingTrainingsFragment extends Fragment implements SchedulingT
     public static SchedulingTrainingsFragment newInstance() {
         return new SchedulingTrainingsFragment();
     }
+
+    @BindView(R.id.btn_interval_multiplier_hour)
+    View hourIntervalMultiplierButton;
+
+    @BindView(R.id.btn_interval_multiplier_15min)
+    View fifteenIntervalMultiplierButton;
 
     @BindView(R.id.rl_future_changes_container)
     View futureContainer;
@@ -78,12 +85,12 @@ public class SchedulingTrainingsFragment extends Fragment implements SchedulingT
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        trainingIntervalBar.setMax((int) intervalMultiplier);
+        updateSeekBar();
+
         trainingIntervalBar.setOnSeekBarChangeListener(new OnSeekBarChangeAdapter() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-//                    presenter.schedulingIntervalChanged((long) ((progress / 100f) * intervalMultiplier));
                     presenter.schedulingIntervalChanged(progress);
                 }
             }
@@ -101,23 +108,13 @@ public class SchedulingTrainingsFragment extends Fragment implements SchedulingT
     @OnClick(R.id.btn_interval_multiplier_hour)
     public void onHourMultiplierClick() {
         intervalMultiplier = Millisecond.HOUR;
-
-        if (trainingIntervalBar.getProgress() > intervalMultiplier) {
-            presenter.schedulingIntervalChanged(intervalMultiplier);
-        }
-
-        trainingIntervalBar.setMax((int) intervalMultiplier);
+        updateSeekBar();
     }
 
     @OnClick(R.id.btn_interval_multiplier_15min)
     public void onFifteenMinutesMultiplierClick() {
         intervalMultiplier = 15 * Millisecond.MINUTE;
-
-        if (trainingIntervalBar.getProgress() > intervalMultiplier) {
-            presenter.schedulingIntervalChanged(intervalMultiplier);
-        }
-
-        trainingIntervalBar.setMax((int) intervalMultiplier);
+        updateSeekBar();
     }
 
     @OnClick(R.id.btn_scheduling_launch)
@@ -168,11 +165,14 @@ public class SchedulingTrainingsFragment extends Fragment implements SchedulingT
         int color;
         if (show) {
             color = ContextCompat.getColor(getContext(), R.color.primaryColor);
-            trainingIntervalBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         } else {
             color = ContextCompat.getColor(getContext(), R.color.secondaryColor);
         }
+
         trainingIntervalBar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            trainingIntervalBar.getThumb().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
     }
 
     @Override
@@ -193,11 +193,13 @@ public class SchedulingTrainingsFragment extends Fragment implements SchedulingT
     public void setActualInterval(long intervalMillis) {
         actualIntervalTimeText.setText(String.format("%s min.", intervalMillis / Millisecond.MINUTE));
         trainingIntervalBar.setProgress((int) intervalMillis);
+    }
 
-        // because actual interval called when we want to set in once and show what is actual stored in scheduling
-        // so there we also set out progressBar progress value based on multiplier value
-        // finally, simply divide interval on multiplier
-        // trainingIntervalBar.setProgress((int) (((double) intervalMillis / intervalMultiplier) * 100));
+    private void updateSeekBar() {
+        if (trainingIntervalBar.getProgress() > intervalMultiplier) {
+            presenter.schedulingIntervalChanged(intervalMultiplier);
+        }
+        trainingIntervalBar.setMax((int) intervalMultiplier);
     }
 
     private void injectDependencies() {

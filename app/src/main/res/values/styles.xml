@@ -22,7 +22,7 @@
         <item name="windowNoTitle">false</item>
     </style>
 
-    <style name="Button.Accent" parent="ThemeOverlay.AppCompat">
+    <style name="Button.Accent.Primary" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">@color/primaryColor</item>
     </style>
 
