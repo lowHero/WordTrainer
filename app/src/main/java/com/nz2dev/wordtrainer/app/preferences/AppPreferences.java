@@ -20,7 +20,7 @@ public class AppPreferences {
 
     private static final String NAME = "AppPref";
 
-    private static final String KEY_SELECTED_COURSE_ID = "SelectedCourseId";
+    public static final String KEY_SELECTED_COURSE_ID = "SelectedCourseId";
     private static final String KEY_ACCOUNT_ID = "AccountId";
     private static final String KEY_LOGIN = "Login";
     private static final String KEY_PASSWORD = "Password";
@@ -30,6 +30,14 @@ public class AppPreferences {
     @Inject
     public AppPreferences(Context context) {
         sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+    }
+
+    public void registerListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
+    }
+
+    public void unregisterListener(SharedPreferences.OnSharedPreferenceChangeListener prefListener) {
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(prefListener);
     }
 
     public void selectCourse(Course course) {

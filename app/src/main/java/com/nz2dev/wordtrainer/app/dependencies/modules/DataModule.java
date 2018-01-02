@@ -95,7 +95,8 @@ public class DataModule {
     }
 
     @Singleton
-    @Provides SchedulingRepository provideSchedulingRepository(RoomSchedulingRepository repository) {
+    @Provides
+    SchedulingRepository provideSchedulingRepository(RoomSchedulingRepository repository) {
         return repository;
     }
 }

@@ -5,11 +5,15 @@ package com.nz2dev.wordtrainer.app.presentation.modules.training.scheduling;
  */
 public interface SchedulingTrainingsView {
 
-    void showNextTrainingUnspecified();
+    long UNSPECIFIED_INTERVAL = 0L;
 
+    void showError(String error);
     void showSchedulingLaunched();
     void showSchedulingStopped();
+    void showIntervalChanging(boolean show);
+    void showTimeLeft(long millisUntilFinished);
 
-    void setTimeReminded(long millisUntilFinished);
-    void setMaxInterval(int maxIntervalMinutes);
+    void setFutureInterval(long intervalMillis);
+    void setActualInterval(long intervalMillis);
+
 }

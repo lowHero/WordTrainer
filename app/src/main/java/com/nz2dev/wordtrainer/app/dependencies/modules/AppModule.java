@@ -3,8 +3,10 @@ package com.nz2dev.wordtrainer.app.dependencies.modules;
 import android.content.Context;
 
 import com.nz2dev.wordtrainer.app.core.AndroidBackgroundExecutor;
+import com.nz2dev.wordtrainer.app.core.AndroidExceptionHandler;
 import com.nz2dev.wordtrainer.app.core.AndroidUIExecutor;
 import com.nz2dev.wordtrainer.app.core.WordTrainerApp;
+import com.nz2dev.wordtrainer.domain.exceptions.ExceptionHandler;
 import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
 import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
 
@@ -42,4 +44,10 @@ public class AppModule {
     UIExecutor provideUiExecutor(AndroidUIExecutor uiExecutor) {
         return uiExecutor;
     }
+
+    @Provides
+    @Singleton ExceptionHandler provideExceptionHandler(AndroidExceptionHandler exceptionHandler) {
+        return exceptionHandler;
+    }
+
 }

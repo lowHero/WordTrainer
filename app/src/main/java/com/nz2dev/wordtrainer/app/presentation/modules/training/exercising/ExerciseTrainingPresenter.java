@@ -2,7 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.training.exercising;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
+import com.nz2dev.wordtrainer.app.utils.helpers.ErrorHandler;
 import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
 import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
 import com.nz2dev.wordtrainer.domain.models.Word;

@@ -3,17 +3,14 @@ package com.nz2dev.wordtrainer.app.presentation.modules.training.overview;
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
-import com.nz2dev.wordtrainer.app.utils.UncheckedObserver;
+import com.nz2dev.wordtrainer.app.utils.helpers.ErrorHandler;
 import com.nz2dev.wordtrainer.domain.interactors.TrainingInteractor;
 import com.nz2dev.wordtrainer.domain.models.Training;
-import com.nz2dev.wordtrainer.domain.repositories.infrastructure.ObservableRepository;
 
 import java.util.Collection;
 
 import javax.inject.Inject;
 
-import io.reactivex.Single;
 import io.reactivex.observers.DisposableSingleObserver;
 
 /**

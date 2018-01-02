@@ -17,7 +17,7 @@ import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment;
 import com.nz2dev.wordtrainer.app.presentation.renderers.TrainingRenderer;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
-import com.nz2dev.wordtrainer.app.utils.OnItemClickListener;
+import com.nz2dev.wordtrainer.app.utils.helpers.OnItemClickListener;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;

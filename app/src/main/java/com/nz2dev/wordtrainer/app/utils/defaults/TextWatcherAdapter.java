@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.utils;
+package com.nz2dev.wordtrainer.app.utils.defaults;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -6,7 +6,7 @@ import android.text.TextWatcher;
 /**
  * Created by nz2Dev on 05.12.2017
  */
-public interface DefaultTextWatcher extends TextWatcher {
+public interface TextWatcherAdapter extends TextWatcher {
 
     @Override
     default void beforeTextChanged(CharSequence s, int start, int count, int after) {

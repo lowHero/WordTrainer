@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.utils;
+package com.nz2dev.wordtrainer.app.utils.helpers;
 
 import android.util.Log;
 

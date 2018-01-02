@@ -1,7 +1,6 @@
 package com.nz2dev.wordtrainer.app.services.training;
 
 import android.app.AlarmManager;
-import android.app.Application;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -12,13 +11,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.WakefulBroadcastReceiver;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.dependencies.components.DaggerTrainingScheduleComponent;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingActivity;
-import com.nz2dev.wordtrainer.app.utils.Constants;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.models.Training;
 
@@ -32,7 +29,7 @@ import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
  */
 public class TrainingScheduleService extends Service implements TrainingScheduleHandler {
 
-    public static final String ACTION_SCHEDULE_COMPLETE = "com.nz2dev.wordtrainer.ACTION_SCHEDULE_COMPLETE";
+    public static final String ACTION_ALARM_STARTED = "com.nz2dev.wordtrainer.ACTION_ALARM_STARTED";
 
     private static final int REQUEST_CODE = 1;
 
@@ -66,14 +63,12 @@ public class TrainingScheduleService extends Service implements TrainingSchedule
         controller.setHandler(this);
 
         if (intent.getBooleanExtra(EXTRA_IS_FROM_ALARM, false)) {
-            sendBroadcast(new Intent(ACTION_SCHEDULE_COMPLETE));
             controller.prepareNextTraining();
         }
 
         if (intent.getBooleanExtra(EXTRA_CANCEL, false)) {
             controller.cancelSchedule();
         } else {
-            sendBroadcast(new Intent(ACTION_SCHEDULE_COMPLETE));
             controller.planeNextTraining();
         }
         return super.onStartCommand(intent, flags, startId);
@@ -100,6 +95,7 @@ public class TrainingScheduleService extends Service implements TrainingSchedule
     @Override
     public void scheduleNextTime(long nextScheduledTime) {
         getAlarmManagerOrThrow().set(RTC_WAKEUP, nextScheduledTime, getPendingAlarmIntent());
+        sendBroadcast(new Intent(ACTION_ALARM_STARTED));
     }
 
     @Override

@@ -2,10 +2,10 @@ package com.nz2dev.wordtrainer.app.services.training;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerService;
 import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.app.preferences.SchedulingPreferences;
-import com.nz2dev.wordtrainer.app.utils.ErrorHandler;
 import com.nz2dev.wordtrainer.app.utils.TimeUtils;
+import com.nz2dev.wordtrainer.app.utils.helpers.ErrorHandler;
 import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
+import com.nz2dev.wordtrainer.domain.interactors.SchedulingInteractor;
 import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
 
 import java.util.Date;
@@ -22,15 +22,15 @@ public class TrainingScheduleController {
 
     private final AppPreferences appPreferences;
     private final ExerciseInteractor exerciseInteractor;
-    private final SchedulingPreferences schedulingPreferences;
+    private final SchedulingInteractor schedulingInteractor;
 
     private TrainingScheduleHandler handler;
 
     @Inject
-    public TrainingScheduleController(AppPreferences appPreferences, ExerciseInteractor exerciseInteractor, SchedulingPreferences schedulingPreferences) {
+    public TrainingScheduleController(AppPreferences appPreferences, ExerciseInteractor exerciseInteractor, SchedulingInteractor schedulingInteractor) {
         this.appPreferences = appPreferences;
         this.exerciseInteractor = exerciseInteractor;
-        this.schedulingPreferences = schedulingPreferences;
+        this.schedulingInteractor = schedulingInteractor;
     }
 
     public void setHandler(TrainingScheduleHandler handler) {
@@ -38,19 +38,26 @@ public class TrainingScheduleController {
     }
 
     public void planeNextTraining() {
-        Date now = TimeUtils.now();
-        schedulingPreferences.setLastScheduledTime(now);
-        handler.scheduleNextTime(now.getTime() + schedulingPreferences.getTrainingInterval());
+        schedulingInteractor.downloadSchedulingForCourse(appPreferences.getSelectedCourseId(), (scheduling, throwable) -> {
+            if (handleThrowable(throwable)) {
+                return;
+            }
 
-        // TODO Use scheduling preferences interval for planing next alarm
-        // TODO Calculate next time when handler should alarm self to preparingTraining
+            Date now = TimeUtils.now();
+            scheduling.setLastTrainingDate(now);
+            schedulingInteractor.updateSchedulingSync(scheduling);
+            handler.scheduleNextTime(now.getTime() + scheduling.getInterval());
+
+            // TODO Use scheduling preferences interval for planing next alarm
+            // TODO Calculate next time when handler should alarm self to preparingTraining
+        });
     }
 
     public void prepareNextTraining() {
         // fetch data, analise it, look at restriction,
         // make exercise and remember last time in preferences or somewhere else
         // and show notification
-        exerciseInteractor.loadProposedExercise(appPreferences.getSignedAccountId(), new DisposableSingleObserver<Exercise>() {
+        exerciseInteractor.loadProposedExercise(appPreferences.getSelectedCourseId(), new DisposableSingleObserver<Exercise>() {
             @Override
             public void onSuccess(Exercise exercise) {
                 // TODO notify Exercise with variants and pass exercise model to the Intent extras
@@ -67,7 +74,19 @@ public class TrainingScheduleController {
     }
 
     public void cancelSchedule() {
-        schedulingPreferences.setLastScheduledTime(null);
-        handler.stopSchedule();
+        schedulingInteractor.downloadSchedulingForCourse(appPreferences.getSelectedCourseId(), (scheduling, throwable) -> {
+            scheduling.setLastTrainingDate(null);
+            schedulingInteractor.updateSchedulingSync(scheduling);
+            handler.stopSchedule();
+        });
+    }
+
+    private boolean handleThrowable(Throwable throwable) {
+        if (throwable != null) {
+            handler.handleError(ErrorHandler.describe(throwable));
+            return true;
+        } else {
+            return false;
+        }
     }
 }

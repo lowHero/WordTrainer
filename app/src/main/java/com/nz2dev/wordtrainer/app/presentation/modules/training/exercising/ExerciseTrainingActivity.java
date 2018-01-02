@@ -21,7 +21,7 @@ import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
  */
 public class ExerciseTrainingActivity extends AppCompatActivity implements HasDependencies<TrainWordComponent>, ExerciseTrainingHandler {
 
-    private static final int REQUEST_CODE = 0;
+    private static final int REQUEST_CODE = 1;
 
     private static final String EXTRA_TRAINING_ID = "TrainingId";
 
@@ -59,8 +59,8 @@ public class ExerciseTrainingActivity extends AppCompatActivity implements HasDe
         return dependencies;
     }
 
-    private int getTrainingId() {
-        return getIntent().getIntExtra(EXTRA_TRAINING_ID, -1);
+    private long getTrainingId() {
+        return getIntent().getLongExtra(EXTRA_TRAINING_ID, -1L);
     }
 
     @Override

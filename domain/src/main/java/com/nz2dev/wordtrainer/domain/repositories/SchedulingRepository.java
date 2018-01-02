@@ -10,5 +10,7 @@ import io.reactivex.Single;
 public interface SchedulingRepository {
 
     Single<Long> addScheduling(Scheduling scheduling);
+    Single<Boolean> updateScheduling(Scheduling scheduling);
+    Single<Scheduling> getSchedulingByCourseId(long courseId);
 
 }

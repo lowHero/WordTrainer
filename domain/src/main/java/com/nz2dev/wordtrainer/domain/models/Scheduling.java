@@ -1,5 +1,7 @@
 package com.nz2dev.wordtrainer.domain.models;
 
+import com.nz2dev.wordtrainer.domain.utils.Millisecond;
+
 import java.util.Date;
 
 /**
@@ -7,7 +9,8 @@ import java.util.Date;
  */
 public class Scheduling {
 
-    public static final long DEFAULT_INTERVAL = 60 * 1000;
+    public static final long DEFAULT_INTERVAL = 15 * Millisecond.MINUTE;
+    public static final long MIN_INTERVAL = Millisecond.MINUTE;
 
     public static Scheduling newInstance() {
         return newInstance(DEFAULT_INTERVAL);

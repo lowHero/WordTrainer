@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
-import com.nz2dev.wordtrainer.app.utils.DefaultTextWatcher;
+import com.nz2dev.wordtrainer.app.utils.defaults.TextWatcherAdapter;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 
 import javax.inject.Inject;
@@ -91,14 +91,14 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        originalWordEditor.addTextChangedListener(new DefaultTextWatcher() {
+        originalWordEditor.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 presenter.validateOriginalInputs(text.toString());
             }
         });
 
-        translateWordEditor.addTextChangedListener(new DefaultTextWatcher() {
+        translateWordEditor.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 presenter.validateTranslationInputs(text.toString());

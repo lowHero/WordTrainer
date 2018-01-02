@@ -1,27 +1,25 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.training.scheduling;
 
-import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 
-import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.preferences.SchedulingPreferences;
+import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingActivity;
 import com.nz2dev.wordtrainer.app.services.training.TrainingScheduleService;
-import com.nz2dev.wordtrainer.app.utils.Constants;
+import com.nz2dev.wordtrainer.app.utils.helpers.ErrorHandler;
+import com.nz2dev.wordtrainer.domain.interactors.SchedulingInteractor;
+import com.nz2dev.wordtrainer.domain.models.Scheduling;
+import com.nz2dev.wordtrainer.domain.utils.Millisecond;
 
 import javax.inject.Inject;
 
-import static com.nz2dev.wordtrainer.app.utils.Constants.INTERVAL_MINUTE_IN_MILLIS;
-import static com.nz2dev.wordtrainer.app.utils.Constants.INTERVAL_SECOND_IN_MILLIS;
+import static com.nz2dev.wordtrainer.app.presentation.modules.training.scheduling.SchedulingTrainingsView.UNSPECIFIED_INTERVAL;
 
 /**
  * Created by nz2Dev on 23.12.2017
@@ -29,40 +27,44 @@ import static com.nz2dev.wordtrainer.app.utils.Constants.INTERVAL_SECOND_IN_MILL
 @PerActivity
 public class SchedulingTrainingsPresenter extends BasePresenter<SchedulingTrainingsView> {
 
-    private static final long MIN_SCHEDULED_INTERVAL = INTERVAL_MINUTE_IN_MILLIS;
+    private static final long FUTURE_INTERVAL_UNSPECIFIED = -1L;
 
-    private static final int MAX_INTERVAL_MINUTES = 60;
+    private final IntentFilter ALARM_STARTED = new IntentFilter(TrainingScheduleService.ACTION_ALARM_STARTED);
 
-    private final SchedulingPreferences schedulingPreferences;
     private final Context context;
+    private final AppPreferences appPreferences;
+    private final SchedulingInteractor schedulingInteractor;
 
     private CountDownTimer timer;
     private BroadcastReceiver receiver;
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+    private Scheduling currentScheduling;
+
+    private long futureInterval = FUTURE_INTERVAL_UNSPECIFIED;
 
     @Inject
-    public SchedulingTrainingsPresenter(SchedulingPreferences schedulingPreferences, Context context) {
-        this.schedulingPreferences = schedulingPreferences;
+    public SchedulingTrainingsPresenter(Context context, AppPreferences appPreferences, SchedulingInteractor schedulingInteractor) {
         this.context = context;
+        this.appPreferences = appPreferences;
+        this.schedulingInteractor = schedulingInteractor;
     }
 
     @Override
     protected void onViewReady() {
-        getView().setMaxInterval(MAX_INTERVAL_MINUTES);
+        prepareScheduler(appPreferences.getSelectedCourseId());
 
-        if (isLastSchedulingExist()) {
-            startSchedulingClick();
-            prepareTimer();
-        } else {
-            getView().showSchedulingStopped();
-            getView().showNextTrainingUnspecified();
-        }
+        appPreferences.registerListener(prefListener = (sharedPreferences, key) -> {
+            if (key.equals(AppPreferences.KEY_SELECTED_COURSE_ID)) {
+                prepareScheduler(appPreferences.getSelectedCourseId());
+            }
+        });
 
         context.registerReceiver(receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 prepareTimer();
             }
-        }, new IntentFilter(TrainingScheduleService.ACTION_SCHEDULE_COMPLETE));
+        }, ALARM_STARTED);
     }
 
     @Override
@@ -73,98 +75,105 @@ public class SchedulingTrainingsPresenter extends BasePresenter<SchedulingTraini
         }
 
         context.unregisterReceiver(receiver);
+        appPreferences.unregisterListener(prefListener);
     }
 
-    public void schedulingIntervalChanged(int progress) {
-        long intervalMinuteInMillis = progress * Constants.INTERVAL_MINUTE_IN_MILLIS;
-        if (intervalMinuteInMillis < MIN_SCHEDULED_INTERVAL) {
-            Log.w(getClass().getSimpleName(), "interval less that minimum, was: " + intervalMinuteInMillis);
-            return;
+    public void schedulingIntervalChanged(long intervalMillis) {
+        if (intervalMillis < Scheduling.MIN_INTERVAL) {
+            intervalMillis = Scheduling.MIN_INTERVAL;
         }
 
-        schedulingPreferences.setTrainingInterval(intervalMinuteInMillis);
-        startSchedulingClick();
+        if (futureInterval == FUTURE_INTERVAL_UNSPECIFIED) {
+            getView().showIntervalChanging(true);
+        }
+
+        futureInterval = intervalMillis;
+        getView().setFutureInterval(intervalMillis);
+    }
+
+    public void acceptFutureIntervalClick() {
+        final long savedInterval = futureInterval;
+        futureInterval = FUTURE_INTERVAL_UNSPECIFIED;
+
+        currentScheduling.setInterval(savedInterval);
+        schedulingInteractor.updateScheduling(currentScheduling, (index, throwable) -> {
+            if (throwable != null) {
+                getView().showError("Error updating interval: " + ErrorHandler.describe(throwable));
+                return;
+            }
+
+            getView().showIntervalChanging(false);
+            getView().setActualInterval(savedInterval);
+
+            if (currentScheduling.getLastTrainingDate() != null) {
+                startSchedulingClick();
+            }
+        });
+    }
+
+    public void rejectFutureIntervalClick() {
+        futureInterval = FUTURE_INTERVAL_UNSPECIFIED;
+        getView().showIntervalChanging(false);
+        getView().setActualInterval(currentScheduling.getInterval());
     }
 
     public void startSchedulingClick() {
-        // prevent double clicking
         getView().showSchedulingLaunched();
-
-        // notify service that we want to start scheduling
-        // maybe should we bing it right there?
         context.startService(TrainingScheduleService.getStartingIntent(context));
-
-        //  TODO prepare time right after onConnected callback will be called
-        //  ... onConnected(Binder binder) {
-        //      prepareTimer();
-        //  }
     }
 
     public void stopSchedulingClick() {
-        // prevent double clicking
-        getView().showSchedulingStopped();
-        getView().showNextTrainingUnspecified();
         if (timer != null) {
             timer.cancel();
         }
 
-        // notify service that we will not be schedule anything
-        context.startService(TrainingScheduleService.getCancelIntent(context));
+        getView().showSchedulingStopped();
+        getView().showTimeLeft(UNSPECIFIED_INTERVAL);
 
-        // maybe just clear timer not call prepare there too.
-        // clearTimer();
+        context.startService(TrainingScheduleService.getCancelIntent(context));
     }
 
-    // TODO change login appropriate with ServiceBindings without preferences interactions
-    // because there in this module we just want to give possibility to change interval and
-    // observe next scheduling time.
+    private void prepareScheduler(long courseId) {
+        schedulingInteractor.downloadSchedulingForCourse(courseId, (scheduling, t) -> {
+            if (t != null) {
+                getView().showError(ErrorHandler.describe(t));
+                return;
+            }
+
+            currentScheduling = scheduling;
+            getView().setActualInterval(currentScheduling.getInterval());
+
+            if (scheduling.getLastTrainingDate() != null) {
+                startSchedulingClick();
+            } else {
+                getView().showSchedulingStopped();
+                getView().showTimeLeft(0L);
+            }
+        });
+    }
+
     private void prepareTimer() {
         if (timer != null) {
             timer.cancel();
             timer = null;
         }
 
-        long trainingInterval = schedulingPreferences.getTrainingInterval();
-        if (trainingInterval < MIN_SCHEDULED_INTERVAL) {
-            throw new RuntimeException(String.format("training interval have to be biggest " +
-                    "that: %s, but was: %s", MIN_SCHEDULED_INTERVAL, trainingInterval));
-        }
+        // TODO preparing Timer logic can be complicated when we would be check last training date
+        // but now just start time for interval
 
-        long nextTrainingTime = schedulingPreferences.getLastScheduledTime().getTime() + trainingInterval;
-        long millisToTraining = nextTrainingTime - System.currentTimeMillis();
-
-        timer = new CountDownTimer(millisToTraining, INTERVAL_SECOND_IN_MILLIS) {
+        timer = new CountDownTimer(currentScheduling.getInterval(), Millisecond.SECOND) {
             @Override
             public void onTick(long millisUntilFinished) {
-                getView().setTimeReminded(millisUntilFinished);
+                getView().showTimeLeft(millisUntilFinished);
             }
 
             @Override
             public void onFinish() {
-                getView().showNextTrainingUnspecified();
+                getView().showTimeLeft(UNSPECIFIED_INTERVAL);
             }
         };
 
         timer.start();
     }
 
-    private boolean isLastSchedulingExist() {
-        return schedulingPreferences.getLastScheduledTime() != null;
-    }
-
-    public void sendPendingClick() {
-        NotificationManagerCompat.from(context)
-                .notify(hashCode(), new NotificationCompat.Builder(context, "channel")
-                        .setAutoCancel(true)
-                        .setTicker("Ticker")
-                        .setDefaults(Notification.DEFAULT_ALL)
-                        .setContentTitle("Title")
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentIntent(ExerciseTrainingActivity.getPendingIntent(context, 1))
-                        .build());
-    }
-
-    public void sendCallingClick() {
-        context.startActivity(ExerciseTrainingActivity.getCallingIntent(context, 1));
-    }
 }
