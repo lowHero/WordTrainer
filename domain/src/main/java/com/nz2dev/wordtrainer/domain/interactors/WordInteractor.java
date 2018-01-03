@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiConsumer;
 
 /**
@@ -28,8 +29,8 @@ public class WordInteractor {
         this.executionManager = executionManager;
     }
 
-    public void addWord(Word word, SingleObserver<Boolean> resultObserver) {
-        wordsRepository.addWord(word)
+    public Disposable addWord(Word word, BiConsumer<Boolean, Throwable> consumer) {
+        return wordsRepository.addWord(word)
                 .subscribeOn(executionManager.background())
                 .to(wordId -> {
                     word.setId(wordId.blockingGet());
@@ -37,7 +38,7 @@ public class WordInteractor {
                 })
                 .subscribeOn(executionManager.background())
                 .observeOn(executionManager.ui())
-                .subscribe(resultObserver);
+                .subscribe(consumer);
     }
 
     public void loadWord(long wordId, BiConsumer<Word, Throwable> consumer) {

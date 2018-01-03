@@ -10,9 +10,8 @@ import android.os.CountDownTimer;
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingActivity;
 import com.nz2dev.wordtrainer.app.services.training.TrainingScheduleService;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorHandler;
+import com.nz2dev.wordtrainer.app.utils.helpers.ErrorsDescriber;
 import com.nz2dev.wordtrainer.domain.interactors.SchedulingInteractor;
 import com.nz2dev.wordtrainer.domain.models.Scheduling;
 import com.nz2dev.wordtrainer.domain.utils.Millisecond;
@@ -98,7 +97,7 @@ public class SchedulingTrainingsPresenter extends BasePresenter<SchedulingTraini
         currentScheduling.setInterval(savedInterval);
         schedulingInteractor.updateScheduling(currentScheduling, (index, throwable) -> {
             if (throwable != null) {
-                getView().showError("Error updating interval: " + ErrorHandler.describe(throwable));
+                getView().showError("Error updating interval: " + ErrorsDescriber.describe(throwable));
                 return;
             }
 
@@ -136,7 +135,7 @@ public class SchedulingTrainingsPresenter extends BasePresenter<SchedulingTraini
     private void prepareScheduler(long courseId) {
         schedulingInteractor.downloadSchedulingForCourse(courseId, (scheduling, t) -> {
             if (t != null) {
-                getView().showError(ErrorHandler.describe(t));
+                getView().showError(ErrorsDescriber.describe(t));
                 return;
             }
 

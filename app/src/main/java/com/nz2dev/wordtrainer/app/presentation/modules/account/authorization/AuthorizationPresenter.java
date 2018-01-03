@@ -3,7 +3,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.account.authorization;
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorHandler;
+import com.nz2dev.wordtrainer.app.utils.helpers.ErrorsDescriber;
 import com.nz2dev.wordtrainer.data.exceptions.AccountNotExistException;
 import com.nz2dev.wordtrainer.domain.interactors.AccountHistoryInteractor;
 import com.nz2dev.wordtrainer.domain.interactors.AccountInteractor;
@@ -47,14 +47,14 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
 
             @Override
             public void onError(Throwable e) {
-                getView().showError(ErrorHandler.describe(e));
+                getView().showError(ErrorsDescriber.describe(e));
             }
         });
     }
 
     public void startCreateAccountClick() {
         // may be possible to check there if this account is exist
-        // and make some restriction to create this account one more time
+        // and make some restriction to selfHandledConsumer this account one more time
         getView().showAccountCreation();
     }
 
@@ -77,7 +77,7 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
 
             @Override
             public void onError(Throwable e) {
-                getView().showError(ErrorHandler.describe(e));
+                getView().showError(ErrorsDescriber.describe(e));
             }
         });
     }
@@ -95,14 +95,14 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
                     }
                     @Override
                     public void onError(Throwable e) {
-                        getView().showError("Error creating history: " + ErrorHandler.describe(e));
+                        getView().showError("Error creating history: " + ErrorsDescriber.describe(e));
                     }
                 });
             }
 
             @Override
             public void onError(Throwable e) {
-                getView().showError(ErrorHandler.describe(e));
+                getView().showError(ErrorsDescriber.describe(e));
                 getView().showProgressIndicator(false);
             }
         });
@@ -127,7 +127,7 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
                     getView().setupCreationButton(true);
                     getView().showAccountHasPassword(false);
                 } else {
-                    getView().showError(ErrorHandler.describe(e));
+                    getView().showError(ErrorsDescriber.describe(e));
                 }
             }
         });

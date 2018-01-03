@@ -6,9 +6,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.word.add;
 public interface AddWordView {
 
     void showWordSuccessfulAdded();
+    void showInsertionAllowed(boolean allowed);
     void hideIt();
 
-    void showError(String describe);
-
-    void showInsertionAllowed(boolean allowed);
 }

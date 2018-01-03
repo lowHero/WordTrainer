@@ -7,6 +7,8 @@ import com.nz2dev.wordtrainer.app.dependencies.modules.DataModule;
 import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.startup.StartupActivity;
+import com.nz2dev.wordtrainer.domain.exceptions.ExceptionHandler;
+import com.nz2dev.wordtrainer.domain.exceptions.ExceptionHelper;
 import com.nz2dev.wordtrainer.domain.interactors.AccountHistoryInteractor;
 import com.nz2dev.wordtrainer.domain.interactors.AccountInteractor;
 import com.nz2dev.wordtrainer.domain.interactors.CourseInteractor;
@@ -29,6 +31,7 @@ public interface AppComponent {
 
     Context appContext();
     AppPreferences appPreferences();
+    ExceptionHelper appExceptionHelper();
     Navigator appNavigator();
 
     TrainingInteractor trainingInteractor();

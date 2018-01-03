@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.utils.helpers;
+package com.nz2dev.wordtrainer.app.utils.generic;
 
 /**
  * Created by nz2Dev on 01.12.2017

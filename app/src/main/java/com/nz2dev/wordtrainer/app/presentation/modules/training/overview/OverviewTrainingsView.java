@@ -9,10 +9,10 @@ import java.util.Collection;
  */
 public interface OverviewTrainingsView {
 
-    void showError(String describe);
     void showTrainings(Collection<Training> words);
-    void updateTraining(Training training);
 
     void navigateWordTraining(long trainingId);
     void navigateWordAddition();
+    void navigateWordEdit(long wordId);
+
 }

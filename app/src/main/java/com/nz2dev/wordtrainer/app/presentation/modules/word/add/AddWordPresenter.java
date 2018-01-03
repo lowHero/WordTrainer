@@ -3,12 +3,13 @@ package com.nz2dev.wordtrainer.app.presentation.modules.word.add;
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorHandler;
+import com.nz2dev.wordtrainer.domain.exceptions.ExceptionHelper;
 import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
 import com.nz2dev.wordtrainer.domain.models.Word;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 
 /**
@@ -21,15 +22,17 @@ public class AddWordPresenter extends BasePresenter<AddWordView> {
 
     private final WordInteractor wordInteractor;
     private final AppPreferences appPreferences;
+    private final ExceptionHelper helper;
 
-    private DisposableSingleObserver<Boolean> disposable;
+    private Disposable disposable;
     private boolean originalValidated;
     private boolean translationValidated;
 
     @Inject
-    public AddWordPresenter(WordInteractor wordInteractor, AppPreferences appPreferences) {
+    public AddWordPresenter(WordInteractor wordInteractor, AppPreferences appPreferences, ExceptionHelper helper) {
         this.wordInteractor = wordInteractor;
         this.appPreferences = appPreferences;
+        this.helper = helper;
     }
 
     @Override
@@ -56,23 +59,14 @@ public class AddWordPresenter extends BasePresenter<AddWordView> {
         checkFullValidated(previousCondition);
     }
 
-    public void closeClick() {
+    public void rejectClick() {
         getView().hideIt();
     }
 
-    public void insertWordClick(String original, String translate) {
-        wordInteractor.addWord(Word.unidentified(appPreferences.getSelectedCourseId(), original, translate),
-                disposable = new DisposableSingleObserver<Boolean>() {
-                    @Override
-                    public void onSuccess(Boolean aBoolean) {
-                        getView().showWordSuccessfulAdded();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().showError(ErrorHandler.describe(e));
-                    }
-                });
+    public void acceptClick(String original, String translate) {
+        disposable = wordInteractor.addWord(
+                Word.unidentified(appPreferences.getSelectedCourseId(), original, translate),
+                helper.obtainSafeCallback(r -> getView().showWordSuccessfulAdded()));
     }
 
     private boolean checkFullValidated(boolean isWasValidated) {

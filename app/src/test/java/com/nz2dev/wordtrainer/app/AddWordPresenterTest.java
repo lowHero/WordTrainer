@@ -28,7 +28,7 @@ public class AddWordPresenterTest {
 
     @Before
     public void init() {
-        presenter = new AddWordPresenter(wordInteractor, appPreferences);
+        presenter = new AddWordPresenter(wordInteractor, appPreferences, exceptionHelper);
     }
 
     @Test

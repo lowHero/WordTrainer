@@ -30,7 +30,6 @@ public class DebugFragment extends Fragment {
 
     @Inject WordInteractor wordInteractor;
     @Inject AppPreferences appPreferences;
-    @Inject Context context;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,14 +68,7 @@ public class DebugFragment extends Fragment {
     private void just(String original, String translation) {
         wordInteractor.addWord(
                 Word.unidentified(appPreferences.getSelectedCourseId(), original, translation),
-                new DisposableSingleObserver<Boolean>() {
-                    @Override
-                    public void onSuccess(Boolean aBoolean) {
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-                });
+                (b, t) -> {});
     }
 
 }

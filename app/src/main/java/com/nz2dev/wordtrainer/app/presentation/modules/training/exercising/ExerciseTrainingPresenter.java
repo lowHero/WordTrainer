@@ -2,10 +2,10 @@ package com.nz2dev.wordtrainer.app.presentation.modules.training.exercising;
 
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorHandler;
+import com.nz2dev.wordtrainer.domain.exceptions.ExceptionHelper;
 import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
-import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
 import com.nz2dev.wordtrainer.domain.models.Word;
+import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,16 +18,18 @@ import io.reactivex.observers.DisposableSingleObserver;
 /**
  * Created by nz2Dev on 16.12.2017
  */
-@PerActivity // TODO try to use @PerFragment annotation
+@PerActivity
 public class ExerciseTrainingPresenter extends BasePresenter<ExerciseTrainingView> {
 
-    private ExerciseInteractor trainer;
+    private final ExerciseInteractor trainer;
+    private final ExceptionHelper exceptionHelper;
 
     private Exercise pendingExercise;
 
     @Inject
-    public ExerciseTrainingPresenter(ExerciseInteractor trainer) {
+    public ExerciseTrainingPresenter(ExerciseInteractor trainer, ExceptionHelper exceptionHelper) {
         this.trainer = trainer;
+        this.exceptionHelper = exceptionHelper;
     }
 
     public void beginExercise(long trainingId) {
@@ -45,7 +47,7 @@ public class ExerciseTrainingPresenter extends BasePresenter<ExerciseTrainingVie
 
             @Override
             public void onError(Throwable e) {
-                getView().showError(ErrorHandler.describe(e));
+                exceptionHelper.getHandler().handleThrowable(e);
             }
         });
     }
@@ -75,7 +77,7 @@ public class ExerciseTrainingPresenter extends BasePresenter<ExerciseTrainingVie
 
             @Override
             public void onError(Throwable e) {
-                getView().showError(ErrorHandler.describe(e));
+                exceptionHelper.getHandler().handleThrowable(e);
             }
         });
     }

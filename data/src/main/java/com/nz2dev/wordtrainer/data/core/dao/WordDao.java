@@ -3,6 +3,7 @@ package com.nz2dev.wordtrainer.data.core.dao;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
 
@@ -13,6 +14,9 @@ import java.util.List;
  */
 @Dao
 public interface WordDao {
+
+    @Query("SELECT * FROM words WHERE id = :wordId")
+    WordEntity getWordById(long wordId);
 
     @Query("SELECT * FROM words " +
             "WHERE courseId = :courseId")
@@ -26,5 +30,8 @@ public interface WordDao {
 
     @Insert
     long addWord(WordEntity word);
+
+    @Update
+    void updateWord(WordEntity wordEntity);
 
 }

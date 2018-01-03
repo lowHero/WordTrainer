@@ -3,9 +3,10 @@ package com.nz2dev.wordtrainer.app.presentation.modules.training.overview;
 import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
 import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorHandler;
+import com.nz2dev.wordtrainer.domain.exceptions.ExceptionHelper;
 import com.nz2dev.wordtrainer.domain.interactors.TrainingInteractor;
 import com.nz2dev.wordtrainer.domain.models.Training;
+import com.nz2dev.wordtrainer.domain.models.Word;
 
 import java.util.Collection;
 
@@ -21,14 +22,16 @@ public class OverviewTrainingsPresenter extends BasePresenter<OverviewTrainingsV
 
     private final TrainingInteractor trainingInteractor;
     private final AppPreferences appPreferences;
+    private final ExceptionHelper exceptionHelper;
 
-    // TODO decide where this condition should changed
+    // TODO decide where this condition should change
     private boolean needToShowNow = true;
 
     @Inject
-    public OverviewTrainingsPresenter(TrainingInteractor trainingInteractor, AppPreferences appPreferences) {
+    public OverviewTrainingsPresenter(TrainingInteractor trainingInteractor, AppPreferences appPreferences, ExceptionHelper exceptionHelper) {
         this.trainingInteractor = trainingInteractor;
         this.appPreferences = appPreferences;
+        this.exceptionHelper = exceptionHelper;
     }
 
     @Override
@@ -62,6 +65,16 @@ public class OverviewTrainingsPresenter extends BasePresenter<OverviewTrainingsV
         getView().navigateWordAddition();
     }
 
+    public void editWordClick(Word word) {
+        getView().navigateWordEdit(word.getId());
+    }
+
+    public void deleteWordClick(Word word) {
+        // TODO delete word and refresh list;
+
+        updateTrainingList();
+    }
+
     private void updateTrainingList() {
         trainingInteractor.loadAllTrainings(appPreferences.getSelectedCourseId(),
                 new DisposableSingleObserver<Collection<Training>>() {
@@ -72,7 +85,7 @@ public class OverviewTrainingsPresenter extends BasePresenter<OverviewTrainingsV
 
                     @Override
                     public void onError(Throwable e) {
-                        getView().showError(ErrorHandler.describe(e));
+                        exceptionHelper.getHandler().handleThrowable(e);
                     }
                 });
     }

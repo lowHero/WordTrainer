@@ -3,7 +3,7 @@ package com.nz2dev.wordtrainer.app.services.training;
 import com.nz2dev.wordtrainer.app.dependencies.PerService;
 import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.app.utils.TimeUtils;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorHandler;
+import com.nz2dev.wordtrainer.app.utils.helpers.ErrorsDescriber;
 import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
 import com.nz2dev.wordtrainer.domain.interactors.SchedulingInteractor;
 import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
@@ -67,7 +67,7 @@ public class TrainingScheduleController {
 
             @Override
             public void onError(Throwable e) {
-                handler.handleError(ErrorHandler.describe(e));
+                handler.handleError(ErrorsDescriber.describe(e));
                 handler.finishWork();
             }
         });
@@ -83,7 +83,7 @@ public class TrainingScheduleController {
 
     private boolean handleThrowable(Throwable throwable) {
         if (throwable != null) {
-            handler.handleError(ErrorHandler.describe(throwable));
+            handler.handleError(ErrorsDescriber.describe(throwable));
             return true;
         } else {
             return false;

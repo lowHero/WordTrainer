@@ -1,20 +1,17 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.training.exercising;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.DismissingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.renderers.WordTranslationVariantRenderer;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
@@ -34,14 +31,8 @@ import butterknife.OnClick;
 /**
  * Created by nz2Dev on 16.12.2017
  */
-public class ExerciseTrainingFragment extends DialogFragment implements ExerciseTrainingView,
+public class ExerciseTrainingFragment extends DismissingFragment implements ExerciseTrainingView,
         WordTranslationVariantRenderer.VariantListener {
-
-    public interface ExerciseTrainingHandler {
-
-        void onTrainingFinished(ExerciseTrainingFragment fragment);
-
-    }
 
     private static final String KEY_TRAINING_ID = "training_id";
 
@@ -63,36 +54,12 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
     @Inject ExerciseTrainingPresenter presenter;
 
     private RVRendererAdapter<Word> variantsAdapter;
-    private ExerciseTrainingHandler trainingHandler;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            trainingHandler = (ExerciseTrainingHandler) context;
-        } catch (ClassCastException e) {
-            throw new RuntimeException(String.format(
-                    "Activity that contain %s should implements %s interface",
-                    getClass().getSimpleName(),
-                    ExerciseTrainingHandler.class.getSimpleName()));
-        }
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         provideInjections();
         variantsAdapter = new RVRendererAdapter<>(new RendererBuilder<>(new WordTranslationVariantRenderer(this)));
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.setTitle(R.string.title_train_word);
-        dialog.setOnCancelListener(d -> presenter.cancelExercising());
-        dialog.setOnDismissListener(d -> presenter.cancelExercising());
-        return dialog;
     }
 
     @Nullable
@@ -128,11 +95,9 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
         presenter.cancelExercising();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void showTargetWord(Word mainWord) {
-        if (getContext() == null) {
-            throw new NullPointerException("context == null");
-        }
         String addition = getContext().getString(R.string.addition_asking_for_connection);
         mainTrainingWordText.setText(String.format("%s %s", mainWord.getOriginal(), addition));
     }
@@ -145,11 +110,6 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
     }
 
     @Override
-    public void showError(String error) {
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void highlightWord(long wordId, boolean correct) {
         int adapterPosition = getAdapterPositionByWordId(wordId);
         WordTranslationVariantRenderer renderer = getVariantRendererInPosition(adapterPosition);
@@ -158,7 +118,7 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
 
     @Override
     public void hideTrainings() {
-        trainingHandler.onTrainingFinished(this);
+        dismissInternal();
     }
 
     private void provideInjections() {
@@ -186,6 +146,7 @@ public class ExerciseTrainingFragment extends DialogFragment implements Exercise
         return (WordTranslationVariantRenderer) rendererViewHolder.getRenderer();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private long getTrainingIdFromBundle() {
         return getArguments().getLong(KEY_TRAINING_ID);
     }

@@ -2,6 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.training.overview;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
@@ -14,15 +15,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.DismissingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.edit.EditWordFragment;
 import com.nz2dev.wordtrainer.app.presentation.renderers.TrainingRenderer;
+import com.nz2dev.wordtrainer.app.presentation.renderers.TrainingRenderer.ActionListener;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
-import com.nz2dev.wordtrainer.app.utils.helpers.OnItemClickListener;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;
@@ -39,12 +41,12 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 /**
  * Created by nz2Dev on 30.11.2017
  */
-public class OverviewTrainingsFragment extends Fragment implements OverviewTrainingsView, OnItemClickListener<Training> {
+public class OverviewTrainingsFragment extends Fragment implements OverviewTrainingsView, ActionListener {
 
-    public interface FragmentExhibitor {
+    public interface NestedFragmentExhibitor {
 
-        void showTraining(Fragment fragment);
-        void showWordAddition(Fragment fragment);
+        void showAtWholeScreen(DismissingFragment dismissingFragment);
+        void showFromBottom(DismissingFragment dismissingFragment);
 
     }
 
@@ -58,15 +60,15 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     @Inject OverviewTrainingsPresenter presenter;
 
     private RVRendererAdapter<Training> adapter;
-    private FragmentExhibitor fragmentExhibitor;
+    private NestedFragmentExhibitor nestedFragmentExhibitor;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            fragmentExhibitor = (FragmentExhibitor) context;
+            nestedFragmentExhibitor = (NestedFragmentExhibitor) context;
         } catch (ClassCastException e) {
-            throw new RuntimeException("context should implement: " + FragmentExhibitor.class.getSimpleName());
+            throw new RuntimeException("context should implement: " + NestedFragmentExhibitor.class.getSimpleName());
         }
     }
 
@@ -80,7 +82,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_trainings_overview, container, false);
         ButterKnife.bind(this, root);
 
@@ -100,7 +102,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter.setView(this);
     }
@@ -122,13 +124,18 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     }
 
     @Override
-    public void onItemClick(Training training) {
-        presenter.trainWordClick(training);
-    }
-
-    @Override
-    public void showError(String describe) {
-        Toast.makeText(getContext(), describe, Toast.LENGTH_SHORT).show();
+    public void onAction(Training training, TrainingRenderer.Action trainingAction) {
+        switch (trainingAction) {
+            case Select:
+                presenter.trainWordClick(training);
+                break;
+            case Edit:
+                presenter.editWordClick(training.getWord());
+                break;
+            case Delete:
+                presenter.deleteWordClick(training.getWord());
+                break;
+        }
     }
 
     @Override
@@ -136,29 +143,25 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
         adapter.clear();
         adapter.addAll(trainings);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void updateTraining(Training training) {
-        for (int position = 0; position < adapter.getItemCount(); position++) {
-            if (adapter.getItem(position).getId() == training.getId()) {
-                adapter.getItem(position).setData(training);
-                adapter.notifyItemChanged(position);
-                break;
-            }
-        }
+        // TODO replace with DiffUtils
     }
 
     @Override
     public void navigateWordTraining(long trainingId) {
-        fragmentExhibitor.showTraining(ExerciseTrainingFragment.newInstance(trainingId));
+        nestedFragmentExhibitor.showAtWholeScreen(ExerciseTrainingFragment.newInstance(trainingId));
     }
 
     @Override
     public void navigateWordAddition() {
-        fragmentExhibitor.showWordAddition(AddWordFragment.newInstance());
+        nestedFragmentExhibitor.showFromBottom(AddWordFragment.newInstance());
     }
 
+    @Override
+    public void navigateWordEdit(long wordId) {
+        nestedFragmentExhibitor.showFromBottom(EditWordFragment.newInstance(wordId));
+    }
+
+    @SuppressWarnings("ConstantConditions")
     private void showAddingVariantDialog() {
         BottomSheetDialog dialog = new BottomSheetDialog(getContext());
         dialog.setContentView(R.layout.dialog_words_addition_variants);

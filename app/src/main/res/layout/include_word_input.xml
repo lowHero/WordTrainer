@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/TextInputLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <EditText
+            android:id="@+id/et_word_original"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/prompt_word_original"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:nextFocusForward="@+id/et_word_translate" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/TextInputLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextInputLayout1"
+        android:layout_margin="4dp">
+
+        <EditText
+            android:id="@+id/et_word_translate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/prompt_word_translation"
+            android:inputType="text" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/btn_accept_word"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/TextInputLayout2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:contentDescription="@string/action_insert_word"
+        android:focusable="true"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_create_simple_black" />
+
+    <ImageView
+        android:id="@+id/btn_reject_word"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignLeft="@+id/btn_accept_word"
+        android:layout_alignStart="@+id/btn_accept_word"
+        android:layout_alignTop="@+id/btn_accept_word"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:contentDescription="@string/action_cancel"
+        android:focusable="true"
+        app:srcCompat="@drawable/ic_close_simple_black" />
+
+</RelativeLayout>

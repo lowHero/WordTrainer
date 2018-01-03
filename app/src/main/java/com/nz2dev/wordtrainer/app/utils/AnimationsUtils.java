@@ -2,12 +2,21 @@ package com.nz2dev.wordtrainer.app.utils;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.view.View;
 
 /**
  * Created by nz2Dev on 31.12.2017
  */
 public class AnimationsUtils {
+
+    public static void animateBackground(View view, int colorFrom, int colorTo, int duration) {
+        ValueAnimator animator = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        animator.addUpdateListener(animation -> view.setBackgroundColor((Integer) animation.getAnimatedValue()));
+        animator.setDuration(duration);
+        animator.start();
+    }
 
     public static void animateToVisibleShort(View view) {
         animateToVisible(view, view.getContext().getResources().getInteger(android.R.integer.config_shortAnimTime));

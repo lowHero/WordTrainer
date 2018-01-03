@@ -11,7 +11,6 @@ import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.dependencies.HasDependencies;
 import com.nz2dev.wordtrainer.app.dependencies.components.DaggerTrainWordComponent;
 import com.nz2dev.wordtrainer.app.dependencies.components.TrainWordComponent;
-import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment.ExerciseTrainingHandler;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
@@ -19,7 +18,7 @@ import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 /**
  * Created by nz2Dev on 15.12.2017
  */
-public class ExerciseTrainingActivity extends AppCompatActivity implements HasDependencies<TrainWordComponent>, ExerciseTrainingHandler {
+public class ExerciseTrainingActivity extends AppCompatActivity implements HasDependencies<TrainWordComponent> {
 
     private static final int REQUEST_CODE = 1;
 
@@ -49,8 +48,11 @@ public class ExerciseTrainingActivity extends AppCompatActivity implements HasDe
             .appComponent(DependenciesUtils.appComponentFrom(this))
             .build();
 
+        ExerciseTrainingFragment fragment = ExerciseTrainingFragment.newInstance(getTrainingId());
+        fragment.listenDismissing(this::finish);
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_default, ExerciseTrainingFragment.newInstance(getTrainingId()))
+                .replace(R.id.fl_default, fragment)
                 .commit();
     }
 
@@ -63,8 +65,4 @@ public class ExerciseTrainingActivity extends AppCompatActivity implements HasDe
         return getIntent().getLongExtra(EXTRA_TRAINING_ID, -1L);
     }
 
-    @Override
-    public void onTrainingFinished(ExerciseTrainingFragment fragment) {
-        finish();
-    }
 }

@@ -1,7 +1,5 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.add;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -14,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.DismissingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.utils.defaults.TextWatcherAdapter;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
@@ -27,14 +25,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.nz2dev.wordtrainer.app.utils.AnimationsUtils.animateToInvisibleShort;
+import static com.nz2dev.wordtrainer.app.utils.AnimationsUtils.animateToVisibleShort;
+
 /**
  * Created by nz2Dev on 11.12.2017
  */
-public class AddWordFragment extends DialogFragment implements AddWordView {
-
-    public interface AddWordHandler {
-        void onWordAdditionFinished(AddWordFragment fragment);
-    }
+public class AddWordFragment extends DismissingFragment implements AddWordView {
 
     public static AddWordFragment newInstance() {
         return new AddWordFragment();
@@ -46,25 +43,13 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
     @BindView(R.id.et_word_translate)
     EditText translateWordEditor;
 
-    @BindView(R.id.btn_insert_word)
+    @BindView(R.id.btn_accept_word)
     View insertWordClicker;
 
-    @BindView(R.id.btn_close_insert_word)
+    @BindView(R.id.btn_reject_word)
     View closeInsertWordClicker;
 
     @Inject AddWordPresenter presenter;
-
-    private AddWordHandler fragmentHandler;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            fragmentHandler = (AddWordHandler) context;
-        } catch (ClassCastException e) {
-            throw new RuntimeException("context should implement: " + AddWordHandler.class);
-        }
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,18 +59,10 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_word_add, container, false);
         ButterKnife.bind(this, root);
         return root;
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.setTitle(R.string.action_add_word);
-        return dialog;
     }
 
     @Override
@@ -113,19 +90,18 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
     public void onDestroyView() {
         super.onDestroyView();
         forceHideKeyboard();
-        fragmentHandler.onWordAdditionFinished(this);
         presenter.detachView();
     }
 
-    @OnClick(R.id.btn_insert_word)
-    public void onInsertClick() {
-        presenter.insertWordClick(originalWordEditor.getText().toString(),
+    @OnClick(R.id.btn_accept_word)
+    public void onAcceptClick() {
+        presenter.acceptClick(originalWordEditor.getText().toString(),
                 translateWordEditor.getText().toString());
     }
 
-    @OnClick(R.id.btn_close_insert_word)
-    public void onCloseClick() {
-        presenter.closeClick();
+    @OnClick(R.id.btn_reject_word)
+    public void onRejectClick() {
+        presenter.rejectClick();
     }
 
     @Override
@@ -136,56 +112,21 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
 
     @Override
     public void showInsertionAllowed(boolean allowed) {
-        int shortAnimationDuration = getContext().getResources().getInteger(android.R.integer.config_shortAnimTime);
-
         if (allowed) {
-            animateToInvisible(closeInsertWordClicker, shortAnimationDuration);
-            animateToVisible(insertWordClicker, shortAnimationDuration);
+            animateToInvisibleShort(closeInsertWordClicker);
+            animateToVisibleShort(insertWordClicker);
         } else {
-            animateToInvisible(insertWordClicker, shortAnimationDuration);
-            animateToVisible(closeInsertWordClicker, shortAnimationDuration);
+            animateToInvisibleShort(insertWordClicker);
+            animateToVisibleShort(closeInsertWordClicker);
         }
-    }
-
-    private void animateToVisible(View view, int duration) {
-        view.animate()
-                .setListener(null)
-                .cancel();
-
-        view.setAlpha(0f);
-        view.setVisibility(View.VISIBLE);
-        view.animate()
-                .alpha(1f)
-                .setDuration(duration)
-                .setListener(null);
-    }
-
-    private void animateToInvisible(View view, int duration) {
-        view.animate()
-                .setListener(null)
-                .cancel();
-
-        view.animate()
-                .alpha(0f)
-                .setDuration(duration)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        view.setVisibility(View.INVISIBLE);
-                    }
-                });
-    }
-
-    @Override
-    public void showError(String error) {
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void hideIt() {
-        fragmentHandler.onWordAdditionFinished(this);
+        dismissInternal();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void forceShowKeyboard() {
         originalWordEditor.requestFocus();
 
@@ -193,6 +134,7 @@ public class AddWordFragment extends DialogFragment implements AddWordView {
         imm.showSoftInput(originalWordEditor, InputMethodManager.SHOW_IMPLICIT);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void forceHideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(originalWordEditor.getWindowToken(), 0);

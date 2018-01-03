@@ -7,6 +7,7 @@ import com.nz2dev.wordtrainer.app.presentation.modules.training.scheduling.Sched
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.overview.OverviewTrainingsFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.edit.EditWordFragment;
 
 import dagger.Component;
 
@@ -20,6 +21,7 @@ public interface HomeComponent {
     void inject(OverviewTrainingsFragment overviewTrainingsFragment);
     void inject(SchedulingTrainingsFragment schedulingTrainingsFragment);
     void inject(AddWordFragment addWordFragment);
+    void inject(EditWordFragment editWordFragment);
     void inject(ExerciseTrainingFragment exerciseTrainingFragment);
 
     void inject(DebugFragment debugFragment);
