@@ -1,5 +1,7 @@
 package com.nz2dev.wordtrainer.domain.exceptions;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -11,6 +13,14 @@ import io.reactivex.functions.Consumer;
  */
 @Singleton
 public class ExceptionHelper {
+
+    public interface HandledThrowableFilter {
+
+        boolean filter(Throwable throwable);
+
+        void handle(Throwable filteredThrowable);
+
+    }
 
     private ExceptionHandler exceptionHandler;
 
@@ -27,6 +37,25 @@ public class ExceptionHelper {
         return (subject, throwable) -> {
             if (throwable != null) {
                 exceptionHandler.handleThrowable(throwable);
+            } else {
+                try {
+                    safeConsumer.accept(subject);
+                } catch (Exception e) {
+                    exceptionHandler.handleThrowable("callback fail", e);
+                }
+            }
+        };
+    }
+
+    public <T> BiConsumer<T, Throwable> obtainSafeCallback(Consumer<T> safeConsumer,
+                                                           HandledThrowableFilter filter) {
+        return (subject, throwable) -> {
+            if (throwable != null) {
+                if (filter.filter(throwable)) {
+                    filter.handle(throwable);
+                } else {
+                    exceptionHandler.handleThrowable("unhandled exception: ", throwable);
+                }
             } else {
                 try {
                     safeConsumer.accept(subject);
