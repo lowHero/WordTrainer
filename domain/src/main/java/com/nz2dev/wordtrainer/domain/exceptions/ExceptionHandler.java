@@ -7,4 +7,6 @@ public interface ExceptionHandler {
 
     void handleThrowable(Throwable throwable);
 
+    void handleThrowable(String title, Throwable throwable);
+
 }

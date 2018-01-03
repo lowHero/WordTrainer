@@ -12,6 +12,8 @@ import io.reactivex.Single;
 public interface WordsRepository {
 
     Single<Long> addWord(Word word);
+    Single<Word> getWord(long wordId);
+    Single<Boolean> updateWord(Word word);
     Single<Collection<Word>> getAllWords(long courseId);
     Single<Collection<Word>> getPartOfWord(long courseId, long fromWordId, long limit);
 

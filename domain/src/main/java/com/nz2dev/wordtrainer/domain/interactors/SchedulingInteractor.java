@@ -30,7 +30,7 @@ public class SchedulingInteractor {
 
     public void uploadScheduling(Scheduling scheduling, BiConsumer<Long, Throwable> consumer) {
         executionManager.handleDisposable(schedulingRepository.addScheduling(scheduling)
-                .subscribeOn(executionManager.work())
+                .subscribeOn(executionManager.background())
                 .observeOn(executionManager.ui())
                 .subscribe(consumer));
     }
@@ -41,14 +41,14 @@ public class SchedulingInteractor {
 
     public void updateScheduling(Scheduling scheduling, @Nullable BiConsumer<Boolean, Throwable> consumer) {
         executionManager.handleDisposable(schedulingRepository.updateScheduling(scheduling)
-                .subscribeOn(executionManager.work())
+                .subscribeOn(executionManager.background())
                 .observeOn(executionManager.ui())
                 .subscribe(consumer == null ? handleError() : consumer));
     }
 
     public void downloadSchedulingForCourse(long courseId, @Nullable BiConsumer<Scheduling, Throwable> consumer) {
         executionManager.handleDisposable(schedulingRepository.getSchedulingByCourseId(courseId)
-                .subscribeOn(executionManager.work())
+                .subscribeOn(executionManager.background())
                 .observeOn(executionManager.ui())
                 .subscribe(consumer == null ? handleError() : consumer));
     }

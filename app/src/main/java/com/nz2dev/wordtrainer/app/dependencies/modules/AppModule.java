@@ -46,8 +46,13 @@ public class AppModule {
     }
 
     @Provides
-    @Singleton ExceptionHandler provideExceptionHandler(AndroidExceptionHandler exceptionHandler) {
-        return exceptionHandler;
+    @Singleton
+    ExceptionHandler provideExceptionHandler(Context context) {
+        return new AndroidExceptionHandler.Builder()
+                .withDialog(false)
+                .withToast(false)
+                .inContext(context)
+                .create();
     }
 
 }

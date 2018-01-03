@@ -7,7 +7,6 @@ import com.nz2dev.wordtrainer.domain.repositories.CourseRepository;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.SingleObserver;
 import io.reactivex.functions.BiConsumer;
 
 /**
@@ -27,14 +26,14 @@ public class CourseInteractor {
 
     public void uploadCourse(Course course, BiConsumer<Long, Throwable> consumer) {
         executionManager.handleDisposable(courseRepository.addCourse(course)
-                .subscribeOn(executionManager.work())
+                .subscribeOn(executionManager.background())
                 .observeOn(executionManager.ui())
                 .subscribe(consumer));
     }
 
     public void downloadCourse(long courseId, BiConsumer<Course, Throwable> consumer) {
         executionManager.handleDisposable(courseRepository.getCourse(courseId)
-                .subscribeOn(executionManager.work())
+                .subscribeOn(executionManager.background())
                 .observeOn(executionManager.ui())
                 .subscribe(consumer));
     }

@@ -1,6 +1,7 @@
 package com.nz2dev.wordtrainer.domain.interactors;
 
 import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
+import com.nz2dev.wordtrainer.domain.execution.ExecutionManager;
 import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
@@ -35,24 +36,27 @@ public class WordInteractorTest {
     @Mock BackgroundExecutor backgroundExecutor;
     @Mock UIExecutor uiExecutor;
 
+    private ExecutionManager executionManager;
     private WordInteractor wordInteractor;
 
     @Before
     public void init() {
         when(uiExecutor.getScheduler()).thenReturn(Schedulers.trampoline());
         when(backgroundExecutor.getScheduler()).thenReturn(Schedulers.trampoline());
-        wordInteractor = new WordInteractor(wordsRepository, trainingsRepository, backgroundExecutor, uiExecutor);
+
+        executionManager = new ExecutionManager(backgroundExecutor, uiExecutor);
+        wordInteractor = new WordInteractor(wordsRepository, trainingsRepository, executionManager);
     }
 
     @Test
     public void addWord_ShouldAddTrainingAutomatically() {
         when(wordsRepository.addWord(any())).thenReturn(Single.just(1L));
-        when(trainingsRepository.addTraining(anyInt())).thenReturn(Single.just(true));
+        when(trainingsRepository.addTraining(any(Word.class))).thenReturn(Single.just(true));
 
         TestObserver<Boolean> testObserver = new TestObserver<>();
         wordInteractor.addWord(new Word(1, 1, "a", "n"), testObserver);
 
-        verify(trainingsRepository, times(1)).addTraining(anyInt());
+        verify(trainingsRepository, times(1)).addTraining(any(Word.class));
     }
 
 }

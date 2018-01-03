@@ -43,7 +43,7 @@ public class ExecutionManager {
         compositeDisposable.add(disposable);
     }
 
-    public Scheduler work() {
+    public Scheduler background() {
         return backgroundExecutor.getScheduler();
     }
 

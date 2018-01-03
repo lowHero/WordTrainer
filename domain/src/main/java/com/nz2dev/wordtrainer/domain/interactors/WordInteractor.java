@@ -1,17 +1,15 @@
 package com.nz2dev.wordtrainer.domain.interactors;
 
-import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
-import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
+import com.nz2dev.wordtrainer.domain.execution.ExecutionManager;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
 import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
-
-import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.SingleObserver;
+import io.reactivex.functions.BiConsumer;
 
 /**
  * Created by nz2Dev on 11.12.2017
@@ -21,33 +19,38 @@ public class WordInteractor {
 
     private WordsRepository wordsRepository;
     private TrainingsRepository trainingsRepository;
-    private BackgroundExecutor backgroundExecutor;
-    private UIExecutor uiExecutor;
+    private ExecutionManager executionManager;
 
     @Inject
-    public WordInteractor(WordsRepository wordsRepository, TrainingsRepository trainingsRepository, BackgroundExecutor backgroundExecutor, UIExecutor uiExecutor) {
+    public WordInteractor(WordsRepository wordsRepository, TrainingsRepository trainingsRepository, ExecutionManager executionManager) {
         this.wordsRepository = wordsRepository;
         this.trainingsRepository = trainingsRepository;
-        this.backgroundExecutor = backgroundExecutor;
-        this.uiExecutor = uiExecutor;
+        this.executionManager = executionManager;
     }
 
     public void addWord(Word word, SingleObserver<Boolean> resultObserver) {
         wordsRepository.addWord(word)
-                .subscribeOn(backgroundExecutor.getScheduler())
+                .subscribeOn(executionManager.background())
                 .to(wordId -> {
                     word.setId(wordId.blockingGet());
                     return trainingsRepository.addTraining(word);
                 })
-                .subscribeOn(backgroundExecutor.getScheduler())
-                .observeOn(uiExecutor.getScheduler())
+                .subscribeOn(executionManager.background())
+                .observeOn(executionManager.ui())
                 .subscribe(resultObserver);
     }
 
-    public void loadWords(long courseId, SingleObserver<Collection<Word>> observer) {
-        wordsRepository.getAllWords(courseId)
-                .subscribeOn(backgroundExecutor.getScheduler())
-                .observeOn(uiExecutor.getScheduler())
-                .subscribe(observer);
+    public void loadWord(long wordId, BiConsumer<Word, Throwable> consumer) {
+        executionManager.handleDisposable(wordsRepository.getWord(wordId)
+                .subscribeOn(executionManager.background())
+                .observeOn(executionManager.ui())
+                .subscribe(consumer));
+    }
+
+    public void updateWord(Word word, BiConsumer<Boolean, Throwable> consumer) {
+        executionManager.handleDisposable(wordsRepository.updateWord(word)
+                .subscribeOn(executionManager.background())
+                .observeOn(executionManager.ui())
+                .subscribe(consumer));
     }
 }
