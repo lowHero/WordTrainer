@@ -34,11 +34,11 @@ import butterknife.OnClick;
 public class ExerciseTrainingFragment extends DismissingFragment implements ExerciseTrainingView,
         WordTranslationVariantRenderer.VariantListener {
 
-    private static final String KEY_TRAINING_ID = "training_id";
+    private static final String KEY_WORD_ID = "training_word_id";
 
-    public static ExerciseTrainingFragment newInstance(long trainingId) {
+    public static ExerciseTrainingFragment newInstance(long trainingWordId) {
         Bundle args = new Bundle();
-        args.putLong(KEY_TRAINING_ID, trainingId);
+        args.putLong(KEY_WORD_ID, trainingWordId);
 
         ExerciseTrainingFragment fragment = new ExerciseTrainingFragment();
         fragment.setArguments(args);
@@ -76,13 +76,13 @@ public class ExerciseTrainingFragment extends DismissingFragment implements Exer
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter.setView(this);
-        presenter.beginExercise(getTrainingIdFromBundle());
+        presenter.beginExercise(getTrainingWordIdFromBundle());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        presenter.detachView();
+         presenter.detachView();
     }
 
     @Override
@@ -147,7 +147,7 @@ public class ExerciseTrainingFragment extends DismissingFragment implements Exer
     }
 
     @SuppressWarnings("ConstantConditions")
-    private long getTrainingIdFromBundle() {
-        return getArguments().getLong(KEY_TRAINING_ID);
+    private long getTrainingWordIdFromBundle() {
+        return getArguments().getLong(KEY_WORD_ID);
     }
 }

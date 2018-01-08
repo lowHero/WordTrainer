@@ -5,9 +5,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
-import com.nz2dev.wordtrainer.app.core.WordTrainerApp;
-import com.nz2dev.wordtrainer.app.dependencies.HasDependencies;
-import com.nz2dev.wordtrainer.app.dependencies.components.AppComponent;
+import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
+import com.nz2dev.wordtrainer.app.common.dependencies.AppComponent;
 
 /**
  * Created by nz2Dev on 30.11.2017

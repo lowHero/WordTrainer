@@ -1,9 +1,9 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.edit;
 
-import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.domain.exceptions.ExceptionHelper;
-import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
+import com.nz2dev.wordtrainer.domain.interactors.word.LoadWordUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.word.UpdateWordUseCase;
 import com.nz2dev.wordtrainer.domain.models.Word;
 
 import javax.inject.Inject;
@@ -11,24 +11,25 @@ import javax.inject.Inject;
 /**
  * Created by nz2Dev on 03.01.2018
  */
+@SuppressWarnings("WeakerAccess")
 @PerActivity
-public class EditWordPresenter extends BasePresenter<EditWordView> {
+public class EditWordPresenter extends DisposableBasePresenter<EditWordView> {
 
-    private final WordInteractor wordInteractor;
-    private final ExceptionHelper exceptionHelper;
+    private final LoadWordUseCase loadWordUseCase;
+    private final UpdateWordUseCase updateWordUseCase;
 
     private Word editedWord;
 
     @Inject
-    public EditWordPresenter(WordInteractor wordInteractor, ExceptionHelper exceptionHelper) {
-        this.wordInteractor = wordInteractor;
-        this.exceptionHelper = exceptionHelper;
+    public EditWordPresenter(LoadWordUseCase loadWordUseCase, UpdateWordUseCase updateWordUseCase) {
+        this.loadWordUseCase = loadWordUseCase;
+        this.updateWordUseCase = updateWordUseCase;
     }
 
     public void loadWord(long wordId) {
-        wordInteractor.loadWord(wordId, exceptionHelper.obtainSafeCallback(word -> {
+        manage(loadWordUseCase.execute(wordId).subscribe(word -> {
             editedWord = word;
-            getView().showWord(word);
+            getView().showWord(editedWord);
         }));
     }
 
@@ -40,11 +41,7 @@ public class EditWordPresenter extends BasePresenter<EditWordView> {
         editedWord.setOriginal(original);
         editedWord.setTranslation(translation);
 
-        wordInteractor.updateWord(editedWord, exceptionHelper.obtainSafeCallback(result -> {
-            if (!result) {
-                throw new Exception("error updating word model, result == false");
-            }
-        }));
+        manage(updateWordUseCase.execute(editedWord).subscribe());
     }
 
 }

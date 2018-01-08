@@ -11,10 +11,6 @@ public class Training {
     // but the main model has same structure in data layer
     public static class Primitive {
 
-        public static Primitive of(long id, long wordId, long time, long progress) {
-            return new Primitive(id, wordId, time, progress);
-        }
-
         public final long id;
         public final long wordId;
         public final long time;
@@ -26,6 +22,10 @@ public class Training {
             this.time = time;
             this.progress = progress;
         }
+    }
+
+    public static Primitive createDto(long wordId, long time, long progress) {
+        return new Primitive(0L, wordId, time, progress);
     }
 
     private long id;

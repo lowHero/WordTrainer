@@ -9,7 +9,7 @@ import io.reactivex.Single;
  */
 public interface CourseRepository {
 
-    Single<Long> addCourse(Course course);
+    Single<Long> addCourse(Course.Primitive course);
     Single<Course> getCourse(long courseId);
 
 }

@@ -14,6 +14,7 @@ import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountNavigation;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 
 import javax.inject.Inject;
 
@@ -99,6 +100,11 @@ public class RegistrationFragment extends DialogFragment implements Registration
     public void endRegistration() {
         dismiss();
         accountNavigation.doRegistrationAttempt(true);
+    }
+
+    @Override
+    public void showProgressIndicator(boolean b) {
+        throw new NotImplementedException();
     }
 
     private void setRegNameEditorFromBundle() {

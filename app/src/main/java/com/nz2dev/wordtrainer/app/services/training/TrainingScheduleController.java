@@ -1,36 +1,31 @@
 package com.nz2dev.wordtrainer.app.services.training;
 
-import com.nz2dev.wordtrainer.app.dependencies.PerService;
-import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerService;
 import com.nz2dev.wordtrainer.app.utils.TimeUtils;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorsDescriber;
-import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
-import com.nz2dev.wordtrainer.domain.interactors.SchedulingInteractor;
-import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
-
-import java.util.Date;
+import com.nz2dev.wordtrainer.domain.interactors.scheduling.PlanNextSchedulingUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.scheduling.StopSchedulingUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.training.LoadProposedTrainingUseCase;
 
 import javax.inject.Inject;
-
-import io.reactivex.observers.DisposableSingleObserver;
 
 /**
  * Created by nz2Dev on 22.12.2017
  */
+@SuppressWarnings("WeakerAccess")
 @PerService
 public class TrainingScheduleController {
 
-    private final AppPreferences appPreferences;
-    private final ExerciseInteractor exerciseInteractor;
-    private final SchedulingInteractor schedulingInteractor;
+    private final PlanNextSchedulingUseCase planNextSchedulingUseCase;
+    private final StopSchedulingUseCase stopSchedulingUseCase;
+    private final LoadProposedTrainingUseCase loadProposedTrainingUseCase;
 
     private TrainingScheduleHandler handler;
 
     @Inject
-    public TrainingScheduleController(AppPreferences appPreferences, ExerciseInteractor exerciseInteractor, SchedulingInteractor schedulingInteractor) {
-        this.appPreferences = appPreferences;
-        this.exerciseInteractor = exerciseInteractor;
-        this.schedulingInteractor = schedulingInteractor;
+    public TrainingScheduleController(PlanNextSchedulingUseCase planNextSchedulingUseCase, StopSchedulingUseCase stopSchedulingUseCase, LoadProposedTrainingUseCase loadProposedTrainingUseCase) {
+        this.planNextSchedulingUseCase = planNextSchedulingUseCase;
+        this.stopSchedulingUseCase = stopSchedulingUseCase;
+        this.loadProposedTrainingUseCase = loadProposedTrainingUseCase;
     }
 
     public void setHandler(TrainingScheduleHandler handler) {
@@ -38,55 +33,20 @@ public class TrainingScheduleController {
     }
 
     public void planeNextTraining() {
-        schedulingInteractor.downloadSchedulingForCourse(appPreferences.getSelectedCourseId(), (scheduling, throwable) -> {
-            if (handleThrowable(throwable)) {
-                return;
-            }
-
-            Date now = TimeUtils.now();
-            scheduling.setLastTrainingDate(now);
-            schedulingInteractor.updateSchedulingSync(scheduling);
-            handler.scheduleNextTime(now.getTime() + scheduling.getInterval());
-
-            // TODO Use scheduling preferences interval for planing next alarm
-            // TODO Calculate next time when handler should alarm self to preparingTraining
-        });
+        planNextSchedulingUseCase.execute(TimeUtils.now()).subscribe(handler::scheduleNextTime);
     }
 
     public void prepareNextTraining() {
         // fetch data, analise it, look at restriction,
         // make exercise and remember last time in preferences or somewhere else
         // and show notification
-        exerciseInteractor.loadProposedExercise(appPreferences.getSelectedCourseId(), new DisposableSingleObserver<Exercise>() {
-            @Override
-            public void onSuccess(Exercise exercise) {
-                // TODO notify Exercise with variants and pass exercise model to the Intent extras
-                handler.notifyTraining(exercise.getTraining());
-                handler.finishWork();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                handler.handleError(ErrorsDescriber.describe(e));
-                handler.finishWork();
-            }
-        });
+        loadProposedTrainingUseCase.execute()
+                .doFinally(handler::finishWork)
+                .subscribe(handler::notifyTraining);
     }
 
     public void cancelSchedule() {
-        schedulingInteractor.downloadSchedulingForCourse(appPreferences.getSelectedCourseId(), (scheduling, throwable) -> {
-            scheduling.setLastTrainingDate(null);
-            schedulingInteractor.updateSchedulingSync(scheduling);
-            handler.stopSchedule();
-        });
+        stopSchedulingUseCase.execute().subscribe(r -> handler.stopSchedule());
     }
 
-    private boolean handleThrowable(Throwable throwable) {
-        if (throwable != null) {
-            handler.handleError(ErrorsDescriber.describe(throwable));
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

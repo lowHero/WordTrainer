@@ -5,6 +5,10 @@ package com.nz2dev.wordtrainer.domain.models;
  */
 public class Account {
 
+    public static Account unidentified(String name) {
+        return new Account(name);
+    }
+
     private long id;
     private String name;
     private boolean hasPassword;

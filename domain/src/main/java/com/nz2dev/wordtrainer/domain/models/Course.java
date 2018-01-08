@@ -5,17 +5,34 @@ package com.nz2dev.wordtrainer.domain.models;
  */
 public class Course {
 
-    public static Course unidentified(long accountId, long schedulingId, String originalLanguage, String translationLanguage) {
-        return new Course(0, accountId, schedulingId, originalLanguage, translationLanguage);
+    public static class Primitive {
+
+        public static Primitive unidentified(long accountId, long schedulingId, String originalLanguageKey, String translationLanguageKey) {
+            return new Primitive(0, accountId, schedulingId, originalLanguageKey, translationLanguageKey);
+        }
+
+        public final long id;
+        public final long accountId;
+        public final long schedulingId;
+        public final String originalLanguageKey;
+        public final String translationLanguageKey;
+
+        public Primitive(long id, long accountId, long schedulingId, String originalLanguageKey, String translationLanguageKey) {
+            this.id = id;
+            this.accountId = accountId;
+            this.schedulingId = schedulingId;
+            this.originalLanguageKey = originalLanguageKey;
+            this.translationLanguageKey = translationLanguageKey;
+        }
     }
 
     public static class Base {
 
         private long id;
-        private String originalLanguage;
-        private String translationLanguage;
+        private Language originalLanguage;
+        private Language translationLanguage;
 
-        public Base(long id, String originalLanguage, String translationLanguage) {
+        public Base(long id, Language originalLanguage, Language translationLanguage) {
             this.id = id;
             this.originalLanguage = originalLanguage;
             this.translationLanguage = translationLanguage;
@@ -29,19 +46,19 @@ public class Course {
             this.id = id;
         }
 
-        public String getOriginalLanguage() {
+        public Language getOriginalLanguage() {
             return originalLanguage;
         }
 
-        public void setOriginalLanguage(String originalLanguage) {
+        public void setOriginalLanguage(Language originalLanguage) {
             this.originalLanguage = originalLanguage;
         }
 
-        public String getTranslationLanguage() {
+        public Language getTranslationLanguage() {
             return translationLanguage;
         }
 
-        public void setTranslationLanguage(String translationLanguage) {
+        public void setTranslationLanguage(Language translationLanguage) {
             this.translationLanguage = translationLanguage;
         }
     }
@@ -49,10 +66,10 @@ public class Course {
     private long id;
     private long accountId;
     private long schedulingId;
-    private String originalLanguage;
-    private String translationLanguage;
+    private Language originalLanguage;
+    private Language translationLanguage;
 
-    public Course(long id, long accountId, long schedulingId, String originalLanguage, String translationLanguage) {
+    public Course(long id, long accountId, long schedulingId, Language originalLanguage, Language translationLanguage) {
         this.id = id;
         this.accountId = accountId;
         this.schedulingId = schedulingId;
@@ -84,19 +101,19 @@ public class Course {
         this.schedulingId = schedulingId;
     }
 
-    public String getOriginalLanguage() {
+    public Language getOriginalLanguage() {
         return originalLanguage;
     }
 
-    public void setOriginalLanguage(String originalLanguage) {
+    public void setOriginalLanguage(Language originalLanguage) {
         this.originalLanguage = originalLanguage;
     }
 
-    public String getTranslationLanguage() {
+    public Language getTranslationLanguage() {
         return translationLanguage;
     }
 
-    public void setTranslationLanguage(String translationLanguage) {
+    public void setTranslationLanguage(Language translationLanguage) {
         this.translationLanguage = translationLanguage;
     }
 }

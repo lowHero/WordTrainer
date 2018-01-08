@@ -1,46 +1,28 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.add;
 
-import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.domain.exceptions.ExceptionHelper;
-import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
-import com.nz2dev.wordtrainer.domain.models.Word;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
+import com.nz2dev.wordtrainer.domain.interactors.word.CreateWordUseCase;
 
 import javax.inject.Inject;
-
-import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableSingleObserver;
 
 /**
  * Created by nz2Dev on 11.12.2017
  */
+@SuppressWarnings("WeakerAccess")
 @PerActivity
-public class AddWordPresenter extends BasePresenter<AddWordView> {
+public class AddWordPresenter extends DisposableBasePresenter<AddWordView> {
 
     private static final int MIN_LENGTH = 2;
 
-    private final WordInteractor wordInteractor;
-    private final AppPreferences appPreferences;
-    private final ExceptionHelper helper;
+    private final CreateWordUseCase createWordUseCase;
 
-    private Disposable disposable;
     private boolean originalValidated;
     private boolean translationValidated;
 
     @Inject
-    public AddWordPresenter(WordInteractor wordInteractor, AppPreferences appPreferences, ExceptionHelper helper) {
-        this.wordInteractor = wordInteractor;
-        this.appPreferences = appPreferences;
-        this.helper = helper;
-    }
-
-    @Override
-    public void detachView() {
-        super.detachView();
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
+    public AddWordPresenter(CreateWordUseCase createWordUseCase) {
+        this.createWordUseCase = createWordUseCase;
     }
 
     public void validateOriginalInputs(String original) {
@@ -64,11 +46,12 @@ public class AddWordPresenter extends BasePresenter<AddWordView> {
     }
 
     public void acceptClick(String original, String translate) {
-        disposable = wordInteractor.addWord(
-                Word.unidentified(appPreferences.getSelectedCourseId(), original, translate),
-                helper.obtainSafeCallback(r -> getView().showWordSuccessfulAdded()));
+        manage(createWordUseCase.execute(original, translate)
+                .doFinally(getView()::showWordSuccessfulAdded)
+                .subscribe());
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     private boolean checkFullValidated(boolean isWasValidated) {
         boolean isValidatedNow = isFullValidated();
 

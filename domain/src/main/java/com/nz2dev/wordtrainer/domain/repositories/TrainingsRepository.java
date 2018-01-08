@@ -6,6 +6,7 @@ import com.nz2dev.wordtrainer.domain.repositories.infrastructure.ObservableRepos
 
 import java.util.Collection;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 /**
@@ -13,10 +14,15 @@ import io.reactivex.Single;
  */
 public interface TrainingsRepository extends ObservableRepository {
 
-    Single<Boolean> addTraining(Word word);
-    Single<Boolean> updateTraining(Training training);
-    Single<Training> getTraining(long id);
-    Single<Training> getFirstSortedTraining(long courseId);
-    Single<Collection<Training>> getSortedTrainings(long courseId);
+    Single<Boolean> addTraining(Training.Primitive dto);
 
+    Single<Boolean> updateTraining(Training training);
+
+    Single<Training> getTraining(long id);
+
+    Single<Training> getTrainingByWordId(long wordId);
+
+    Single<Training> getFirstSortedTraining(long courseId);
+
+    Single<Collection<Training>> getSortedTrainings(long courseId);
 }

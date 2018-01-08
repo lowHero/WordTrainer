@@ -3,6 +3,7 @@ package com.nz2dev.wordtrainer.domain.repositories;
 import com.nz2dev.wordtrainer.domain.models.Word;
 
 import java.util.Collection;
+import java.util.List;
 
 import io.reactivex.Single;
 
@@ -12,9 +13,9 @@ import io.reactivex.Single;
 public interface WordsRepository {
 
     Single<Long> addWord(Word word);
-    Single<Word> getWord(long wordId);
     Single<Boolean> updateWord(Word word);
-    Single<Collection<Word>> getAllWords(long courseId);
-    Single<Collection<Word>> getPartOfWord(long courseId, long fromWordId, long limit);
+    Single<Word> getWord(long wordId);
+    Single<Collection<Long>> getWordsIds(long courseId, long limit);
+    Single<Collection<Word>> getWords(List<Long> ids);
 
 }

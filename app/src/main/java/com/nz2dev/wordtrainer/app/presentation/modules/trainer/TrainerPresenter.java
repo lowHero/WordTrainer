@@ -1,7 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
 
-import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 
 import javax.inject.Inject;

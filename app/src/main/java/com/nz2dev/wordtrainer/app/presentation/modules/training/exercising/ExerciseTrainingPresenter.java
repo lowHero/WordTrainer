@@ -1,9 +1,9 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.training.exercising;
 
-import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.domain.exceptions.ExceptionHelper;
-import com.nz2dev.wordtrainer.domain.interactors.ExerciseInteractor;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
+import com.nz2dev.wordtrainer.domain.interactors.exercise.CommitExerciseUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.exercise.LoadExerciseUseCase;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
 
@@ -13,43 +13,31 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
 
 /**
  * Created by nz2Dev on 16.12.2017
  */
+@SuppressWarnings("WeakerAccess")
 @PerActivity
-public class ExerciseTrainingPresenter extends BasePresenter<ExerciseTrainingView> {
+public class ExerciseTrainingPresenter extends DisposableBasePresenter<ExerciseTrainingView> {
 
-    private final ExerciseInteractor trainer;
-    private final ExceptionHelper exceptionHelper;
+    private final LoadExerciseUseCase loadExerciseUseCase;
+    private final CommitExerciseUseCase commitExerciseUseCase;
 
     private Exercise pendingExercise;
 
     @Inject
-    public ExerciseTrainingPresenter(ExerciseInteractor trainer, ExceptionHelper exceptionHelper) {
-        this.trainer = trainer;
-        this.exceptionHelper = exceptionHelper;
+    public ExerciseTrainingPresenter(LoadExerciseUseCase loadExerciseUseCase, CommitExerciseUseCase commitExerciseUseCase) {
+        this.loadExerciseUseCase = loadExerciseUseCase;
+        this.commitExerciseUseCase = commitExerciseUseCase;
     }
 
-    public void beginExercise(long trainingId) {
-        trainer.loadNextExercise(trainingId, new DisposableSingleObserver<Exercise>() {
-            @Override
-            public void onSuccess(Exercise exercise) {
-                if (!isViewAttached()) {
-                    return;
-                }
-
-                pendingExercise = exercise;
-                getView().showTargetWord(exercise.getTraining().getWord());
-                getView().showVariants(exercise.getTranslationVariants());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                exceptionHelper.getHandler().handleThrowable(e);
-            }
-        });
+    public void beginExercise(long wordId) {
+        manage(loadExerciseUseCase.execute(wordId).subscribe(exercise -> {
+            pendingExercise = exercise;
+            getView().showTargetWord(exercise.getTraining().getWord());
+            getView().showVariants(exercise.getTranslationVariants());
+        }));
     }
 
     public void answer(Word word) {
@@ -61,25 +49,13 @@ public class ExerciseTrainingPresenter extends BasePresenter<ExerciseTrainingVie
             getView().highlightWord(word.getId(), false);
         }
 
-        trainer.commitExercise(pendingExercise, isCorrectAnswer, new DisposableSingleObserver<Boolean>() {
-            @Override
-            public void onSuccess(Boolean result) {
-                // TODO based on what user want to do next (train other word or finish app) that defined in
-                // methods such as getView().getNextBehaviour() or something else that return strategy what to do next
-                // and perform that actions there, or notify about error passing this exercise.
-
-                Single.timer(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()).subscribe(time -> {
-                    if (isViewAttached()) {
-                        getView().hideTrainings();
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                exceptionHelper.getHandler().handleThrowable(e);
-            }
-        });
+        manage(commitExerciseUseCase.execute(pendingExercise, isCorrectAnswer).subscribe(r -> {
+            Single.timer(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()).subscribe(time -> {
+                if (isViewAttached()) {
+                    getView().hideTrainings();
+                }
+            });
+        }));
     }
 
     public void cancelExercising() {

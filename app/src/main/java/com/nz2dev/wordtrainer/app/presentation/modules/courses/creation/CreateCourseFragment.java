@@ -7,12 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.domain.models.Language;
+
+import java.util.Collection;
 
 import javax.inject.Inject;
 
@@ -29,16 +32,19 @@ public class CreateCourseFragment extends Fragment implements CreateCourseView {
         return new CreateCourseFragment();
     }
 
-    @BindView(R.id.et_course_language)
-    EditText courseLanguageEditor;
+    @BindView(R.id.spinner_languages)
+    Spinner courseLanguagesSpinner;
 
     @Inject Navigator navigator;
     @Inject CreateCoursePresenter presenter;
+
+    private LanguagesAdapter languagesAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DependenciesUtils.fromAttachedActivity(this, CreateCourseActivity.class).inject(this);
+        languagesAdapter = new LanguagesAdapter(getContext());
     }
 
     @Nullable
@@ -52,21 +58,26 @@ public class CreateCourseFragment extends Fragment implements CreateCourseView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        courseLanguagesSpinner.setAdapter(languagesAdapter);
+
         presenter.setView(this);
+        presenter.loadPossibleLanguages();
     }
 
     @OnClick(R.id.btn_create_course)
     public void onCreateClick() {
-        presenter.createCourseClick(courseLanguageEditor.getText().toString());
+        Language selectedLanguage = languagesAdapter.getItem(courseLanguagesSpinner.getSelectedItemPosition());
+        presenter.createCourseClick(selectedLanguage, true);
     }
 
     @Override
-    public void showError(String error) {
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+    public void showPossibleLanguages(Collection<Language> languages) {
+        languagesAdapter.setCollection(languages);
+        languagesAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void hideId() {
+    public void finishCreation() {
         getActivity().finish();
     }
 }

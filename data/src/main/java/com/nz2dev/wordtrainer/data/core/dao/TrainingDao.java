@@ -30,6 +30,13 @@ public interface TrainingDao {
             "WHERE trainings.tId = :trainingId")
     TrainingAndWordJoin getTrainingById(long trainingId);
 
+
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query("SELECT * FROM trainings " +
+            "INNER JOIN words ON trainings.wordId = words.id " +
+            "WHERE trainings.wordId = :trainingWordId")
+    TrainingAndWordJoin getTrainingByWordId(long trainingWordId);
+
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * FROM trainings " +
             "INNER JOIN words ON trainings.wordId = words.id " +

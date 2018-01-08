@@ -1,0 +1,5 @@
+<resources>
+    <string name="english_language">English</string>
+    <string name="ukrainian_language">Українська</string>
+    <string name="russian_language">Руский</string>
+</resources>

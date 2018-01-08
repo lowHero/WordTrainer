@@ -23,7 +23,7 @@ import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
         CourseEntity.class,
         TrainingEntity.class,
         WordEntity.class
-}, version = 11)
+}, version = 12)
 public abstract class WordTrainerDatabase extends RoomDatabase {
 
     public abstract AccountDao getAccountDao();

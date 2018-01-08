@@ -1,53 +1,37 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.courses.creation;
 
-import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorsDescriber;
-import com.nz2dev.wordtrainer.domain.interactors.CourseInteractor;
-import com.nz2dev.wordtrainer.domain.interactors.SchedulingInteractor;
-import com.nz2dev.wordtrainer.domain.models.Course;
-import com.nz2dev.wordtrainer.domain.models.Scheduling;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
+import com.nz2dev.wordtrainer.domain.interactors.course.CreateCourseUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.language.LoadAllLanguagesUseCase;
+import com.nz2dev.wordtrainer.domain.models.Language;
 
 import javax.inject.Inject;
 
 /**
  * Created by nz2Dev on 30.12.2017
  */
+@SuppressWarnings("WeakerAccess")
 @PerActivity
-public class CreateCoursePresenter extends BasePresenter<CreateCourseView> {
+public class CreateCoursePresenter extends DisposableBasePresenter<CreateCourseView> {
 
-    private final AppPreferences appPreferences;
-    private final CourseInteractor courseInteractor;
-    private final SchedulingInteractor schedulingInteractor;
+    private final LoadAllLanguagesUseCase loadAllLanguagesUseCase;
+    private final CreateCourseUseCase createCourseUseCase;
 
     @Inject
-    public CreateCoursePresenter(AppPreferences appPreferences, CourseInteractor courseInteractor, SchedulingInteractor schedulingInteractor) {
-        this.appPreferences = appPreferences;
-        this.courseInteractor = courseInteractor;
-        this.schedulingInteractor = schedulingInteractor;
+    public CreateCoursePresenter(LoadAllLanguagesUseCase loadAllLanguagesUseCase, CreateCourseUseCase createCourseUseCase) {
+        this.loadAllLanguagesUseCase = loadAllLanguagesUseCase;
+        this.createCourseUseCase = createCourseUseCase;
     }
 
-    public void createCourseClick(String courseLanguage) {
-        schedulingInteractor.uploadScheduling(Scheduling.newInstance(), (id, throwable) -> {
-            if (throwable != null) {
-                getView().showError(ErrorsDescriber.describe(throwable));
-                return;
-            }
+    public void loadPossibleLanguages() {
+        manage(loadAllLanguagesUseCase.execute()
+                .subscribe(getView()::showPossibleLanguages));
+    }
 
-            Course course = Course.unidentified(appPreferences.getSignedAccountId(), id, courseLanguage, null);
-
-            courseInteractor.uploadCourse(course, (courseId, courseCreationThrowable) -> {
-                if (courseCreationThrowable != null) {
-                    getView().showError(ErrorsDescriber.describe(courseCreationThrowable));
-                    return;
-                }
-
-                course.setId(courseId);
-                appPreferences.selectCourse(course);
-                getView().hideId();
-            });
-        });
+    public void createCourseClick(Language courseLanguage, boolean selectAfterSucceed) {
+        manage(createCourseUseCase.execute(courseLanguage.getKey(), selectAfterSucceed)
+                .subscribe(v -> getView().finishCreation()));
     }
 
 }

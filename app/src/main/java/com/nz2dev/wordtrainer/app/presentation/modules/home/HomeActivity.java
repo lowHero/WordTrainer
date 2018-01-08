@@ -14,10 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.dependencies.HasDependencies;
-import com.nz2dev.wordtrainer.app.dependencies.components.DaggerHomeComponent;
-import com.nz2dev.wordtrainer.app.dependencies.components.HomeComponent;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DismissingFragment;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.courses.overview.CoursesOverviewFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.debug.DebugFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.overview.OverviewTrainingsFragment;
@@ -66,11 +64,7 @@ public class HomeActivity extends AppCompatActivity implements HasDependencies<H
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         }
-
         ButterKnife.bind(this);
-        dependencies = DaggerHomeComponent.builder()
-                .appComponent(DependenciesUtils.appComponentFrom(this))
-                .build();
 
         getSupportFragmentManager().beginTransaction()
 //               TODO decide where to place TrainerFragment .replace(R.id.fl_trainer_place, TrainerFragment.newInstance())
@@ -91,6 +85,9 @@ public class HomeActivity extends AppCompatActivity implements HasDependencies<H
 
     @Override
     public HomeComponent getDependencies() {
+        if (dependencies == null) {
+            dependencies = DependenciesUtils.appComponentFrom(this).createHomeComponent();
+        }
         return dependencies;
     }
 

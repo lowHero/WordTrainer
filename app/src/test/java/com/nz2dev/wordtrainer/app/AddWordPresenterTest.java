@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app;
 
-import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.data.preferences.SharedAppPreferences;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordPresenter;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordView;
 import com.nz2dev.wordtrainer.domain.interactors.WordInteractor;
@@ -21,14 +21,14 @@ import static org.mockito.Mockito.verify;
 public class AddWordPresenterTest {
 
     @Mock AddWordView view;
-    @Mock AppPreferences appPreferences;
+    @Mock SharedAppPreferences appPreferences;
     @Mock WordInteractor wordInteractor;
 
     private AddWordPresenter presenter;
 
     @Before
     public void init() {
-        presenter = new AddWordPresenter(wordInteractor, appPreferences, exceptionHelper);
+        presenter = new AddWordPresenter(wordInteractor, appPreferences, exceptionHelper, createWordUseCase);
     }
 
     @Test

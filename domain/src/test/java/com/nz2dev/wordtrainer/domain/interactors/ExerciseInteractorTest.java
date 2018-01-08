@@ -2,6 +2,7 @@ package com.nz2dev.wordtrainer.domain.interactors;
 
 import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
 import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
+import com.nz2dev.wordtrainer.domain.interactors.exercise.ExerciseInteractor;
 import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;

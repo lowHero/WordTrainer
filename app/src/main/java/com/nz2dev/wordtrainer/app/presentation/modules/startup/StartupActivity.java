@@ -20,7 +20,9 @@ public class StartupActivity extends AppCompatActivity implements StartupView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.appComponentFrom(this).inject(this);
+        DependenciesUtils.appComponentFrom(this)
+                .createStartupComponent()
+                .inject(this);
     }
 
     @Override

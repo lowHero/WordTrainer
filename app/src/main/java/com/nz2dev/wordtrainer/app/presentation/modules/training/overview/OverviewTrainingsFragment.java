@@ -127,10 +127,10 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     public void onAction(Training training, TrainingRenderer.Action trainingAction) {
         switch (trainingAction) {
             case Select:
-                presenter.trainWordClick(training);
+                presenter.navigateWordTrainingClick(training);
                 break;
             case Edit:
-                presenter.editWordClick(training.getWord());
+                presenter.navigateWordEditClick(training.getWord());
                 break;
             case Delete:
                 presenter.deleteWordClick(training.getWord());
@@ -147,8 +147,8 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     }
 
     @Override
-    public void navigateWordTraining(long trainingId) {
-        nestedFragmentExhibitor.showAtWholeScreen(ExerciseTrainingFragment.newInstance(trainingId));
+    public void navigateWordTraining(long trainingWordId) {
+        nestedFragmentExhibitor.showAtWholeScreen(ExerciseTrainingFragment.newInstance(trainingWordId));
     }
 
     @Override
@@ -167,7 +167,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
         dialog.setContentView(R.layout.dialog_words_addition_variants);
         dialog.findViewById(R.id.btn_add_word).setOnClickListener(v -> {
             dialog.dismiss();
-            presenter.addWordClick();
+            presenter.navigateWordAdditionClick();
         });
         dialog.show();
     }

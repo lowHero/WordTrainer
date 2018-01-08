@@ -14,7 +14,6 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.dependencies.components.DaggerTrainingScheduleComponent;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingActivity;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.models.Training;
@@ -55,9 +54,8 @@ public class TrainingScheduleService extends Service implements TrainingSchedule
 
     @Override // maybe provide some wake lock before if needed. TODO test it
     public int onStartCommand(Intent intent, int flags, int startId) {
-        DaggerTrainingScheduleComponent.builder()
-                .appComponent(DependenciesUtils.appComponentFrom(this))
-                .build()
+        DependenciesUtils.appComponentFrom(this)
+                .createTrainingScheduleComponent()
                 .inject(this);
 
         controller.setHandler(this);
@@ -83,7 +81,7 @@ public class TrainingScheduleService extends Service implements TrainingSchedule
                         .setContentTitle("Content title there")
                         .setTicker("Ticker there!")
                         .setDefaults(Notification.DEFAULT_ALL)
-                        .setContentIntent(ExerciseTrainingActivity.getPendingIntent(this, training.getId()))
+                        .setContentIntent(ExerciseTrainingActivity.getPendingIntent(this, training.getWord().getId()))
                         .build());
     }
 

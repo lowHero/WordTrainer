@@ -1,37 +1,32 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.account.authorization;
 
-import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorsDescriber;
-import com.nz2dev.wordtrainer.data.exceptions.AccountNotExistException;
-import com.nz2dev.wordtrainer.domain.interactors.AccountHistoryInteractor;
-import com.nz2dev.wordtrainer.domain.interactors.AccountInteractor;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
+import com.nz2dev.wordtrainer.domain.exceptions.AccountNotExistException;
+import com.nz2dev.wordtrainer.domain.exceptions.AccountNotExistOrPasswordIncorrectException;
+import com.nz2dev.wordtrainer.domain.interactors.account.AuthenticateAccountUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.account.LoadAccountUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.accounthistory.LoadAccountHistoryUseCase;
 import com.nz2dev.wordtrainer.domain.models.Account;
 
-import java.util.Collection;
-
 import javax.inject.Inject;
-
-import io.reactivex.observers.DisposableSingleObserver;
 
 /**
  * Created by nz2Dev on 01.12.2017
  */
+@SuppressWarnings("WeakerAccess")
 @PerActivity
-public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
+public class AuthorizationPresenter extends DisposableBasePresenter<AuthorizationView> {
 
-    private final AccountInteractor accountInteractor;
-    private final AccountHistoryInteractor historyInteractor;
-    private final AppPreferences appPreferences;
-
-    private DisposableSingleObserver<Account> findAccountDisposable;
+    private final LoadAccountUseCase loadAccountUseCase;
+    private final LoadAccountHistoryUseCase loadAccountHistoryUseCase;
+    private final AuthenticateAccountUseCase authenticateAccountUseCase;
 
     @Inject
-    public AuthorizationPresenter(AccountInteractor accountInteractor, AccountHistoryInteractor historyInteractor, AppPreferences appPreferences) {
-        this.accountInteractor = accountInteractor;
-        this.historyInteractor = historyInteractor;
-        this.appPreferences = appPreferences;
+    public AuthorizationPresenter(LoadAccountUseCase loadAccountUseCase, LoadAccountHistoryUseCase loadAccountHistoryUseCase, AuthenticateAccountUseCase authenticateAccountUseCase) {
+        this.loadAccountUseCase = loadAccountUseCase;
+        this.loadAccountHistoryUseCase = loadAccountHistoryUseCase;
+        this.authenticateAccountUseCase = authenticateAccountUseCase;
     }
 
     @Override
@@ -39,22 +34,11 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
         super.onViewReady();
         getView().setupLoginButton(false);
         getView().setupCreationButton(true);
-        historyInteractor.loadHistory(new DisposableSingleObserver<Collection<Account>>() {
-            @Override
-            public void onSuccess(Collection<Account> accounts) {
-                getView().showRecentlyAccounts(accounts);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getView().showError(ErrorsDescriber.describe(e));
-            }
-        });
+        manage(loadAccountHistoryUseCase.execute()
+                .subscribe(accounts -> getView().showRecentlyAccounts(accounts)));
     }
 
     public void startCreateAccountClick() {
-        // may be possible to check there if this account is exist
-        // and make some restriction to selfHandledConsumer this account one more time
         getView().showAccountCreation();
     }
 
@@ -63,76 +47,41 @@ public class AuthorizationPresenter extends BasePresenter<AuthorizationView> {
     }
 
     public void loginAccountClick(String userName) {
-        // first check if that account need password then show dialog for typing password
-        // and then call this method
-        accountInteractor.loadIfExist(userName, new DisposableSingleObserver<Account>() {
-            @Override
-            public void onSuccess(Account account) {
-                if (account.isHasPassword()) {
-                    getView().showPasswordInput();
-                } else {
-                    loginAccountWithPasswordClick(userName, "");
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getView().showError(ErrorsDescriber.describe(e));
-            }
-        });
+        manage(loadAccountUseCase.execute(userName)
+                .subscribe(account -> {
+                    if (account.isHasPassword()) {
+                        getView().showPasswordInput();
+                    } else {
+                        loginAccountWithPasswordClick(userName, "");
+                    }
+                }));
     }
 
     public void loginAccountWithPasswordClick(String userName, String password) {
         getView().showProgressIndicator(true);
-        accountInteractor.loadIfPasswordExist(userName, password, new DisposableSingleObserver<Account>() {
-            @Override
-            public void onSuccess(Account account) {
-                appPreferences.signIn(account, password);
-                historyInteractor.createRecord(account, new DisposableSingleObserver<Boolean>() {
-                    @Override
-                    public void onSuccess(Boolean result) {
-                        getView().navigateHome();
+        manage(authenticateAccountUseCase.execute(userName, password)
+                .doOnError(throwable -> {
+                    if (throwable instanceof AccountNotExistOrPasswordIncorrectException) {
+                        getView().showError("fail to authenticate");
                     }
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().showError("Error creating history: " + ErrorsDescriber.describe(e));
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getView().showError(ErrorsDescriber.describe(e));
-                getView().showProgressIndicator(false);
-            }
-        });
+                })
+                .doFinally(() -> getView().showProgressIndicator(false))
+                .subscribe(nothing -> getView().navigateHome()));
     }
 
     public void userNameEditorChanged(String userNameText) {
-        if (findAccountDisposable != null && !findAccountDisposable.isDisposed()) {
-            findAccountDisposable.dispose();
-        }
-        accountInteractor.loadIfExist(userNameText, findAccountDisposable = new DisposableSingleObserver<Account>() {
-            @Override
-            public void onSuccess(Account account) {
-                getView().setupLoginButton(true);
-                getView().setupCreationButton(false);
-                getView().showAccountHasPassword(account.isHasPassword());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                if (e instanceof AccountNotExistException) {
-                    getView().setupLoginButton(false);
-                    getView().setupCreationButton(true);
-                    getView().showAccountHasPassword(false);
-                } else {
-                    getView().showError(ErrorsDescriber.describe(e));
-                }
-            }
-        });
-
-        // find and show filtered accounts
-        // getView().showRecentlyAccounts(Collections.singletonList(new Account(userNameText)));
+        manage("Try Login", loadAccountUseCase.execute(userNameText)
+                .doOnError(throwable -> {
+                    if (throwable instanceof AccountNotExistException) {
+                        getView().setupLoginButton(false);
+                        getView().setupCreationButton(true);
+                        getView().showAccountHasPassword(false);
+                    }
+                })
+                .subscribe(account -> {
+                    getView().setupLoginButton(true);
+                    getView().setupCreationButton(false);
+                    getView().showAccountHasPassword(account.isHasPassword());
+                }));
     }
 }

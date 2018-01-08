@@ -1,7 +1,7 @@
 package com.nz2dev.wordtrainer.domain.interactors;
 
 import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionManager;
+import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
 import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
@@ -12,15 +12,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.verification.VerificationMode;
 
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,7 +33,7 @@ public class WordInteractorTest {
     @Mock BackgroundExecutor backgroundExecutor;
     @Mock UIExecutor uiExecutor;
 
-    private ExecutionManager executionManager;
+    private ExecutionProxy executionProxy;
     private WordInteractor wordInteractor;
 
     @Before
@@ -44,8 +41,8 @@ public class WordInteractorTest {
         when(uiExecutor.getScheduler()).thenReturn(Schedulers.trampoline());
         when(backgroundExecutor.getScheduler()).thenReturn(Schedulers.trampoline());
 
-        executionManager = new ExecutionManager(backgroundExecutor, uiExecutor);
-        wordInteractor = new WordInteractor(wordsRepository, trainingsRepository, executionManager);
+        executionProxy = new ExecutionProxy(backgroundExecutor, uiExecutor);
+        wordInteractor = new WordInteractor(wordsRepository, trainingsRepository, executionProxy);
     }
 
     @Test

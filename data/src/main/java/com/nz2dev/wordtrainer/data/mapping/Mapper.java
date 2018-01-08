@@ -7,11 +7,13 @@ import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
 import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
 import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
 import com.nz2dev.wordtrainer.data.core.relation.TrainingAndWordJoin;
-import com.nz2dev.wordtrainer.data.ultralightmapper.UltraLightMapper;
+import com.nz2dev.wordtrainer.domain.utils.ultralightmapper.UltraLightMapper;
 import com.nz2dev.wordtrainer.domain.models.Account;
 import com.nz2dev.wordtrainer.domain.models.AccountHistory;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
+
+import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -23,7 +25,8 @@ import javax.inject.Singleton;
 public class Mapper extends UltraLightMapper {
 
     @Inject
-    public Mapper() {}
+    public Mapper() {
+    }
 
     @Override
     protected void configure() {
@@ -47,5 +50,8 @@ public class Mapper extends UltraLightMapper {
                         model.getWord().getId(),
                         model.getLastTrainingDate(),
                         model.getProgress()));
+
+        bind(Training.Primitive.class).to(dto ->
+                new TrainingEntity(dto.id, dto.wordId, new Date(dto.time), dto.progress));
     }
 }

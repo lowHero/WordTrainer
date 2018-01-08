@@ -4,15 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 
-import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.app.services.training.TrainingScheduleService;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorsDescriber;
-import com.nz2dev.wordtrainer.domain.interactors.SchedulingInteractor;
+import com.nz2dev.wordtrainer.domain.interactors.scheduling.ChangeSchedulingIntervalUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.scheduling.DownloadSchedulingUseCase;
 import com.nz2dev.wordtrainer.domain.models.Scheduling;
 import com.nz2dev.wordtrainer.domain.utils.Millisecond;
 
@@ -30,34 +28,27 @@ public class SchedulingTrainingsPresenter extends BasePresenter<SchedulingTraini
 
     private final IntentFilter ALARM_STARTED = new IntentFilter(TrainingScheduleService.ACTION_ALARM_STARTED);
 
+    private final DownloadSchedulingUseCase downloadSchedulingUseCase;
+    private final ChangeSchedulingIntervalUseCase changeSchedulingIntervalUseCase;
+
     private final Context context;
-    private final AppPreferences appPreferences;
-    private final SchedulingInteractor schedulingInteractor;
 
     private CountDownTimer timer;
     private BroadcastReceiver receiver;
-    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
     private Scheduling currentScheduling;
 
     private long futureInterval = FUTURE_INTERVAL_UNSPECIFIED;
 
     @Inject
-    public SchedulingTrainingsPresenter(Context context, AppPreferences appPreferences, SchedulingInteractor schedulingInteractor) {
+    public SchedulingTrainingsPresenter(DownloadSchedulingUseCase downloadSchedulingUseCase, ChangeSchedulingIntervalUseCase changeSchedulingIntervalUseCase, Context context) {
+        this.downloadSchedulingUseCase = downloadSchedulingUseCase;
+        this.changeSchedulingIntervalUseCase = changeSchedulingIntervalUseCase;
         this.context = context;
-        this.appPreferences = appPreferences;
-        this.schedulingInteractor = schedulingInteractor;
     }
 
     @Override
     protected void onViewReady() {
-        prepareScheduler(appPreferences.getSelectedCourseId());
-
-        appPreferences.registerListener(prefListener = (sharedPreferences, key) -> {
-            if (key.equals(AppPreferences.KEY_SELECTED_COURSE_ID)) {
-                prepareScheduler(appPreferences.getSelectedCourseId());
-            }
-        });
-
+        prepareScheduler();
         context.registerReceiver(receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -72,9 +63,7 @@ public class SchedulingTrainingsPresenter extends BasePresenter<SchedulingTraini
         if (timer != null) {
             timer.cancel();
         }
-
         context.unregisterReceiver(receiver);
-        appPreferences.unregisterListener(prefListener);
     }
 
     public void schedulingIntervalChanged(long intervalMillis) {
@@ -91,18 +80,10 @@ public class SchedulingTrainingsPresenter extends BasePresenter<SchedulingTraini
     }
 
     public void acceptFutureIntervalClick() {
-        final long savedInterval = futureInterval;
-        futureInterval = FUTURE_INTERVAL_UNSPECIFIED;
-
-        currentScheduling.setInterval(savedInterval);
-        schedulingInteractor.updateScheduling(currentScheduling, (index, throwable) -> {
-            if (throwable != null) {
-                getView().showError("Error updating interval: " + ErrorsDescriber.describe(throwable));
-                return;
-            }
-
+        changeSchedulingIntervalUseCase.execute(futureInterval).subscribe(result -> {
             getView().showIntervalChanging(false);
-            getView().setActualInterval(savedInterval);
+            getView().setActualInterval(futureInterval);
+            futureInterval = FUTURE_INTERVAL_UNSPECIFIED;
 
             if (currentScheduling.getLastTrainingDate() != null) {
                 startSchedulingClick();
@@ -132,13 +113,8 @@ public class SchedulingTrainingsPresenter extends BasePresenter<SchedulingTraini
         context.startService(TrainingScheduleService.getCancelIntent(context));
     }
 
-    private void prepareScheduler(long courseId) {
-        schedulingInteractor.downloadSchedulingForCourse(courseId, (scheduling, t) -> {
-            if (t != null) {
-                getView().showError(ErrorsDescriber.describe(t));
-                return;
-            }
-
+    private void prepareScheduler() {
+        downloadSchedulingUseCase.execute().subscribe(scheduling -> {
             currentScheduling = scheduling;
             getView().setActualInterval(currentScheduling.getInterval());
 

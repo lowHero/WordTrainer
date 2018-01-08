@@ -6,4 +6,6 @@ package com.nz2dev.wordtrainer.app.presentation.modules.account.registration;
 public interface RegistrationView {
     void showRegistrationFailed(String errorMessage);
     void endRegistration();
+
+    void showProgressIndicator(boolean b);
 }

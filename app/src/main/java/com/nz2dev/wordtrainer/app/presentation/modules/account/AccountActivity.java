@@ -9,10 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.dependencies.HasDependencies;
-import com.nz2dev.wordtrainer.app.dependencies.components.AccountComponent;
-import com.nz2dev.wordtrainer.app.dependencies.components.DaggerAccountComponent;
-import com.nz2dev.wordtrainer.app.dependencies.modules.AccountModule;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.account.authorization.AuthorizationFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.account.registration.RegistrationFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
@@ -36,16 +33,16 @@ public class AccountActivity extends AppCompatActivity implements HasDependencie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        dependencies = DaggerAccountComponent.builder()
-                .appComponent(DependenciesUtils.appComponentFrom(this))
-                .accountModule(AccountModule.from(this))
-                .build();
-
-        dependencies.accountNavigation().showAuthorization();
+        getDependencies().accountNavigation().showAuthorization();
     }
 
     @Override
     public AccountComponent getDependencies() {
+        if (dependencies == null) {
+            dependencies = DependenciesUtils
+                    .appComponentFrom(this)
+                    .createAccountComponent(AccountModule.from(this));
+        }
         return dependencies;
     }
 

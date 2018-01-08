@@ -1,6 +1,8 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
+import com.nz2dev.wordtrainer.data.R;
 import com.nz2dev.wordtrainer.domain.models.Course;
+import com.nz2dev.wordtrainer.domain.models.Language;
 import com.nz2dev.wordtrainer.domain.repositories.CourseRepository;
 
 import javax.inject.Inject;
@@ -19,13 +21,15 @@ public class RoomCourseRepository implements CourseRepository {
     }
 
     @Override
-    public Single<Long> addCourse(Course course) {
+    public Single<Long> addCourse(Course.Primitive course) {
         return Single.just(1L);
     }
 
     @Override
     public Single<Course> getCourse(long courseId) {
-        return Single.just(new Course(courseId, -1, -1, "English", null));
+        Language original = new Language("en", R.drawable.ic_flag_english, R.string.english_language);
+        Language translation = new Language("uk", R.drawable.ic_flag_ukraine, R.string.ukrainian_language);
+        return Single.just(new Course(1, -1, 1, original, translation));
     }
 
 }

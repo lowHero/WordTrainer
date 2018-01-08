@@ -15,18 +15,17 @@ import java.util.List;
 @Dao
 public interface WordDao {
 
-    @Query("SELECT * FROM words WHERE id = :wordId")
-    WordEntity getWordById(long wordId);
-
-    @Query("SELECT * FROM words " +
-            "WHERE courseId = :courseId")
-    List<WordEntity> getAllWords(long courseId);
-
-    @Query("SELECT * FROM words " +
+    @Query("SELECT id FROM words " +
             "WHERE courseId = :courseId " +
-            "AND id BETWEEN :fromWordId - :limit / 2 AND :fromWordId + :limit / 2 " +
             "LIMIT :limit")
-    List<WordEntity> getPartOfWords(long courseId, long fromWordId, long limit);
+    List<Long> getWordsIds(long courseId, long limit);
+
+    @Query("SELECT * FROM words " +
+            "WHERE id IN (:ids)")
+    List<WordEntity> getWords(long... ids);
+
+    @Query("SELECT * FROM words WHERE id = :id limit 1")
+    WordEntity getWordById(long id);
 
     @Insert
     long addWord(WordEntity word);

@@ -1,12 +1,6 @@
 package com.nz2dev.wordtrainer.domain.repositories.infrastructure;
 
-import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
-
-import java.util.Collection;
-
-import io.reactivex.Observer;
-import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
+import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 /**
@@ -14,14 +8,15 @@ import io.reactivex.subjects.PublishSubject;
  */
 public abstract class RxObservableRepository implements ObservableRepository {
 
-    private PublishSubject<State> publishSubject = PublishSubject.create();
+    private PublishSubject<ChangesType> publishSubject = PublishSubject.create();
 
-    protected void requestChanges(State state) {
-        publishSubject.onNext(state);
+    protected void requestChanges(ChangesType changesType) {
+        publishSubject.onNext(changesType);
     }
 
     @Override
-    public void listenChanges(Consumer<State> changesObserver, UIExecutor uiExecutor) {
-        publishSubject.observeOn(uiExecutor.getScheduler()).subscribe(changesObserver);
+    public Observable<ChangesType> getChangesPublisher() {
+        return publishSubject;
     }
+
 }

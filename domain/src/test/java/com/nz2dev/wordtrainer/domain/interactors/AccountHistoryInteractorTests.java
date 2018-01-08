@@ -2,6 +2,7 @@ package com.nz2dev.wordtrainer.domain.interactors;
 
 import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
 import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
+import com.nz2dev.wordtrainer.domain.interactors.account.AccountHistoryInteractor;
 import com.nz2dev.wordtrainer.domain.models.Account;
 import com.nz2dev.wordtrainer.domain.models.AccountHistory;
 import com.nz2dev.wordtrainer.domain.repositories.AccountHistoryRepository;
@@ -45,7 +46,7 @@ public class AccountHistoryInteractorTests {
     public void init() {
         when(uiExecutor.getScheduler()).thenReturn(Schedulers.trampoline());
         when(backgroundExecutor.getScheduler()).thenReturn(Schedulers.trampoline());
-        interactor = new AccountHistoryInteractor(accountHistoryRepository, accountRepository, uiExecutor, backgroundExecutor);
+        interactor = new AccountHistoryInteractor(accountHistoryRepository, accountRepository, uiExecutor, backgroundExecutor, executionProxy);
     }
 
     @Test

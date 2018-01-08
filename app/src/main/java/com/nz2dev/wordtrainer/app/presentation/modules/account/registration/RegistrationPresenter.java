@@ -1,39 +1,28 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.account.registration;
 
-import com.nz2dev.wordtrainer.app.dependencies.PerActivity;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
-import com.nz2dev.wordtrainer.app.utils.helpers.ErrorsDescriber;
-import com.nz2dev.wordtrainer.domain.interactors.AccountInteractor;
-import com.nz2dev.wordtrainer.domain.models.Account;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
+import com.nz2dev.wordtrainer.domain.interactors.account.CreateAccountUseCase;
 
 import javax.inject.Inject;
-
-import io.reactivex.observers.DisposableSingleObserver;
 
 /**
  * Created by nz2Dev on 01.12.2017
  */
+@SuppressWarnings("WeakerAccess")
 @PerActivity
-public class RegistrationPresenter extends BasePresenter<RegistrationView> {
+public class RegistrationPresenter extends DisposableBasePresenter<RegistrationView> {
 
-    private AccountInteractor accountInteractor;
+    private final CreateAccountUseCase createAccountUseCase;
 
     @Inject
-    public RegistrationPresenter(AccountInteractor accountInteractor) {
-        this.accountInteractor = accountInteractor;
+    public RegistrationPresenter(CreateAccountUseCase createAccountUseCase) {
+        this.createAccountUseCase = createAccountUseCase;
     }
 
     public void register(String name, String password) {
-        accountInteractor.createAccount(new Account(name), password, new DisposableSingleObserver<Boolean>() {
-            @Override
-            public void onSuccess(Boolean succeed) {
-                getView().endRegistration();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getView().showRegistrationFailed(ErrorsDescriber.describe(e));
-            }
-        });
+        getView().showProgressIndicator(true);
+        manage(createAccountUseCase.execute(name, password)
+                .subscribe(result -> getView().endRegistration()));
     }
 }
