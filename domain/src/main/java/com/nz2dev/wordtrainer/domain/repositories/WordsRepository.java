@@ -15,6 +15,7 @@ public interface WordsRepository {
     Single<Long> addWord(Word word);
     Single<Boolean> updateWord(Word word);
     Single<Word> getWord(long wordId);
+    Single<Integer> getWordsCount(long courseId);
     Single<Collection<Long>> getWordsIds(long courseId, long limit);
     Single<Collection<Word>> getWords(List<Long> ids);
 

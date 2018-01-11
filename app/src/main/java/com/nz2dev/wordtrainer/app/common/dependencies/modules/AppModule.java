@@ -2,16 +2,14 @@ package com.nz2dev.wordtrainer.app.common.dependencies.modules;
 
 import android.content.Context;
 
-import com.nz2dev.wordtrainer.device.exceptions.AndroidExceptionHandler;
-import com.nz2dev.wordtrainer.device.execution.AndroidExecution;
 import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
-import com.nz2dev.wordtrainer.domain.execution.ExceptionHandler;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+
 
 /**
  * Created by nz2Dev on 29.11.2017
@@ -29,6 +27,12 @@ public class AppModule {
     @Singleton
     Context provideAppContext() {
         return appInstance;
+    }
+
+    @Provides
+    @Singleton
+    EventBus provideAppEventBus() {
+        return new EventBus();
     }
 
 }

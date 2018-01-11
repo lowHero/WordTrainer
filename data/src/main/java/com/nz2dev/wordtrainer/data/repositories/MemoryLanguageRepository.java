@@ -48,9 +48,9 @@ public class MemoryLanguageRepository implements LanguageRepository {
 
     private static Map<String, Language> obtainLanguages() {
         Map<String, Language> languages = new HashMap<>(3);
-        languages.put(KEY_EN, new Language(KEY_EN, R.drawable.ic_flag_english, R.string.english_language));
-        languages.put(KEY_UK, new Language(KEY_UK, R.drawable.ic_flag_ukraine, R.string.ukrainian_language));
-        languages.put(KEY_RU, new Language(KEY_RU, R.drawable.ic_flag_russian, R.string.russian_language));
+        languages.put(KEY_EN, new Language(KEY_EN, "ic_flag_english", "English"));
+        languages.put(KEY_UK, new Language(KEY_UK, "ic_flag_ukraine", "Українська"));
+        languages.put(KEY_RU, new Language(KEY_RU, "ic_flag_russian", "Русский"));
         return languages;
     }
 

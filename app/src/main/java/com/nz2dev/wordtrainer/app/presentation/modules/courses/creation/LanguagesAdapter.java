@@ -1,17 +1,16 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.courses.creation;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.utils.helpers.DrawableIdHelper;
 import com.nz2dev.wordtrainer.domain.models.Language;
 
 import java.util.ArrayList;
@@ -100,8 +99,8 @@ public class LanguagesAdapter extends BaseAdapter {
         }
 
         private void render(Language language) {
-            languageIcon.setImageResource(language.getDrawableResId());
-            languageName.setText(language.getLocalizedNameStringId());
+            languageIcon.setImageResource(DrawableIdHelper.getIdByFieldName(language.getDrawableUri()));
+            languageName.setText(language.getLocalizedName());
         }
 
     }

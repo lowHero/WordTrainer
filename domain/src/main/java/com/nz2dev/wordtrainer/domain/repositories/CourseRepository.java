@@ -1,6 +1,9 @@
 package com.nz2dev.wordtrainer.domain.repositories;
 
 import com.nz2dev.wordtrainer.domain.models.Course;
+import com.nz2dev.wordtrainer.domain.models.CourseBase;
+
+import java.util.Collection;
 
 import io.reactivex.Single;
 
@@ -9,7 +12,7 @@ import io.reactivex.Single;
  */
 public interface CourseRepository {
 
-    Single<Long> addCourse(Course.Primitive course);
-    Single<Course> getCourse(long courseId);
+    Single<Long> addCourse(Course course);
+    Single<Collection<CourseBase>> getCoursesBase();
 
 }

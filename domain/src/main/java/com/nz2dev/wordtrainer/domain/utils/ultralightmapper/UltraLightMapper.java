@@ -16,7 +16,7 @@ public abstract class UltraLightMapper {
 
     protected abstract void configure();
 
-    protected final <T> Bindings<T> bind(Class<T> type) {
+    protected final <T> Bindings<T> forSource(Class<T> type) {
         return new Bindings<>(type);
     }
 
@@ -55,7 +55,7 @@ public abstract class UltraLightMapper {
             this.sourceType = sourceType;
         }
 
-        public <D> void to(Mapping<S, D> mapping) {
+        public <D> void map(Mapping<S, D> mapping) {
             mappings.put(sourceType, mapping);
         }
     }

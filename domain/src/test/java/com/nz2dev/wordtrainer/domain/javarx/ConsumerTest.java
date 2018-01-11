@@ -3,6 +3,8 @@ package com.nz2dev.wordtrainer.domain.javarx;
 import org.junit.Test;
 
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 
 /**
@@ -20,6 +22,18 @@ public class ConsumerTest {
                         System.out.println("normal callback");
                     }
                 });
+    }
+
+    @Test
+    public void subscribe_withRuntimeExceptionThrow_ShouldHandlWithOnError() {
+        Single.zip(
+                Single.just("A")
+                        .doOnSuccess(s -> {
+                            throw new RuntimeException("A");
+                        }),
+                Single.just("B"),
+                (o, s) -> "ASD")
+        .subscribe(s -> {}, System.out::println);
     }
 
 }

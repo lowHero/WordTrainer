@@ -1,11 +1,11 @@
 package com.nz2dev.wordtrainer.domain.interactors;
 
-import com.nz2dev.wordtrainer.domain.execution.BackgroundExecutor;
-import com.nz2dev.wordtrainer.domain.execution.UIExecutor;
-import com.nz2dev.wordtrainer.domain.interactors.exercise.ExerciseInteractor;
-import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
+import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.interactors.exercise.LoadExerciseUseCase;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
+import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
+import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
 import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
 
@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.schedulers.TestScheduler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.filter;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -36,17 +36,22 @@ public class ExerciseInteractorTest {
 
     @Mock WordsRepository wordsRepository;
     @Mock TrainingsRepository trainingsRepository;
-    @Mock BackgroundExecutor backgroundExecutor;
-    @Mock UIExecutor uiExecutor;
+    @Mock ExecutionProxy executionProxy;
+    @Mock AppPreferences appPreferences;
 
     private TestScheduler testScheduler;
 
-    private ExerciseInteractor interactor;
+    private LoadExerciseUseCase loadExerciseUseCase;
+
+    private static Long[] ids = new Long[] {
+            1L
+//            2L, 3L
+    };
 
     private static Word[] wordsDummy = new Word[]{
-            new Word(0, 1, "A", "N"),
-            new Word(1, 1, "A", "N"),
-            new Word(2, 1, "A", "N")
+            new Word(1, 1, "A", "N")
+//            new Word(2, 1, "A", "N"),
+//            new Word(3, 1, "A", "N")
 //            new Word(3, 1, "A", "N"),
 //            new Word(4, 1, "A", "N")
     };
@@ -55,23 +60,27 @@ public class ExerciseInteractorTest {
     public void init() {
         testScheduler = new TestScheduler();
 
-        when(uiExecutor.getScheduler()).thenReturn(Schedulers.trampoline());
-        when(backgroundExecutor.getScheduler()).thenReturn(Schedulers.trampoline());
-        interactor = new ExerciseInteractor(wordsRepository, trainingsRepository, uiExecutor, backgroundExecutor);
+        when(executionProxy.background()).thenReturn(Schedulers.trampoline());
+        when(executionProxy.ui()).thenReturn(Schedulers.trampoline());
+
+        when(appPreferences.getSelectedCourseId()).thenReturn(1L);
+
+        loadExerciseUseCase = new LoadExerciseUseCase(
+                trainingsRepository, wordsRepository, appPreferences, executionProxy);
     }
 
     @Test
     public void makeExercise_withNotEnoughWord_ShouldThrowAnException() throws InterruptedException {
         final int accountId = 1;
         final int wordId = 1;
-        final int trainingId = 1;
         final int MAX_WORDS = 50;
 
-        when(wordsRepository.getPartOfWord(accountId, wordId, MAX_WORDS)).thenReturn(Single.just(Arrays.asList(wordsDummy)));
-        when(trainingsRepository.getTraining(trainingId)).thenReturn(Single.just(new Training(trainingId, wordsDummy[trainingId], new Date(), 0)));
+        when(wordsRepository.getWordsIds(wordId, MAX_WORDS)).thenReturn(Single.just(Arrays.asList(ids)));
+        when(wordsRepository.getWords(any())).thenReturn(Single.just(Arrays.asList(wordsDummy)));
+        when(trainingsRepository.getTrainingByWordId(any())).thenReturn(Single.just(new Training(wordId, wordsDummy[0], new Date(), 0)));
         TestObserver<Exercise> testObserver = new TestObserver<>();
 
-        interactor.loadNextExercise(trainingId, testObserver);
+        loadExerciseUseCase.execute(wordId).subscribe(testObserver);
 
 //        testObserver.await(1, TimeUnit.SECONDS);
         testObserver.assertNoErrors();

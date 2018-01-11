@@ -1,5 +1,6 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
+import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.core.dao.AccountHistoryDao;
 import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
@@ -25,8 +26,8 @@ public class RoomAccountHistoryRepository implements AccountHistoryRepository {
     private Mapper mapper;
 
     @Inject
-    public RoomAccountHistoryRepository(AccountHistoryDao accountHistoryDao, Mapper mapper) {
-        this.accountHistoryDao = accountHistoryDao;
+    public RoomAccountHistoryRepository(WordTrainerDatabase database, Mapper mapper) {
+        this.accountHistoryDao = database.getAccountHistoryDao();
         this.mapper = mapper;
     }
 

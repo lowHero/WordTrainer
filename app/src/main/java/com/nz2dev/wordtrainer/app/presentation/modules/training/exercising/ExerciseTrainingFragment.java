@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DismissingFragment;
@@ -119,6 +120,11 @@ public class ExerciseTrainingFragment extends DismissingFragment implements Exer
     @Override
     public void hideTrainings() {
         dismissInternal();
+    }
+
+    @Override
+    public void showError(String errorMessage) {
+        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
     }
 
     private void provideInjections() {

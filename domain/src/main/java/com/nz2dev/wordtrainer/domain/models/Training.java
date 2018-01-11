@@ -7,27 +7,6 @@ import java.util.Date;
  */
 public class Training {
 
-    // Primitive in case when has relationship that replace modelId onto modelObject
-    // but the main model has same structure in data layer
-    public static class Primitive {
-
-        public final long id;
-        public final long wordId;
-        public final long time;
-        public final long progress;
-
-        private Primitive(long id, long wordId, long time, long progress) {
-            this.id = id;
-            this.wordId = wordId;
-            this.time = time;
-            this.progress = progress;
-        }
-    }
-
-    public static Primitive createDto(long wordId, long time, long progress) {
-        return new Primitive(0L, wordId, time, progress);
-    }
-
     private long id;
     private Word word;
     private Date lastTrainingDate;

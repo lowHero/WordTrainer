@@ -8,13 +8,6 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
-
-        <!--<item name="colorPrimaryLight">@color/primaryLightColor</item>-->
-        <!--<item name="colorSecondary">@color/secondaryColor</item>-->
-        <!--<item name="colorSecondaryLight">@color/secondaryLightColor</item>-->
-        <!--<item name="colorSecondaryDark">@color/secondaryDarkColor</item>-->
-        <!--<item name="textColorPrimary">@color/primaryTextColor</item>-->
-        <!--<item name="textColorSecondary">@color/secondaryTextColor</item>-->
     </style>
 
     <style name="AppTheme.ActionBar">

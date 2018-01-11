@@ -1,9 +1,11 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
+import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.core.dao.WordDao;
 import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.data.utils.ListToArrayUtils;
+import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
 
@@ -26,8 +28,8 @@ public class RoomWordRepository implements WordsRepository {
     private final Mapper mapper;
 
     @Inject
-    public RoomWordRepository(WordDao wordDao, Mapper mapper) {
-        this.wordDao = wordDao;
+    public RoomWordRepository(WordTrainerDatabase database, Mapper mapper) {
+        this.wordDao = database.getWordDao();
         this.mapper = mapper;
     }
 
@@ -53,6 +55,11 @@ public class RoomWordRepository implements WordsRepository {
         return Single.create(emitter -> {
             emitter.onSuccess(mapper.map(wordDao.getWordById(wordId), Word.class));
         });
+    }
+
+    @Override
+    public Single<Integer> getWordsCount(long courseId) {
+        return Single.create(emitter -> emitter.onSuccess(wordDao.getWordsCount(courseId)));
     }
 
     @Override

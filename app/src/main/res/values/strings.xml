@@ -30,4 +30,5 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_next_time_unspecified">--:--:--</string>
+    <string name="prompt_amount_of_word">Amount of word:</string>
 </resources>

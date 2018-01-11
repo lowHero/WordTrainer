@@ -21,7 +21,8 @@ public class WordEntity {
     private String original;
     private String translate;
 
-    public WordEntity(long courseId, String original, String translate) {
+    public WordEntity(long id, long courseId, String original, String translate) {
+        this.id = id;
         this.courseId = courseId;
         this.original = original;
         this.translate = translate;

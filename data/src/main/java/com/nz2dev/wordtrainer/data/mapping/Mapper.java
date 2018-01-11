@@ -4,16 +4,19 @@ import android.text.TextUtils;
 
 import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
 import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
+import com.nz2dev.wordtrainer.data.core.entity.CourseEntity;
 import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
 import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
+import com.nz2dev.wordtrainer.data.core.relation.CourseBaseSet;
 import com.nz2dev.wordtrainer.data.core.relation.TrainingAndWordJoin;
-import com.nz2dev.wordtrainer.domain.utils.ultralightmapper.UltraLightMapper;
 import com.nz2dev.wordtrainer.domain.models.Account;
 import com.nz2dev.wordtrainer.domain.models.AccountHistory;
+import com.nz2dev.wordtrainer.domain.models.Course;
+import com.nz2dev.wordtrainer.domain.models.CourseBase;
+import com.nz2dev.wordtrainer.domain.models.Language;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
-
-import java.util.Date;
+import com.nz2dev.wordtrainer.domain.utils.ultralightmapper.UltraLightMapper;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -30,28 +33,73 @@ public class Mapper extends UltraLightMapper {
 
     @Override
     protected void configure() {
-        bind(AccountEntity.class).to(dto -> new Account(dto.getId(), dto.getName(), !TextUtils.isEmpty(dto.getPassword())));
-        bind(Account.class).to(model -> new AccountEntity(model.getName()));
+        configureAccount();
+        configureAccountHistory();
+        configureWord();
+        configureTraining();
+        configureCourse();
+    }
 
-        bind(AccountHistoryEntity.class).to(dto -> new AccountHistory(dto.getAccountName(), dto.getLoginDates()));
-        bind(AccountHistory.class).to(model -> new AccountHistoryEntity(model.getAccountName(), model.getLoginDate()));
+    private void configureAccount() {
+        forSource(AccountEntity.class).map(dto ->
+                new Account(dto.getId(), dto.getName(), !TextUtils.isEmpty(dto.getPassword())));
 
-        bind(WordEntity.class).to(dto -> new Word(dto.getId(), dto.getCourseId(), dto.getOriginal(), dto.getTranslate()));
-        bind(Word.class).to(model -> new WordEntity(model.getCourseId(), model.getOriginal(), model.getTranslation()));
+        forSource(Account.class).map(model ->
+                new AccountEntity(model.getName()));
+    }
 
-        bind(TrainingAndWordJoin.class).to(dto ->
-                new Training(dto.tId,
-                        map(dto.word, Word.class),
-                        dto.lastTrainingDate,
-                        dto.progress));
+    private void configureAccountHistory() {
+        forSource(AccountHistoryEntity.class).map(dto ->
+                new AccountHistory(dto.getAccountName(), dto.getLoginDates()));
 
-        bind(Training.class).to(model ->
+        forSource(AccountHistory.class).map(model ->
+                new AccountHistoryEntity(model.getAccountName(), model.getLoginDate()));
+    }
+
+    private void configureWord() {
+        forSource(WordEntity.class).map(dto ->
+                new Word(dto.getId(),
+                        dto.getCourseId(),
+                        dto.getOriginal(),
+                        dto.getTranslate()));
+
+        forSource(Word.class).map(model ->
+                new WordEntity(model.getId(),
+                        model.getCourseId(),
+                        model.getOriginal(),
+                        model.getTranslation()));
+    }
+
+    private void configureTraining() {
+        forSource(TrainingAndWordJoin.class).map(entity ->
+                new Training(entity.tId,
+                        map(entity.word, Word.class),
+                        entity.lastTrainingDate,
+                        entity.progress));
+
+        forSource(Training.class).map(model ->
                 new TrainingEntity(model.getId(),
                         model.getWord().getId(),
                         model.getLastTrainingDate(),
                         model.getProgress()));
-
-        bind(Training.Primitive.class).to(dto ->
-                new TrainingEntity(dto.id, dto.wordId, new Date(dto.time), dto.progress));
     }
+
+    private void configureCourse() {
+        forSource(CourseEntity.class).map(entity ->
+                new Course(entity.id,
+                        entity.schedulingId,
+                        new Language(entity.originalLanguage, null, null),
+                        new Language(entity.translationLanguage, null, null)));
+
+        forSource(Course.class).map(model ->
+                new CourseEntity(model.getId(),
+                        model.getSchedulingId(),
+                        model.getOriginalLanguage().getKey(),
+                        model.getTranslationLanguage().getKey()));
+
+        forSource(CourseBaseSet.class).map(entity ->
+                new CourseBase(entity.id,
+                        new Language(entity.originalLanguage, null, null)));
+    }
+
 }

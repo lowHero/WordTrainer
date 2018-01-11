@@ -6,6 +6,7 @@ import android.content.Context;
 import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.core.dao.AccountDao;
 import com.nz2dev.wordtrainer.data.core.dao.AccountHistoryDao;
+import com.nz2dev.wordtrainer.data.core.dao.CourseDao;
 import com.nz2dev.wordtrainer.data.core.dao.TrainingDao;
 import com.nz2dev.wordtrainer.data.core.dao.WordDao;
 import com.nz2dev.wordtrainer.data.preferences.SharedAppPreferences;
@@ -42,30 +43,6 @@ public class DataModule {
         return Room.databaseBuilder(context, WordTrainerDatabase.class, "WordTrainerDatabase")
                 .fallbackToDestructiveMigration()
                 .build();
-    }
-
-    @Provides
-    @Singleton
-    AccountDao provideAccountDao(WordTrainerDatabase database) {
-        return database.getAccountDao();
-    }
-
-    @Provides
-    @Singleton
-    AccountHistoryDao provideAccountHistoryDao(WordTrainerDatabase database) {
-        return database.getAccountHistoryDao();
-    }
-
-    @Provides
-    @Singleton
-    WordDao provideWordDao(WordTrainerDatabase database) {
-        return database.getWordDao();
-    }
-
-    @Provides
-    @Singleton
-    TrainingDao provideTrainingDao(WordTrainerDatabase database) {
-        return database.getTrainingDao();
     }
 
     @Singleton

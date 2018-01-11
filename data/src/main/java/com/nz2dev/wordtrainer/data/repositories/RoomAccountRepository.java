@@ -1,5 +1,6 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
+import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.core.dao.AccountDao;
 import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
 import com.nz2dev.wordtrainer.domain.exceptions.AccountNotExistException;
@@ -26,8 +27,8 @@ public class RoomAccountRepository implements AccountRepository {
     private Mapper mapper;
 
     @Inject
-    public RoomAccountRepository(AccountDao accountDao, Mapper mapper) {
-        this.accountDao = accountDao;
+    public RoomAccountRepository(WordTrainerDatabase database, Mapper mapper) {
+        this.accountDao = database.getAccountDao();
         this.mapper = mapper;
     }
 

@@ -1,5 +1,6 @@
 package com.nz2dev.wordtrainer.domain.interactors.exercise;
 
+import com.nz2dev.wordtrainer.domain.exceptions.NotEnoughWordForTraining;
 import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
@@ -17,6 +18,7 @@ import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by nz2Dev on 05.01.2018
@@ -44,13 +46,16 @@ public class LoadExerciseUseCase {
     }
 
     public Single<Exercise> execute(long wordId) {
-        Single<Training> trainingAsync = trainingsRepository.getTrainingByWordId(wordId);
+        Single<Training> trainingAsync = trainingsRepository
+                .getTrainingByWordId(wordId)
+                .subscribeOn(executionProxy.background());
+
         Single<Collection<Word>> variantsAsync = wordsRepository
                 .getWordsIds(appPreferences.getSelectedCourseId(), EXERCISING_WORDS_VARIANT_RANGE)
                 .subscribeOn(executionProxy.background())
                 .doOnSuccess(ids -> {
                     if (ids.size() < MINIMUM_WORDS_FOR_EXERCISING) {
-                        throw new RuntimeException("not enough word for training");
+                        throw new NotEnoughWordForTraining();
                     }
                 })
                 .to(wordIdsSingle -> Observable.fromIterable(wordIdsSingle.blockingGet()))

@@ -14,6 +14,7 @@ android {
         versionName config["versionName"]
         testInstrumentationRunner config["testInstrumentationRunner"]
         testApplicationId config["testApplicationId"]
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {

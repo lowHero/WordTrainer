@@ -1,22 +1,29 @@
 package com.nz2dev.wordtrainer.domain.models;
 
+import com.nz2dev.wordtrainer.domain.models.bindings.EmbeddedModel;
+
 /**
  * Created by nz2Dev on 04.01.2018
  */
-public class Language {
+public class Language extends EmbeddedModel {
 
     public static final String KEY_EN = "en";
     public static final String KEY_UK = "uk";
     public static final String KEY_RU = "ru";
 
     private String key;
-    private int drawableResId;
-    private int localizedNameStringId;
+    private String drawableUri;
+    private String localizedName;
 
-    public Language(String key, int drawableResId, int localizedNameStringId) {
+    public Language(String key, String drawableUri, String localizedName) {
         this.key = key;
-        this.drawableResId = drawableResId;
-        this.localizedNameStringId = localizedNameStringId;
+        this.drawableUri = drawableUri;
+        this.localizedName = localizedName;
+    }
+
+    @Override
+    public boolean isQuiteDefined() {
+        return drawableUri != null && localizedName != null;
     }
 
     public String getKey() {
@@ -27,19 +34,19 @@ public class Language {
         this.key = key;
     }
 
-    public int getDrawableResId() {
-        return drawableResId;
+    public String getDrawableUri() {
+        return drawableUri;
     }
 
-    public void setDrawableResId(int drawableResId) {
-        this.drawableResId = drawableResId;
+    public void setDrawableUri(String drawableUri) {
+        this.drawableUri = drawableUri;
     }
 
-    public int getLocalizedNameStringId() {
-        return localizedNameStringId;
+    public String getLocalizedName() {
+        return localizedName;
     }
 
-    public void setLocalizedNameStringId(int localizedNameStringId) {
-        this.localizedNameStringId = localizedNameStringId;
+    public void setLocalizedName(String localizedName) {
+        this.localizedName = localizedName;
     }
 }
