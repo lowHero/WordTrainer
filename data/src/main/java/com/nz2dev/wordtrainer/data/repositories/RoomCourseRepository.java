@@ -42,10 +42,18 @@ public class RoomCourseRepository implements CourseRepository {
     }
 
     @Override
+    public Single<CourseBase> getCourseBase(long courseId) {
+        return Single.create(emitter -> {
+            CourseBaseSet entity = courseDao.getCourseBase(courseId);
+            emitter.onSuccess(mapper.map(entity, CourseBase.class));
+        });
+    }
+
+    @Override
     public Single<Collection<CourseBase>> getCoursesBase() {
         return Single.create(emitter -> {
             List<CourseBaseSet> entityList = courseDao.getCoursesBase();
-            List<CourseBase> courses = mapper.mapList(entityList, new ArrayList<>(entityList.size()), CourseBase.class);
+            Collection<CourseBase> courses = mapper.mapList(entityList, new ArrayList<>(entityList.size()), CourseBase.class);
             emitter.onSuccess(courses);
         });
     }

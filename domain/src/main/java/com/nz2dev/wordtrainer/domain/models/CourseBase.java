@@ -9,15 +9,17 @@ public class CourseBase extends BindableModel {
 
     private long id;
     private Language originalLanguage;
+    private Language translationLanguage;
 
-    public CourseBase(long id, Language originalLanguage) {
+    public CourseBase(long id, Language originalLanguage, Language translationLanguage) {
         this.id = id;
         this.originalLanguage = originalLanguage;
+        this.translationLanguage = translationLanguage;
     }
 
     @Override
     public boolean isFullSpecified() {
-        return checkEmbedded(originalLanguage);
+        return checkEmbedded(originalLanguage) && checkEmbedded(translationLanguage);
     }
 
     public long getId() {
@@ -36,4 +38,11 @@ public class CourseBase extends BindableModel {
         this.originalLanguage = originalLanguage;
     }
 
+    public Language getTranslationLanguage() {
+        return translationLanguage;
+    }
+
+    public void setTranslationLanguage(Language translationLanguage) {
+        this.translationLanguage = translationLanguage;
+    }
 }

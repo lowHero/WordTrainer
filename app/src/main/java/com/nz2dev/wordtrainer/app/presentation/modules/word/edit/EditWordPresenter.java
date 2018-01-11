@@ -15,10 +15,18 @@ import javax.inject.Inject;
 @PerActivity
 public class EditWordPresenter extends DisposableBasePresenter<EditWordView> {
 
+    private static final int MIN_LENGTH = 2;
+
     private final LoadWordUseCase loadWordUseCase;
     private final UpdateWordUseCase updateWordUseCase;
 
     private Word editedWord;
+    private String originalInputCache;
+    private String translationInputCache;
+
+    private boolean originalValidated;
+    private boolean translationValidated;
+    private boolean isWordAcceptableNow;
 
     @Inject
     public EditWordPresenter(LoadWordUseCase loadWordUseCase, UpdateWordUseCase updateWordUseCase) {
@@ -27,13 +35,29 @@ public class EditWordPresenter extends DisposableBasePresenter<EditWordView> {
     }
 
     public void loadWord(long wordId) {
-        manage(loadWordUseCase.execute(wordId).subscribe(word -> {
+        manage("Load", loadWordUseCase.execute(wordId).subscribe(word -> {
+            originalValidated = true;
+            translationValidated = true;
             editedWord = word;
+
             getView().showWord(editedWord);
+            getView().showInsertionAllowed(isWordAcceptableNow = false);
         }));
     }
 
-    public void updateWord(String original, String translation) {
+    public void originalInputChanged(String original) {
+        originalInputCache = original;
+        validateOriginalInput(original);
+        trySwitch();
+    }
+
+    public void translationInputChanged(String translation) {
+        translationInputCache = translation;
+        validateTranslationInput(translation);
+        trySwitch();
+    }
+
+    public void acceptClick(String original, String translation) {
         if (editedWord == null) {
             throw new NullPointerException("edited word not loaded");
         }
@@ -41,7 +65,34 @@ public class EditWordPresenter extends DisposableBasePresenter<EditWordView> {
         editedWord.setOriginal(original);
         editedWord.setTranslation(translation);
 
-        manage(updateWordUseCase.execute(editedWord).subscribe());
+        manage("Accept", updateWordUseCase.execute(editedWord).subscribe(r -> {
+            getView().hideIt();
+        }));
+    }
+
+    public void rejectClick() {
+        getView().hideIt();
+    }
+
+    private void trySwitch() {
+        if (!isWordAcceptableNow && !isSameAsLoaded() && originalValidated && translationValidated) {
+            getView().showInsertionAllowed(isWordAcceptableNow = true);
+        } else if (isWordAcceptableNow && (!originalValidated || !translationValidated || isSameAsLoaded())) {
+            getView().showInsertionAllowed(isWordAcceptableNow = false);
+        }
+    }
+
+    private void validateOriginalInput(String input) {
+        originalValidated = input.length() > MIN_LENGTH;
+    }
+
+    private void validateTranslationInput(String input) {
+        translationValidated = input.length() > MIN_LENGTH;
+    }
+
+    private boolean isSameAsLoaded() {
+        return editedWord.getOriginal().equals(originalInputCache)
+                && editedWord.getTranslation().equals(translationInputCache);
     }
 
 }

@@ -25,6 +25,10 @@ public interface WordDao {
             "WHERE id IN (:ids)")
     List<WordEntity> getWords(long... ids);
 
+    @Query("SELECT * FROM words " +
+            "WHERE courseId = :courseId")
+    List<WordEntity> getAllWords(long courseId);
+
     @Query("SELECT COUNT(id) FROM words WHERE courseId = :courseId")
     int getWordsCount(long courseId);
 

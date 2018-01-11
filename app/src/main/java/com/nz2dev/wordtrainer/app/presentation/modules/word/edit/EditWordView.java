@@ -9,4 +9,8 @@ public interface EditWordView {
 
     void showWord(Word word);
 
+    void showInsertionAllowed(boolean allowed);
+
+    void hideIt();
+
 }

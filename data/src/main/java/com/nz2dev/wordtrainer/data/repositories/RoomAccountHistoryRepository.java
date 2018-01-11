@@ -43,7 +43,7 @@ public class RoomAccountHistoryRepository implements AccountHistoryRepository {
     public Single<Collection<AccountHistory>> getAllRecords() {
         return Single.create(emitter -> {
             List<AccountHistoryEntity> historyEntities = accountHistoryDao.getAllHistories();
-            List<AccountHistory> histories = mapper.mapList(
+            Collection<AccountHistory> histories = mapper.mapList(
                     historyEntities,
                     new ArrayList<>(historyEntities.size()),
                     AccountHistory.class);

@@ -12,6 +12,7 @@ import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DismissingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.utils.defaults.TextWatcherAdapter;
 import com.nz2dev.wordtrainer.domain.models.Word;
 
 import javax.inject.Inject;
@@ -19,6 +20,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.nz2dev.wordtrainer.app.utils.AnimationsUtils.animateToInvisibleShort;
+import static com.nz2dev.wordtrainer.app.utils.AnimationsUtils.animateToVisibleShort;
 
 /**
  * Created by nz2Dev on 03.01.2018
@@ -42,6 +46,12 @@ public class EditWordFragment extends DismissingFragment implements EditWordView
     @BindView(R.id.et_word_translate)
     EditText translationWordEditor;
 
+    @BindView(R.id.btn_accept_word)
+    View insertWordClicker;
+
+    @BindView(R.id.btn_reject_word)
+    View closeInsertWordClicker;
+
     @Inject EditWordPresenter presenter;
 
     @Override
@@ -61,6 +71,20 @@ public class EditWordFragment extends DismissingFragment implements EditWordView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        originalWordEditor.addTextChangedListener(new TextWatcherAdapter() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {
+                presenter.originalInputChanged(text.toString());
+            }
+        });
+
+        translationWordEditor.addTextChangedListener(new TextWatcherAdapter() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {
+                presenter.translationInputChanged(text.toString());
+            }
+        });
+
         presenter.setView(this);
         presenter.loadWord(getWordIdFromBundle());
     }
@@ -73,19 +97,35 @@ public class EditWordFragment extends DismissingFragment implements EditWordView
 
     @OnClick(R.id.btn_accept_word)
     public void onAcceptClick() {
-        presenter.updateWord(originalWordEditor.getText().toString(),
+        presenter.acceptClick(originalWordEditor.getText().toString(),
                 translationWordEditor.getText().toString());
     }
 
     @OnClick(R.id.btn_reject_word)
     public void onRejectClick() {
-        dismissInternal();
+        presenter.rejectClick();
     }
 
     @Override
     public void showWord(Word word) {
         originalWordEditor.setText(word.getOriginal());
         translationWordEditor.setText(word.getTranslation());
+    }
+
+    @Override
+    public void showInsertionAllowed(boolean allowed) {
+        if (allowed) {
+            animateToInvisibleShort(closeInsertWordClicker);
+            animateToVisibleShort(insertWordClicker);
+        } else {
+            animateToInvisibleShort(insertWordClicker);
+            animateToVisibleShort(closeInsertWordClicker);
+        }
+    }
+
+    @Override
+    public void hideIt() {
+        dismissInternal();
     }
 
     @SuppressWarnings("ConstantConditions")

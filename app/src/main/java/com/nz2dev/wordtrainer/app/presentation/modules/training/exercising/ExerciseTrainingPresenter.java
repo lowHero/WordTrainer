@@ -41,7 +41,7 @@ public class ExerciseTrainingPresenter extends DisposableBasePresenter<ExerciseT
                     getView().showVariants(exercise.getTranslationVariants());
                 }, throwable -> {
                     if (throwable instanceof NotEnoughWordForTraining) {
-                        getView().showError("Not enough word for training, add more words");
+                        getView().showError("Not enough word for training, add more wordsData");
                     } else {
                         getView().showError(throwable.getMessage());
                     }

@@ -4,8 +4,7 @@ import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.core.dao.WordDao;
 import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
-import com.nz2dev.wordtrainer.data.utils.ListToArrayUtils;
-import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
+import com.nz2dev.wordtrainer.data.utils.CollectionToArrayUtils;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
 
@@ -42,10 +41,19 @@ public class RoomWordRepository implements WordsRepository {
     }
 
     @Override
-    public Single<Collection<Word>> getWords(List<Long> ids) {
+    public Single<Collection<Word>> getAllWords(long courseId) {
         return Single.create(emitter -> {
-            List<WordEntity> entityList = wordDao.getWords(ListToArrayUtils.convertToLongArray(ids));
-            List<Word> words = mapper.mapList(entityList, new ArrayList<>(entityList.size()), Word.class);
+            Collection<WordEntity> entityList = wordDao.getAllWords(courseId);
+            Collection<Word> words = mapper.mapList(entityList, new ArrayList<>(entityList.size()), Word.class);
+            emitter.onSuccess(words);
+        });
+    }
+
+    @Override
+    public Single<Collection<Word>> getWords(Collection<Long> ids) {
+        return Single.create(emitter -> {
+            Collection<WordEntity> entityList = wordDao.getWords(CollectionToArrayUtils.convertToLongArray(ids));
+            Collection<Word> words = mapper.mapList(entityList, new ArrayList<>(entityList.size()), Word.class);
             emitter.onSuccess(words);
         });
     }

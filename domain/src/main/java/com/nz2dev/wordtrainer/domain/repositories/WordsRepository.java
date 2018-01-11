@@ -18,6 +18,7 @@ public interface WordsRepository {
     Single<Word> getWord(long wordId);
     Single<Integer> getWordsCount(long courseId);
     Single<Collection<Long>> getWordsIds(long courseId, long limit);
-    Single<Collection<Word>> getWords(List<Long> ids);
+    Single<Collection<Word>> getAllWords(long courseId);
+    Single<Collection<Word>> getWords(Collection<Long> ids);
 
 }

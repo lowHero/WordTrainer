@@ -99,7 +99,8 @@ public class Mapper extends UltraLightMapper {
 
         forSource(CourseBaseSet.class).map(entity ->
                 new CourseBase(entity.id,
-                        new Language(entity.originalLanguage, null, null)));
+                        new Language(entity.originalLanguage, null, null),
+                        new Language(entity.translationLanguage, null, null)));
     }
 
 }

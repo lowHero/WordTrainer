@@ -21,7 +21,9 @@ public interface CourseDao {
     @Insert(onConflict = REPLACE)
     long add(CourseEntity course);
 
-    @Query("SELECT courses.id, courses.originalLanguage FROM courses ")
+    @Query("SELECT id, originalLanguage, translationLanguage FROM courses")
     List<CourseBaseSet> getCoursesBase();
 
+    @Query("SELECT id, originalLanguage, translationLanguage FROM courses WHERE id = :courseId")
+    CourseBaseSet getCourseBase(long courseId);
 }

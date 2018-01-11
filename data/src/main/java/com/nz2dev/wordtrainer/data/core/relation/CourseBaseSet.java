@@ -7,10 +7,12 @@ public class CourseBaseSet {
 
     public final long id;
     public final String originalLanguage;
+    public final String translationLanguage;
 
-    public CourseBaseSet(long id, String originalLanguage) {
+    public CourseBaseSet(long id, String originalLanguage, String translationLanguage) {
         this.id = id;
         this.originalLanguage = originalLanguage;
+        this.translationLanguage = translationLanguage;
     }
 
 }

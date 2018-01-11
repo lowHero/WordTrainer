@@ -34,6 +34,8 @@ dependencies {
     implementation globalDependencies["javaxInject"]
     implementation globalDependencies["rxJava"]
     implementation globalDependencies["rxAndroid"]
+    implementation globalDependencies["gson"]
+    implementation globalDependencies["commonsIO"]
 
     def testDependencies = rootProject.ext.testDependencies
     testImplementation testDependencies["junit"]

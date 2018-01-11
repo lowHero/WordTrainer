@@ -40,7 +40,7 @@ public class OverviewTrainingsPresenter extends DisposableBasePresenter<Overview
         super.onViewReady();
         loadTrainings();
         manage(Observable
-                .merge(appEventBus.observeEvents(WordEvent.class, WordEvent::isStructureChanged),
+                .merge(appEventBus.observeEvents(WordEvent.class),
                         appEventBus.observeEvents(TrainingEvent.class, TrainingEvent::isUpdated),
                         appEventBus.observeEvents(CourseEvent.class, CourseEvent::isSelected))
                 .subscribe(event -> {
@@ -68,7 +68,7 @@ public class OverviewTrainingsPresenter extends DisposableBasePresenter<Overview
     }
 
     public void deleteWordClick(Word word) {
-        manage("Delete", deleteWordUseCase.execute(word).subscribe());
+        manage(word.hashCode(), deleteWordUseCase.execute(word).subscribe());
     }
 
     private void loadTrainings() {

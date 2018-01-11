@@ -13,6 +13,7 @@ import io.reactivex.Single;
 public interface CourseRepository {
 
     Single<Long> addCourse(Course course);
+    Single<CourseBase> getCourseBase(long courseId);
     Single<Collection<CourseBase>> getCoursesBase();
 
 }

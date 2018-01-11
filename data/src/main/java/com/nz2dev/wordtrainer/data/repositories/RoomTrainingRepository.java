@@ -84,7 +84,7 @@ public class RoomTrainingRepository implements TrainingsRepository {
     public Single<Collection<Training>> getSortedTrainings(long courseId) {
         return Single.create(emitter -> {
             List<TrainingAndWordJoin> sortedTrainingEntityList = trainingDao.getSortedTraining(courseId);
-            List<Training> sortedTrainings = mapper.mapList(sortedTrainingEntityList, new ArrayList<>(), Training.class);
+            Collection<Training> sortedTrainings = mapper.mapList(sortedTrainingEntityList, new ArrayList<>(), Training.class);
             emitter.onSuccess(sortedTrainings);
         });
     }

@@ -5,4 +5,12 @@
         android:id="@+id/item_populate"
         android:title="Populate Test Words" />
 
+    <item
+        android:id="@+id/item_export_words"
+        android:title="Export Test Words" />
+
+    <item
+        android:id="@+id/item_import_words"
+        android:title="Import Test Words"/>
+
 </menu>

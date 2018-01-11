@@ -1,5 +1,6 @@
 package com.nz2dev.wordtrainer.domain.utils.ultralightmapper;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public abstract class UltraLightMapper {
         return destinationClass.cast(mapping.map(source));
     }
 
-    public <S, D> List<D> mapList(List<S> source, List<D> destination, Class<D> destinationClass) {
+    public <S, D> Collection<D> mapList(Collection<S> source, Collection<D> destination, Class<D> destinationClass) {
         if (source == null) {
             return null;
         }

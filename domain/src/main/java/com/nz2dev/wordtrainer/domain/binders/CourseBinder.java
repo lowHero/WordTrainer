@@ -23,30 +23,17 @@ public class CourseBinder {
         this.languageRepository = languageRepository;
     }
 
-    public Single<Course> bindCourse(Course course) {
-        return Single.create(emitter -> {
-            if (!course.isFullSpecified()) {
-                if (!course.getOriginalLanguage().isQuiteDefined()) {
-                    course.setOriginalLanguage(languageRepository
-                            .getLanguage(course.getOriginalLanguage().getKey())
-                            .blockingGet());
-                }
-                if (!course.getTranslationLanguage().isQuiteDefined()) {
-                    course.setTranslationLanguage(languageRepository
-                            .getLanguage(course.getTranslationLanguage().getKey())
-                            .blockingGet());
-                }
-            }
-            emitter.onSuccess(course);
-        });
-    }
-
     public Single<CourseBase> bindCourseBase(CourseBase courseBase) {
         return Single.create(emitter -> {
             if (!courseBase.isFullSpecified()) {
                 if (!courseBase.getOriginalLanguage().isQuiteDefined()) {
                     courseBase.setOriginalLanguage(languageRepository
                             .getLanguage(courseBase.getOriginalLanguage().getKey())
+                            .blockingGet());
+                }
+                if (!courseBase.getTranslationLanguage().isQuiteDefined()) {
+                    courseBase.setTranslationLanguage(languageRepository
+                            .getLanguage(courseBase.getTranslationLanguage().getKey())
                             .blockingGet());
                 }
             }
