@@ -9,11 +9,16 @@ public final class WordEvent {
 
     public enum Type {
         WordAndTrainingAdded,
+        WordAndTrainingDeleted,
         Edited,
     }
 
     static WordEvent newWordAndTrainingAdded(Word word) {
         return new WordEvent(Type.WordAndTrainingAdded, word);
+    }
+
+    static WordEvent newWordAndTrainingDeleted(Word word) {
+        return new WordEvent(Type.WordAndTrainingDeleted, word);
     }
 
     static WordEvent newEdited(Word word) {
@@ -29,7 +34,7 @@ public final class WordEvent {
     }
 
     public boolean isStructureChanged() {
-        return Type.WordAndTrainingAdded.equals(type);
+        return Type.WordAndTrainingAdded.equals(type) || Type.WordAndTrainingDeleted.equals(type);
     }
 
     public boolean isEdited() {

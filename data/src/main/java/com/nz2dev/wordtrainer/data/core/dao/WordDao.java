@@ -1,6 +1,7 @@
 package com.nz2dev.wordtrainer.data.core.dao;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
@@ -35,5 +36,8 @@ public interface WordDao {
 
     @Update
     void updateWord(WordEntity wordEntity);
+
+    @Delete
+    void deleteWord(WordEntity wordEntity);
 
 }

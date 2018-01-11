@@ -1,7 +1,7 @@
 package com.nz2dev.wordtrainer.domain.interactors;
 
 import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
-import com.nz2dev.wordtrainer.domain.interactors.exercise.LoadExerciseUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.training.LoadExerciseUseCase;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.models.internal.Exercise;

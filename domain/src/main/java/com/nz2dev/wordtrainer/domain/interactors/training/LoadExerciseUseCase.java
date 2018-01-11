@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.domain.interactors.exercise;
+package com.nz2dev.wordtrainer.domain.interactors.training;
 
 import com.nz2dev.wordtrainer.domain.exceptions.NotEnoughWordForTraining;
 import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;

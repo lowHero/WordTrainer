@@ -4,12 +4,16 @@ import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.interactors.course.CourseEvent;
 import com.nz2dev.wordtrainer.domain.interactors.training.LoadTrainingsUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.training.TrainingEvent;
+import com.nz2dev.wordtrainer.domain.interactors.word.DeleteWordUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.word.WordEvent;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
 
 /**
  * Created by nz2Dev on 30.11.2017
@@ -20,27 +24,26 @@ public class OverviewTrainingsPresenter extends DisposableBasePresenter<Overview
 
     private final EventBus appEventBus;
     private final LoadTrainingsUseCase loadTrainingsUseCase;
+    private final DeleteWordUseCase deleteWordUseCase;
 
     private boolean needToShowNow = true;
 
     @Inject
-    public OverviewTrainingsPresenter(EventBus appEventBus, LoadTrainingsUseCase loadTrainingsUseCase) {
+    public OverviewTrainingsPresenter(EventBus appEventBus, LoadTrainingsUseCase loadTrainingsUseCase, DeleteWordUseCase deleteWordUseCase) {
         this.appEventBus = appEventBus;
         this.loadTrainingsUseCase = loadTrainingsUseCase;
+        this.deleteWordUseCase = deleteWordUseCase;
     }
 
     @Override
     protected void onViewReady() {
         super.onViewReady();
         loadTrainings();
-        manage(appEventBus.observeEvents(WordEvent.class, WordEvent::isStructureChanged)
+        manage(Observable
+                .merge(appEventBus.observeEvents(WordEvent.class, WordEvent::isStructureChanged),
+                        appEventBus.observeEvents(TrainingEvent.class, TrainingEvent::isUpdated),
+                        appEventBus.observeEvents(CourseEvent.class, CourseEvent::isSelected))
                 .subscribe(event -> {
-                    if (needToShowNow) {
-                        loadTrainings();
-                    }
-                }));
-        manage(appEventBus.observeEvents(CourseEvent.class, CourseEvent::isSelected)
-                .subscribe(courseEvent -> {
                     if (needToShowNow) {
                         loadTrainings();
                     }
@@ -65,7 +68,7 @@ public class OverviewTrainingsPresenter extends DisposableBasePresenter<Overview
     }
 
     public void deleteWordClick(Word word) {
-        // TODO delete word and refresh list;
+        manage("Delete", deleteWordUseCase.execute(word).subscribe());
     }
 
     private void loadTrainings() {

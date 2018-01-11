@@ -5,6 +5,7 @@ import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePres
 import com.nz2dev.wordtrainer.domain.interactors.course.CourseEvent;
 import com.nz2dev.wordtrainer.domain.interactors.course.DownloadCourseOverviewUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.course.SelectCourseUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.word.WordEvent;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -37,7 +39,9 @@ public class CoursesOverviewPresenter extends DisposableBasePresenter<CoursesOve
     protected void onViewReady() {
         super.onViewReady();
         prepareCourses();
-        manage(appEventBus.observeEvents(CourseEvent.class, CourseEvent::isChanged)
+        manage(Observable
+                .merge(appEventBus.observeEvents(CourseEvent.class, CourseEvent::isChanged),
+                        appEventBus.observeEvents(WordEvent.class, WordEvent::isStructureChanged))
                 .subscribe(coursesChangedEvent -> {
                     prepareCourses();
                 }));

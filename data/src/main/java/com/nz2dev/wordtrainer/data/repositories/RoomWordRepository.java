@@ -71,6 +71,14 @@ public class RoomWordRepository implements WordsRepository {
     }
 
     @Override
+    public Single<Boolean> deleteWord(Word word) {
+        return Single.create(emitter -> {
+            wordDao.deleteWord(mapper.map(word, WordEntity.class));
+            emitter.onSuccess(true);
+        });
+    }
+
+    @Override
     public Single<Collection<Long>> getWordsIds(long courseId, long limit) {
         return Single.create(emitter -> emitter.onSuccess(wordDao.getWordsIds(courseId, limit)));
     }
