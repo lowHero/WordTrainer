@@ -37,15 +37,9 @@ public class ExportWordsUseCase {
     public Single<Boolean> execute(String name, Collection<Word> words) {
         Word first = Observable.fromIterable(words).blockingFirst();
         return Observable.fromIterable(words)
-                .scan(first, (word, word2) -> {
-                    if (word.getCourseId() != word2.getCourseId()) {
-                        throw new RuntimeException("not all the words have the same courseId: " + first.getCourseId());
-                    }
-                    return word2;
-                })
-                .subscribeOn(executionProxy.background())
                 .map(word -> new WordData(word.getOriginal(), word.getTranslation()))
                 .toList()
+                .subscribeOn(executionProxy.background())
                 .map(wordsDataList -> {
                     CourseBase owner = courseRepository.getCourseBase(first.getCourseId()).blockingGet();
                     WordsPacket wordsPacket = new WordsPacket(

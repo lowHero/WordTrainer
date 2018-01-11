@@ -10,6 +10,7 @@ import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeComponent;
 import com.nz2dev.wordtrainer.app.presentation.modules.startup.StartupActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.startup.StartupComponent;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingComponent;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.importing.ImportWordsComponent;
 import com.nz2dev.wordtrainer.app.services.training.TrainingScheduleComponent;
 
 import javax.inject.Singleton;
@@ -34,5 +35,7 @@ public interface AppComponent {
     CreateCourseComponent createCreateCourseComponent();
 
     TrainingScheduleComponent createTrainingScheduleComponent();
+
+    ImportWordsComponent createImportWordsComponent();
 
 }
