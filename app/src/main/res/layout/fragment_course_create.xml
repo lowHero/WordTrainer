@@ -14,7 +14,7 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginTop="24dp"
-        tools:listitem="@layout/include_language_item"/>
+        tools:listitem="@layout/include_item_language"/>
 
     <Button
         android:id="@+id/btn_create_course"

@@ -47,7 +47,7 @@ public class RecentlyAccountsRenderer extends Renderer<Account> {
 
     @Override
     protected View inflate(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.include_account_short_prompt, parent, false);
+        return inflater.inflate(R.layout.include_item_account_short, parent, false);
     }
 
     @Override

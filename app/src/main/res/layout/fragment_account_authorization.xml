@@ -23,7 +23,7 @@
             android:paddingTop="16dp"
             app:reverseLayout="true"
             app:stackFromEnd="true"
-            tools:listitem="@layout/include_account_short_prompt">
+            tools:listitem="@layout/include_item_account_short">
 
         </android.support.v7.widget.RecyclerView>
 

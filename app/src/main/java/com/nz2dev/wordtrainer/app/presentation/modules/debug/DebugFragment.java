@@ -17,7 +17,7 @@ import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.interactors.word.CreateWordUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.word.ExportWordsUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.word.ImportWordsUseCase;
-import com.nz2dev.wordtrainer.domain.interactors.word.LoadCurrentCourseWordsUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.word.LoadCourseWordsUseCase;
 
 import javax.inject.Inject;
 
@@ -31,7 +31,7 @@ public class DebugFragment extends Fragment {
     }
 
     @Inject CreateWordUseCase createWordUseCase;
-    @Inject LoadCurrentCourseWordsUseCase loadCurrentCourseWordsUseCase;
+    @Inject LoadCourseWordsUseCase loadCourseWordsUseCase;
     @Inject ExportWordsUseCase exportWordsUseCase;
     @Inject ImportWordsUseCase importWordsUseCase;
 
@@ -55,7 +55,7 @@ public class DebugFragment extends Fragment {
                 return true;
 
             case R.id.item_export_words:
-                loadCurrentCourseWordsUseCase.execute().subscribe(words -> {
+                loadCourseWordsUseCase.execute(-1).subscribe(words -> {
                     Toast.makeText(getContext(), "load wordsData: " + words.size(), Toast.LENGTH_SHORT).show();
 
                     exportWordsUseCase.execute("Test", words).subscribe(r -> {

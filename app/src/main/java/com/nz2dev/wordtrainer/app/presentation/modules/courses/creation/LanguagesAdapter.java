@@ -70,7 +70,7 @@ public class LanguagesAdapter extends BaseAdapter {
         ViewHolder viewHolder = convertView == null ? null : (ViewHolder) convertView.getTag();
 
         if (viewHolder == null) {
-            view = inflater.inflate(R.layout.include_language_item, parent, false);
+            view = inflater.inflate(R.layout.include_item_language, parent, false);
             // by default its inflated with android.widget.ViewGroup.LayoutParam and crashes when
             // use trying to expand spinner, that's why i'm doing this
             view.setLayoutParams(new LayoutParams(MATCH_PARENT, MATCH_PARENT));

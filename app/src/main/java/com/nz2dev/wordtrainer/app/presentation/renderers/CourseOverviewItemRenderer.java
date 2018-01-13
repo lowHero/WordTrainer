@@ -2,6 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.renderers;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.utils.generic.OnItemClickListener;
 import com.nz2dev.wordtrainer.app.utils.helpers.DrawableIdHelper;
+import com.nz2dev.wordtrainer.domain.models.Course;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 import com.nz2dev.wordtrainer.domain.models.Language;
 import com.nz2dev.wordtrainer.domain.models.internal.CourseInfo;
@@ -22,7 +24,18 @@ import butterknife.ButterKnife;
 /**
  * Created by nz2Dev on 09.01.2018
  */
-public class CourseRenderer extends Renderer<CourseInfo> {
+public class CourseOverviewItemRenderer extends Renderer<CourseInfo> {
+
+    public enum CourseAction {
+        Select,
+        ExportWords
+    }
+
+    public interface CourseActionListener {
+
+        void onCourseAction(CourseBase course, CourseAction action);
+
+    }
 
     @BindView(R.id.cv_course_item_root)
     CardView root;
@@ -36,9 +49,9 @@ public class CourseRenderer extends Renderer<CourseInfo> {
     @BindView(R.id.tv_course_word_count)
     TextView wordCountText;
 
-    private OnItemClickListener<CourseBase> listener;
+    private CourseActionListener listener;
 
-    public CourseRenderer(OnItemClickListener<CourseBase> listener) {
+    public CourseOverviewItemRenderer(CourseActionListener listener) {
         this.listener = listener;
     }
 
@@ -49,12 +62,27 @@ public class CourseRenderer extends Renderer<CourseInfo> {
 
     @Override
     protected void hookListeners(View rootView) {
-        rootView.setOnClickListener(v -> listener.onItemClick(getContent().getCourse()));
+        rootView.setOnClickListener(v -> {
+            listener.onCourseAction(getContent().getCourse(), CourseAction.Select);
+        });
+        rootView.setOnLongClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(getContext(), rootView);
+            popupMenu.getMenu().add("Export Words");
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getTitle().equals("Export Words")) {
+                    listener.onCourseAction(getContent().getCourse(), CourseAction.ExportWords);
+                }
+                popupMenu.dismiss();
+                return true;
+            });
+            popupMenu.show();
+            return true;
+        });
     }
 
     @Override
     protected View inflate(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.include_course_item, parent, false);
+        return inflater.inflate(R.layout.include_item_course, parent, false);
     }
 
     @Override

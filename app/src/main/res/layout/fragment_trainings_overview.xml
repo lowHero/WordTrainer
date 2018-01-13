@@ -10,5 +10,5 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="8dp"
-    tools:listitem="@layout/include_training_item" />
+    tools:listitem="@layout/include_item_training" />
 

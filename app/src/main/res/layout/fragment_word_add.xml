@@ -15,7 +15,7 @@
     tools:background="#d6d6d6">
 
     <include
-        layout="@layout/include_word_input"
+        layout="@layout/include_structure_word_input"
         android:id="@+id/word_input"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

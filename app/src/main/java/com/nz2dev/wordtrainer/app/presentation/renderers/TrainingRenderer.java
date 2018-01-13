@@ -70,7 +70,7 @@ public class TrainingRenderer extends Renderer<Training> {
 
     @Override
     protected View inflate(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.include_training_item, parent, false);
+        return inflater.inflate(R.layout.include_item_training, parent, false);
     }
 
     @Override

@@ -164,7 +164,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     @SuppressWarnings("ConstantConditions")
     private void showAddingVariantDialog() {
         BottomSheetDialog dialog = new BottomSheetDialog(getContext());
-        dialog.setContentView(R.layout.dialog_words_addition_variants);
+        dialog.setContentView(R.layout.include_structure_words_addition_variants);
         dialog.findViewById(R.id.btn_add_word).setOnClickListener(v -> {
             dialog.dismiss();
             presenter.navigateWordAdditionClick();

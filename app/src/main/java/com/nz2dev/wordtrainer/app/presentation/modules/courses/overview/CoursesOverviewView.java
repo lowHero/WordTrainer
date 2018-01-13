@@ -14,4 +14,7 @@ public interface CoursesOverviewView {
     void showSelectedCourse(long currentCourseId);
 
     void navigateCourseAddition();
+
+    void navigateWordsExporting(long courseId);
+
 }

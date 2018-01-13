@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        layout="@layout/include_structure_languages"
+        android:id="@+id/include_structure_language_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
+
+    <EditText
+        android:id="@+id/et_file_name_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include_structure_language_holder"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
+    <ImageView
+        android:id="@+id/btn_reject_export"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/et_file_name_input"
+        android:layout_alignTop="@+id/et_file_name_input"
+        android:layout_toLeftOf="@+id/et_file_name_input"
+        android:layout_toStartOf="@+id/et_file_name_input"
+        android:padding="10dp"
+        app:srcCompat="@drawable/ic_close_simple_black" />
+
+    <ImageView
+        android:id="@+id/btn_accept_export"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/et_file_name_input"
+        android:layout_alignTop="@+id/et_file_name_input"
+        android:layout_toEndOf="@+id/et_file_name_input"
+        android:layout_toRightOf="@+id/et_file_name_input"
+        app:srcCompat="@drawable/ic_accept_simple_black" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_exported_words_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/et_file_name_input"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        tools:listitem="@layout/include_item_word" />
+
+</RelativeLayout>

@@ -13,7 +13,7 @@
 
         <include
             android:id="@+id/home_main"
-            layout="@layout/include_home_main"
+            layout="@layout/include_structure_home_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

@@ -37,7 +37,7 @@
             android:overScrollMode="never"
             app:layoutManager="android.support.v7.widget.GridLayoutManager"
             tools:layout_height="170dp"
-            tools:listitem="@layout/include_word_translation_variant">
+            tools:listitem="@layout/include_item_word_translation">
 
         </android.support.v7.widget.RecyclerView>
 

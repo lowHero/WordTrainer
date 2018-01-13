@@ -40,7 +40,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:padding="8dp"
-        tools:listitem="@layout/include_word_item" />
+        tools:listitem="@layout/include_item_word" />
 
     <ImageView
         android:id="@+id/btn_import_accept"

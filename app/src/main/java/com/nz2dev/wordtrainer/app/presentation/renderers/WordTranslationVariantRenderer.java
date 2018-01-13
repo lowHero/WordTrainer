@@ -51,7 +51,7 @@ public class WordTranslationVariantRenderer extends Renderer<Word> {
 
     @Override
     protected View inflate(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.include_word_translation_variant, parent, false);
+        return inflater.inflate(R.layout.include_item_word_translation, parent, false);
     }
 
     public void highlightIsCorrect(boolean condition) {

@@ -58,6 +58,10 @@ public class CoursesOverviewPresenter extends DisposableBasePresenter<CoursesOve
         getView().navigateCourseAddition();
     }
 
+    public void exportCourseWordClick(CourseBase course) {
+        getView().navigateWordsExporting(course.getId());
+    }
+
     private void prepareCourses() {
         manage("Prepare Courses", downloadCourseOverviewUseCase.execute()
                 .subscribe(coursesOverview -> {

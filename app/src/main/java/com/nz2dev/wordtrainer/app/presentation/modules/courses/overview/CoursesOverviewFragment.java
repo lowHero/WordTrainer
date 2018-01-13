@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.Navigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
-import com.nz2dev.wordtrainer.app.presentation.renderers.CourseRenderer;
+import com.nz2dev.wordtrainer.app.presentation.renderers.CourseOverviewItemRenderer;
+import com.nz2dev.wordtrainer.app.presentation.renderers.CourseOverviewItemRenderer.CourseActionListener;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.app.utils.generic.OnItemClickListener;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
@@ -35,7 +36,7 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 /**
  * Created by nz2Dev on 09.01.2018
  */
-public class CoursesOverviewFragment extends Fragment implements CoursesOverviewView, OnItemClickListener<CourseBase> {
+public class CoursesOverviewFragment extends Fragment implements CoursesOverviewView, CourseActionListener {
 
     public static CoursesOverviewFragment newInstance() {
         return new CoursesOverviewFragment();
@@ -53,7 +54,7 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
-        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new CourseRenderer(this)));
+        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new CourseOverviewItemRenderer(this)));
     }
 
     @Nullable
@@ -98,8 +99,15 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
     }
 
     @Override
-    public void onItemClick(CourseBase item) {
-        presenter.selectCourseClick(item);
+    public void onCourseAction(CourseBase course, CourseOverviewItemRenderer.CourseAction action) {
+        switch (action) {
+            case Select:
+                presenter.selectCourseClick(course);
+                return;
+            case ExportWords:
+                presenter.exportCourseWordClick(course);
+                return;
+        }
     }
 
     @OnClick(R.id.btn_add_course)
@@ -119,7 +127,7 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
         for (int i = 0; i < adapter.getItemCount(); i++) {
             RendererViewHolder viewHolder = (RendererViewHolder) coursesRecyclerView.findViewHolderForAdapterPosition(i);
             if (viewHolder != null) {
-                CourseRenderer renderer = (CourseRenderer) viewHolder.getRenderer();
+                CourseOverviewItemRenderer renderer = (CourseOverviewItemRenderer) viewHolder.getRenderer();
                 if (adapter.getItem(i).getCourse().getId() == currentCourseId) {
                     renderer.showAsSelected(true);
                 } else {
@@ -133,4 +141,10 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
     public void navigateCourseAddition() {
         navigator.navigateCourseCreationFrom(getActivity());
     }
+
+    @Override
+    public void navigateWordsExporting(long courseId) {
+        navigator.navigateWordExportingFrom(getActivity(), courseId);
+    }
+
 }

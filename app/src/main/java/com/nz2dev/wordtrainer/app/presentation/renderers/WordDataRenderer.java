@@ -35,7 +35,7 @@ public class WordDataRenderer extends Renderer<WordData> {
 
     @Override
     protected View inflate(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.include_word_item, parent, false);
+        return inflater.inflate(R.layout.include_item_word, parent, false);
     }
 
     @Override
