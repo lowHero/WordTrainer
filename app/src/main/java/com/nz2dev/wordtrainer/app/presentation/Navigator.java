@@ -6,7 +6,9 @@ import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.courses.creation.CreateCourseActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.startup.StartupActivity;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.explore.ExploreWordsSourceActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.exporting.ExportWordsActivity;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.importing.ImportWordsActivity;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,8 +36,16 @@ public class Navigator {
         source.startActivity(CreateCourseActivity.getCallingIntent(source));
     }
 
-    public void navigateWordExportingFrom(Activity source, long courseId) {
+    public void navigateWordsExportingFrom(Activity source, long courseId) {
         source.startActivity(ExportWordsActivity.getCallingIntent(source, courseId));
+    }
+
+    public void navigateWordsExploring(Activity source) {
+        source.startActivity(ExploreWordsSourceActivity.getCallingIntent(source));
+    }
+
+    public void navigateWordsImportingFrom(Activity source, String filePath) {
+        source.startActivity(ImportWordsActivity.getCallingIntent(source, filePath));
     }
 
 }

@@ -7,8 +7,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.presentation.renderers.abstraction.AbstractSelectableItemRenderer;
 import com.nz2dev.wordtrainer.domain.models.Word;
-import com.pedrogomez.renderers.Renderer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,11 +16,7 @@ import butterknife.ButterKnife;
 /**
  * Created by nz2Dev on 13.01.2018
  */
-public class SelectableWordItemRenderer extends Renderer<Word> {
-
-    public interface SelectionListener {
-        void onItemSelected(Word word, boolean selected);
-    }
+public class ExportedWordItemRenderer extends AbstractSelectableItemRenderer<Word> {
 
     @BindView(R.id.tv_word_selectable_original)
     TextView originalWordText;
@@ -31,12 +27,8 @@ public class SelectableWordItemRenderer extends Renderer<Word> {
     @BindView(R.id.cb_selection_indicator)
     CheckBox selectionIndicator;
 
-    private SelectionListener listener;
-    private boolean isSelected;
-
-    public SelectableWordItemRenderer(SelectionListener listener, boolean isSelectedDefault) {
-        this.listener = listener;
-        this.isSelected = isSelectedDefault;
+    public ExportedWordItemRenderer(boolean isSelectedDefault, SelectionListener<Word> listener) {
+        super(isSelectedDefault, listener);
     }
 
     @Override
@@ -45,29 +37,20 @@ public class SelectableWordItemRenderer extends Renderer<Word> {
     }
 
     @Override
-    protected void hookListeners(View rootView) {
-        rootView.setOnClickListener(v -> {
-            isSelected = !isSelected;
-            renderSelection();
-            listener.onItemSelected(getContent(), isSelected);
-        });
-    }
-
-    @Override
     protected View inflate(LayoutInflater inflater, ViewGroup parent) {
         return inflater.inflate(R.layout.include_item_word_selectable, parent, false);
     }
 
     @Override
-    public void render() {
+    protected void renderItem() {
         originalWordText.setText(getContent().getOriginal());
         translationWordText.setText(getContent().getTranslation());
-        renderSelection();
     }
 
-    private void renderSelection() {
-        selectionIndicator.setChecked(isSelected);
-        selectionIndicator.setText(isSelected ? R.string.prompt_export : R.string.prompt_ignore);
+    @Override
+    protected void renderSelection() {
+        selectionIndicator.setChecked(isSelected());
+        selectionIndicator.setText(isSelected() ? R.string.prompt_export : R.string.prompt_ignore);
     }
 
 }

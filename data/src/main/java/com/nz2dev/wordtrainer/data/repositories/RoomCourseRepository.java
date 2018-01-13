@@ -5,6 +5,7 @@ import com.nz2dev.wordtrainer.data.core.dao.CourseDao;
 import com.nz2dev.wordtrainer.data.core.entity.CourseEntity;
 import com.nz2dev.wordtrainer.data.core.relation.CourseBaseSet;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
+import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 import com.nz2dev.wordtrainer.domain.models.Course;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 import com.nz2dev.wordtrainer.domain.repositories.CourseRepository;
@@ -55,6 +56,15 @@ public class RoomCourseRepository implements CourseRepository {
             List<CourseBaseSet> entityList = courseDao.getCoursesBase();
             Collection<CourseBase> courses = mapper.mapList(entityList, new ArrayList<>(entityList.size()), CourseBase.class);
             emitter.onSuccess(courses);
+        });
+    }
+
+    @Override
+    public Single<CourseBase> getCourseBaseByOriginalLanguageKey(String originalLanguageKey) {
+        return Single.create(emitter -> {
+            CourseBaseSet entity = courseDao.getCourseBaseByOriginalLanguageKey(originalLanguageKey);
+            CourseBase course = mapper.map(entity, CourseBase.class);
+            emitter.onSuccess(course);
         });
     }
 

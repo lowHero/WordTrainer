@@ -13,7 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.renderers.SelectableWordItemRenderer;
+import com.nz2dev.wordtrainer.app.presentation.renderers.ExportedWordItemRenderer;
+import com.nz2dev.wordtrainer.app.presentation.renderers.abstraction.AbstractSelectableItemRenderer.DefaultSelectionHandler;
 import com.nz2dev.wordtrainer.app.presentation.structures.LanguageStructuresHolder;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.models.Language;
@@ -57,14 +58,14 @@ public class ExportWordsFragment extends Fragment implements ExportWordsView {
 
     private LanguageStructuresHolder languageStructuresHolder;
     private RVRendererAdapter<Word> wordsAdapter;
-    private SelectionHandler selectionHandler;
+    private DefaultSelectionHandler<Word> selectionHandler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DependenciesUtils.fromAttachedActivity(this, ExportWordsActivity.class).inject(this);
-        selectionHandler = new SelectionHandler();
-        wordsAdapter = new RVRendererAdapter<>(new RendererBuilder<>(new SelectableWordItemRenderer(selectionHandler, true)));
+        selectionHandler = new DefaultSelectionHandler<>();
+        wordsAdapter = new RVRendererAdapter<>(new RendererBuilder<>(new ExportedWordItemRenderer(true, selectionHandler)));
     }
 
     @Nullable

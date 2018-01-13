@@ -16,7 +16,6 @@ import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.renderers.CourseOverviewItemRenderer;
 import com.nz2dev.wordtrainer.app.presentation.renderers.CourseOverviewItemRenderer.CourseActionListener;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
-import com.nz2dev.wordtrainer.app.utils.generic.OnItemClickListener;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 import com.nz2dev.wordtrainer.domain.models.internal.CourseInfo;
 import com.pedrogomez.renderers.RVRendererAdapter;
@@ -147,7 +146,7 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
 
     @Override
     public void navigateWordsExporting(long courseId) {
-        navigator.navigateWordExportingFrom(getActivity(), courseId);
+        navigator.navigateWordsExportingFrom(getActivity(), courseId);
     }
 
 }

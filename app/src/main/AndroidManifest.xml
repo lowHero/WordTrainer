@@ -41,6 +41,9 @@
             android:name=".presentation.modules.word.exporting.ExportWordsActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".presentation.modules.word.explore.ExploreWordsSourceActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".presentation.modules.word.importing.ImportWordsActivity"
             android:screenOrientation="portrait">
 

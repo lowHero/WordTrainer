@@ -13,8 +13,9 @@ import io.reactivex.Single;
 public interface CourseRepository {
 
     Single<Long> addCourse(Course course);
+    Single<Course> deleteCourse(long courseId);
     Single<CourseBase> getCourseBase(long courseId);
     Single<Collection<CourseBase>> getCoursesBase();
-    Single<Course> deleteCourse(long courseId);
+    Single<CourseBase> getCourseBaseByOriginalLanguageKey(String originalLanguageKey);
 
 }

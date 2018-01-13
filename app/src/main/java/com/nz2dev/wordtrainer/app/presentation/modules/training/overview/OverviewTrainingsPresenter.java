@@ -67,6 +67,10 @@ public class OverviewTrainingsPresenter extends DisposableBasePresenter<Overview
         getView().navigateWordEdit(word.getId());
     }
 
+    public void navigateWordExploreClick() {
+        getView().navigateWordExploring();
+    }
+
     public void deleteWordClick(Word word) {
         manage(word.hashCode(), deleteWordUseCase.execute(word).subscribe());
     }

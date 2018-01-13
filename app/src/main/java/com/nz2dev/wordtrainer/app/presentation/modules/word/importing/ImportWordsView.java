@@ -10,8 +10,9 @@ import java.util.Collection;
  */
 interface ImportWordsView {
 
-    void showOriginalLanguage(Language originalLanguage);
-    void showTranslationLanguage(Language translationLanguage);
+    void showLanguages(Language originalLanguage, Language translationLanguage);
     void showImportableWords(Collection<WordData> wordsData);
+
+    void hideIt();
 
 }

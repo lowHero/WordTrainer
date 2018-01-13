@@ -12,6 +12,7 @@
     <string name="prompt_word_original">Original</string>
     <string name="prompt_word_translation">Translation</string>
     <string name="prompt_export">Export</string>
+    <string name="prompt_import">Import</string>
     <string name="prompt_ignore">Ignore</string>
     <string name="prompt_course_language">Course Language</string>
     <string name="prompt_amount_of_word">Amount of word:</string>

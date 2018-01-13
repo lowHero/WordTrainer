@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.presentation.Navigator;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DismissingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.training.exercising.ExerciseTrainingFragment;
@@ -57,6 +58,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     @BindView(R.id.rv_words_list)
     RecyclerView wordsList;
 
+    @Inject Navigator navigator;
     @Inject OverviewTrainingsPresenter presenter;
 
     private RVRendererAdapter<Training> adapter;
@@ -161,6 +163,11 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
         nestedFragmentExhibitor.showFromBottom(EditWordFragment.newInstance(wordId));
     }
 
+    @Override
+    public void navigateWordExploring() {
+        navigator.navigateWordsExploring(getActivity());
+    }
+
     @SuppressWarnings("ConstantConditions")
     private void showAddingVariantDialog() {
         BottomSheetDialog dialog = new BottomSheetDialog(getContext());
@@ -168,6 +175,10 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
         dialog.findViewById(R.id.btn_add_word).setOnClickListener(v -> {
             dialog.dismiss();
             presenter.navigateWordAdditionClick();
+        });
+        dialog.findViewById(R.id.btn_import_word).setOnClickListener(v -> {
+            dialog.dismiss();
+            presenter.navigateWordExploreClick();
         });
         dialog.show();
     }

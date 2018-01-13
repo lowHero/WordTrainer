@@ -31,6 +31,9 @@ public interface CourseDao {
     @Query("SELECT * FROM courses WHERE id = :courseId")
     CourseEntity getCourse(long courseId);
 
+    @Query("SELECT id, originalLanguage, translationLanguage FROM courses WHERE originalLanguage = :originalLanguage")
+    CourseBaseSet getCourseBaseByOriginalLanguageKey(String originalLanguage);
+
     @Delete
     void deleteCourse(CourseEntity course);
 

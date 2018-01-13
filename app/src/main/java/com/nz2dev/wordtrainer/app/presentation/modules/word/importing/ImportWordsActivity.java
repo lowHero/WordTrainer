@@ -2,6 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.word.importing;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +18,10 @@ import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
  */
 public class ImportWordsActivity extends AppCompatActivity implements HasDependencies<ImportWordsComponent> {
 
-    public static Intent getCallingIntent(Context context) {
-        return new Intent(context, ImportWordsActivity.class);
+    public static Intent getCallingIntent(Context context, String path) {
+        Intent intent = new Intent(context, ImportWordsActivity.class);
+        intent.setData(Uri.parse(path));
+        return intent;
     }
 
     private ImportWordsComponent dependencies;
