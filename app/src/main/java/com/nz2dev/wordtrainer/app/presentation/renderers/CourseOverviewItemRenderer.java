@@ -28,7 +28,8 @@ public class CourseOverviewItemRenderer extends Renderer<CourseInfo> {
 
     public enum CourseAction {
         Select,
-        ExportWords
+        ExportWords,
+        Delete
     }
 
     public interface CourseActionListener {
@@ -67,10 +68,13 @@ public class CourseOverviewItemRenderer extends Renderer<CourseInfo> {
         });
         rootView.setOnLongClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), rootView);
-            popupMenu.getMenu().add("Export Words");
+            popupMenu.getMenu().add("Export words");
+            popupMenu.getMenu().add("Delete course");
             popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getTitle().equals("Export Words")) {
+                if (item.getTitle().equals("Export words")) {
                     listener.onCourseAction(getContent().getCourse(), CourseAction.ExportWords);
+                } else if (item.getTitle().equals("Delete course")) {
+                    listener.onCourseAction(getContent().getCourse(), CourseAction.Delete);
                 }
                 popupMenu.dismiss();
                 return true;

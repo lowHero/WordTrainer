@@ -107,6 +107,9 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
             case ExportWords:
                 presenter.exportCourseWordClick(course);
                 return;
+            case Delete:
+                presenter.deleteCourseClick(course);
+                return;
         }
     }
 

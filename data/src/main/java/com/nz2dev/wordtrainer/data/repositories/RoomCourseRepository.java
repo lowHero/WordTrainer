@@ -57,4 +57,14 @@ public class RoomCourseRepository implements CourseRepository {
             emitter.onSuccess(courses);
         });
     }
+
+    @Override
+    public Single<Course> deleteCourse(long courseId) {
+        return Single.create(emitter -> {
+            CourseEntity entity = courseDao.getCourse(courseId);
+            courseDao.deleteCourse(entity);
+            emitter.onSuccess(mapper.map(entity, Course.class));
+        });
+    }
+
 }

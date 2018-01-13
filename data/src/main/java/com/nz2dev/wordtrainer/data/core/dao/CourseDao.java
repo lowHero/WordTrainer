@@ -1,6 +1,7 @@
 package com.nz2dev.wordtrainer.data.core.dao;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
@@ -26,4 +27,11 @@ public interface CourseDao {
 
     @Query("SELECT id, originalLanguage, translationLanguage FROM courses WHERE id = :courseId")
     CourseBaseSet getCourseBase(long courseId);
+
+    @Query("SELECT * FROM courses WHERE id = :courseId")
+    CourseEntity getCourse(long courseId);
+
+    @Delete
+    void deleteCourse(CourseEntity course);
+
 }

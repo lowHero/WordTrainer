@@ -59,7 +59,7 @@ public class CreateCourseUseCase {
 
                     course.setId(courseId);
                     courseBinder.bindCourseBase(course);
-                    appEventBus.post(CourseEvent.newChanged(course));
+                    appEventBus.post(CourseEvent.newAdded(course));
 
                     if (select) {
                         appPreferences.selectPrimaryCourseId(courseId);

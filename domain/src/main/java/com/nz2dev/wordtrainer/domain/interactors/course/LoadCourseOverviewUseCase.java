@@ -18,7 +18,7 @@ import io.reactivex.Single;
  * Created by nz2Dev on 05.01.2018
  */
 @Singleton
-public class DownloadCourseOverviewUseCase {
+public class LoadCourseOverviewUseCase {
 
     private final AppPreferences appPreferences;
     private final CourseRepository courseRepository;
@@ -27,7 +27,7 @@ public class DownloadCourseOverviewUseCase {
     private final ExecutionProxy executionProxy;
 
     @Inject
-    public DownloadCourseOverviewUseCase(AppPreferences appPreferences, CourseRepository courseRepository, WordsRepository wordsRepository, CourseBinder courseBinder, ExecutionProxy executionProxy) {
+    public LoadCourseOverviewUseCase(AppPreferences appPreferences, CourseRepository courseRepository, WordsRepository wordsRepository, CourseBinder courseBinder, ExecutionProxy executionProxy) {
         this.appPreferences = appPreferences;
         this.wordsRepository = wordsRepository;
         this.courseBinder = courseBinder;

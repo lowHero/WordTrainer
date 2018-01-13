@@ -9,15 +9,25 @@ public final class CourseEvent {
 
     public enum Type {
         Select,
-        Changed
+        Added,
+        Deleted,
+        NotSpecified
     }
 
     static CourseEvent newSelect(CourseBase course) {
         return new CourseEvent(Type.Select, course);
     }
 
-    static CourseEvent newChanged(CourseBase course) {
-        return new CourseEvent(Type.Changed, course);
+    static CourseEvent newAdded(CourseBase course) {
+        return new CourseEvent(Type.Added, course);
+    }
+
+    static CourseEvent newDeleted(CourseBase course) {
+        return new CourseEvent(Type.Deleted, course);
+    }
+
+    static CourseEvent newNotSpecified() {
+        return new CourseEvent(Type.NotSpecified, null);
     }
 
     private final Type type;
@@ -29,11 +39,23 @@ public final class CourseEvent {
     }
 
     public boolean isSelected() {
-        return type.equals(Type.Select);
+        return Type.Select.equals(type);
+    }
+
+    public boolean isAdded() {
+        return Type.Added.equals(type);
+    }
+
+    public boolean isDeleted() {
+        return Type.Deleted.equals(type);
     }
 
     public boolean isChanged() {
-        return type.equals(Type.Changed);
+        return isAdded() || isDeleted();
+    }
+
+    public boolean isNotSpecified() {
+        return Type.NotSpecified.equals(type);
     }
 
     public CourseBase getCourse() {
