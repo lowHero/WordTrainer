@@ -14,16 +14,28 @@ import com.nz2dev.wordtrainer.app.common.dependencies.AppComponent;
  */
 public class DependenciesUtils {
 
-    public static AppComponent appComponentFrom(Context context) {
-        return ((WordTrainerApp) context.getApplicationContext()).getDependenciesComponent();
+    @NonNull
+    public static AppComponent fromApplication(Context context) {
+        WordTrainerApp application = (WordTrainerApp) context.getApplicationContext();
+        return application.getDependencies();
     }
 
     @NonNull
     public static <C, A extends Activity & HasDependencies<C>> C fromAttachedActivity(Fragment f, Class<A> type) {
         A activity = type.cast(f.getActivity());
         if (activity == null) {
-            throw new RuntimeException("fragment activity isn't " + type.toString());
+            throw new RuntimeException("fragment's activity isn't " + type.toString());
         }
         return activity.getDependencies();
     }
+
+    @NonNull
+    public static <C, A extends Fragment & HasDependencies<C>> C fromParentFragment(Fragment f, Class<A> type) {
+        A parent = type.cast(f.getParentFragment());
+        if (parent == null) {
+            throw new RuntimeException("fragment's parent fragment isn't " + type.toString());
+        }
+        return parent.getDependencies();
+    }
+
 }

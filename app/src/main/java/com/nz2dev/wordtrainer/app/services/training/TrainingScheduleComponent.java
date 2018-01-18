@@ -1,13 +1,13 @@
 package com.nz2dev.wordtrainer.app.services.training;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerService;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 
 import dagger.Subcomponent;
 
 /**
  * Created by nz2Dev on 22.12.2017
  */
-@PerService
+@ForActions
 @Subcomponent()
 public interface TrainingScheduleComponent {
     void inject(TrainingScheduleService trainingScheduleService);

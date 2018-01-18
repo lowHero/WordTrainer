@@ -1,6 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.account.registration;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -11,8 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountActivity;
-import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountNavigation;
+import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.account.registration.elevated.ElevatedRegistrationActivity;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 
@@ -49,27 +50,28 @@ public class RegistrationFragment extends DialogFragment implements Registration
     EditText regPasswordEditor;
 
     @Inject RegistrationPresenter presenter;
-    @Inject AccountNavigation accountNavigation;
+    @Inject Navigator navigator;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, 0);
-        DependenciesUtils.fromAttachedActivity(this, AccountActivity.class).inject(this);
+        DependenciesUtils.fromAttachedActivity(this, ElevatedRegistrationActivity.class).inject(this);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_account_registration, container, false);
-        ButterKnife.bind(this, root);
-        setRegNameEditorFromBundle();
-        return root;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_account_registration, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+
+        setRegNameEditorFromBundle();
+
         presenter.setView(this);
     }
 
@@ -99,7 +101,7 @@ public class RegistrationFragment extends DialogFragment implements Registration
     @Override
     public void endRegistration() {
         dismiss();
-        accountNavigation.doRegistrationAttempt(true);
+        // TODO write global navigation for that
     }
 
     @Override

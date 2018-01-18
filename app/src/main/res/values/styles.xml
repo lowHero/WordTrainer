@@ -8,6 +8,7 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
+        <item name="actionBarTheme">@style/MyActionBarTheme</item>
     </style>
 
     <style name="AppTheme.ActionBar">
@@ -15,6 +16,15 @@
         <item name="windowNoTitle">false</item>
     </style>
 
+    <style name="MyActionBarTheme" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="titleTextColor">@color/primaryTextColor</item>
+        <item name="actionOverflowButtonStyle">@style/MyActionOverflowButtonStyle</item>
+    </style>
+
+    <style name="MyActionOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="tint">@android:color/white</item>
+    </style>
+    
     <style name="Button.Accent.Primary" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">@color/primaryColor</item>
     </style>

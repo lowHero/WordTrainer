@@ -1,11 +1,10 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.add;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.DismissingFragment;
-import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.wordtrainer.app.utils.defaults.TextWatcherAdapter;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 
 import javax.inject.Inject;
 
@@ -31,7 +27,7 @@ import static com.nz2dev.wordtrainer.app.utils.AnimationsUtils.animateToVisibleS
 /**
  * Created by nz2Dev on 11.12.2017
  */
-public class AddWordFragment extends DismissingFragment implements AddWordView {
+public class AddWordFragment extends Fragment implements AddWordView {
 
     public static AddWordFragment newInstance() {
         return new AddWordFragment();
@@ -54,20 +50,21 @@ public class AddWordFragment extends DismissingFragment implements AddWordView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
+        // TODO provide AddWordActivity or else place where to place this fragment
+//        DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_word_add, container, false);
-        ButterKnife.bind(this, root);
-        return root;
+        return inflater.inflate(R.layout.fragment_word_add, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+
         originalWordEditor.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
@@ -123,7 +120,7 @@ public class AddWordFragment extends DismissingFragment implements AddWordView {
 
     @Override
     public void hideIt() {
-        dismissInternal();
+        getActivity().finish();
     }
 
     @SuppressWarnings("ConstantConditions")

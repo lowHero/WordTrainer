@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.account.authorization;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.exceptions.AccountNotExistException;
 import com.nz2dev.wordtrainer.domain.exceptions.AccountNotExistOrPasswordIncorrectException;
@@ -15,7 +15,7 @@ import javax.inject.Inject;
  * Created by nz2Dev on 01.12.2017
  */
 @SuppressWarnings("WeakerAccess")
-@PerActivity
+@ForActions
 public class AuthorizationPresenter extends DisposableBasePresenter<AuthorizationView> {
 
     private final LoadAccountUseCase loadAccountUseCase;

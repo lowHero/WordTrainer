@@ -13,9 +13,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.renderers.ExportedWordItemRenderer;
-import com.nz2dev.wordtrainer.app.presentation.renderers.abstraction.AbstractSelectableItemRenderer.DefaultSelectionHandler;
-import com.nz2dev.wordtrainer.app.presentation.structures.LanguageStructuresHolder;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.ExportedWordItemRenderer;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.abstraction.AbstractSelectableItemRenderer.DefaultSelectionHandler;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.single.LanguagesRelationRenderer;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.exporting.elevated.ExportWordsActivity;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.models.Language;
 import com.nz2dev.wordtrainer.domain.models.Word;
@@ -56,7 +57,7 @@ public class ExportWordsFragment extends Fragment implements ExportWordsView {
 
     @Inject ExportWordsPresenter presenter;
 
-    private LanguageStructuresHolder languageStructuresHolder;
+    private LanguagesRelationRenderer languagesRelationRenderer;
     private RVRendererAdapter<Word> wordsAdapter;
     private DefaultSelectionHandler<Word> selectionHandler;
 
@@ -64,23 +65,26 @@ public class ExportWordsFragment extends Fragment implements ExportWordsView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DependenciesUtils.fromAttachedActivity(this, ExportWordsActivity.class).inject(this);
-        selectionHandler = new DefaultSelectionHandler<>();
-        wordsAdapter = new RVRendererAdapter<>(new RendererBuilder<>(new ExportedWordItemRenderer(true, selectionHandler)));
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_words_exporting, container, false);
-        ButterKnife.bind(this, root);
-        languageStructuresHolder = LanguageStructuresHolder.withRoot(root);
-        return root;
+        return inflater.inflate(R.layout.fragment_words_exporting, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        exportedWordsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
+        ButterKnife.bind(this, view);
+        languagesRelationRenderer = LanguagesRelationRenderer.withRoot(view);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), VERTICAL, false);
+        exportedWordsRecyclerView.setLayoutManager(layoutManager);
+
+        selectionHandler = new DefaultSelectionHandler<>();
+        ExportedWordItemRenderer itemRenderer = new ExportedWordItemRenderer(true, selectionHandler);
+        wordsAdapter = new RVRendererAdapter<>(new RendererBuilder<>(itemRenderer));
         exportedWordsRecyclerView.setAdapter(wordsAdapter);
 
         presenter.setView(this);
@@ -105,7 +109,7 @@ public class ExportWordsFragment extends Fragment implements ExportWordsView {
 
     @Override
     public void showExportedLanguages(Language originalLanguage, Language translationLanguage) {
-        languageStructuresHolder.renderLanguages(originalLanguage, translationLanguage);
+        languagesRelationRenderer.renderLanguages(originalLanguage, translationLanguage);
     }
 
     @Override

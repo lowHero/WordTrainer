@@ -21,7 +21,7 @@ public class WordTrainerApp extends Application {
                 .build();
     }
 
-    public AppComponent getDependenciesComponent() {
+    public AppComponent getDependencies() {
         return dependenciesComponent;
     }
 }

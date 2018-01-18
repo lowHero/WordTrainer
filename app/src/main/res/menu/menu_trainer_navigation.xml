@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_show_set_up_rules"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="@string/title_trainer_settings" />
+
+    <item
+        android:id="@+id/item_init_adding"
+        android:icon="@drawable/ic_add_circle_outline_black_24dp"
+        android:title="@string/title_init_adding" />
+
+    <item
+        android:id="@+id/item_show_set_up_scheduling"
+        android:icon="@drawable/ic_schedule_black_24dp"
+        android:title="@string/title_trainer_scheduling" />
+
+</menu>

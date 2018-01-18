@@ -1,6 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.account.authorization;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -17,14 +18,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.Navigator;
-import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountActivity;
-import com.nz2dev.wordtrainer.app.presentation.modules.account.AccountNavigation;
-import com.nz2dev.wordtrainer.app.presentation.renderers.RecentlyAccountsRenderer;
-import com.nz2dev.wordtrainer.app.presentation.renderers.RecentlyAccountsRenderer.OnRecentlyAccountClickListener;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.RecentlyAccountsRenderer;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.RecentlyAccountsRenderer.OnRecentlyAccountClickListener;
+import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
 import com.nz2dev.wordtrainer.app.utils.defaults.TextWatcherAdapter;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
-import com.nz2dev.wordtrainer.app.utils.defaults.ObserverAdapter;
 import com.nz2dev.wordtrainer.domain.models.Account;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;
@@ -71,43 +68,40 @@ public class AuthorizationFragment extends Fragment implements AuthorizationView
 
     @Inject AuthorizationPresenter presenter;
     @Inject Navigator navigator;
-    @Inject AccountNavigation accountNavigation;
 
     private RVRendererAdapter<Account> rendererAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.fromAttachedActivity(this, AccountActivity.class).inject(this);
-        rendererAdapter = new RVRendererAdapter<>(new RendererBuilder<>(new RecentlyAccountsRenderer(this)));
+//      TODO provide navigation from ElevatedAuthorizationActivity
+//      DependenciesUtils.fromAttachedActivity(this, ElevatedAuthorizationActivity.class).inject(this);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_account_authorization, container, false);
-        ButterKnife.bind(this, root);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_account_authorization, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, true));
+
+        rendererAdapter = new RVRendererAdapter<>(new RendererBuilder<>(new RecentlyAccountsRenderer(this)));
+        recyclerView.setAdapter(rendererAdapter);
+
         userNameEditor.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 presenter.userNameEditorChanged(text.toString());
             }
         });
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, true));
-        recyclerView.setAdapter(rendererAdapter);
-        return root;
-    }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         presenter.setView(this);
-        accountNavigation.addRegistrationObserver(new ObserverAdapter<Boolean>() {
-            @Override
-            public void onNext(Boolean succeed) {
-                presenter.userNameEditorChanged(userNameEditor.getText().toString());
-            }
-        });
     }
 
     @Override
@@ -140,7 +134,8 @@ public class AuthorizationFragment extends Fragment implements AuthorizationView
 
     @Override
     public void showAccountCreation() {
-        accountNavigation.showRegistration(userNameEditor.getText().toString());
+//      TODO provide this navigation
+//      navigator.showRegistration(userNameEditor.getText().toString());
     }
 
     @Override
@@ -190,6 +185,6 @@ public class AuthorizationFragment extends Fragment implements AuthorizationView
 
     @Override
     public void navigateHome() {
-        navigator.navigateHomeFrom(getActivity());
+        navigator.navigateToHomeFrom(getActivity());
     }
 }

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.nz2dev.wordtrainer.app.presentation.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 
 import javax.inject.Inject;
@@ -20,7 +20,7 @@ public class StartupActivity extends AppCompatActivity implements StartupView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.appComponentFrom(this)
+        DependenciesUtils.fromApplication(this)
                 .createStartupComponent()
                 .inject(this);
     }
@@ -39,11 +39,11 @@ public class StartupActivity extends AppCompatActivity implements StartupView {
 
     @Override
     public void navigateHome() {
-        navigator.navigateHomeFrom(this);
+        navigator.navigateToHomeFrom(this);
     }
 
     @Override
     public void navigateCourseCreation() {
-        navigator.navigateCourseCreationFrom(this);
+        navigator.navigateToCourseCreationFrom(this);
     }
 }

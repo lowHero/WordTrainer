@@ -49,7 +49,7 @@
         android:contentDescription="@string/action_insert_word"
         android:focusable="true"
         android:visibility="invisible"
-        app:srcCompat="@drawable/ic_create_simple_black" />
+        app:srcCompat="@drawable/ic_create_black_24dp" />
 
     <ImageView
         android:id="@+id/btn_reject_word"

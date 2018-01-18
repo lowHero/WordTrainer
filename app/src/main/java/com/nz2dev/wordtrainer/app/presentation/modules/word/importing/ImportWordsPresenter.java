@@ -1,8 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.importing;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
-import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 import com.nz2dev.wordtrainer.domain.interactors.language.LoadLanguageUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.word.AddWordDataSetUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.word.ImportWordsUseCase;
@@ -18,7 +17,7 @@ import io.reactivex.Single;
 /**
  * Created by nz2Dev on 11.01.2018
  */
-@PerActivity
+@ForActions
 public class ImportWordsPresenter extends DisposableBasePresenter<ImportWordsView> {
 
     private final ImportWordsUseCase importWordsUseCase;

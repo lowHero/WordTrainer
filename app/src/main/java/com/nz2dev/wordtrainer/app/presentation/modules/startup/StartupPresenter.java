@@ -1,11 +1,10 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.startup;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
-import com.nz2dev.wordtrainer.data.preferences.SharedAppPreferences;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
+import com.nz2dev.wordtrainer.data.preferences.SharedAppPreferences;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -15,7 +14,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 /**
  * Created by nz2Dev on 30.11.2017
  */
-@PerActivity
+@ForActions
 public class StartupPresenter extends BasePresenter<StartupView> {
 
     private static final long SPLASH_DELAY_MS = 300;

@@ -12,8 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.Navigator;
-import com.nz2dev.wordtrainer.app.presentation.renderers.SimpleFileItemRenderer;
+import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.SimpleFileItemRenderer;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.explore.elevated.ElevatedExploreWordsSourceActivity;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.app.utils.generic.OnItemClickListener;
 import com.pedrogomez.renderers.RVRendererAdapter;
@@ -49,22 +50,24 @@ public class ExploreWordsSourceFragment extends Fragment implements ExploreWords
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.fromAttachedActivity(this, ExploreWordsSourceActivity.class).inject(this);
-        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new SimpleFileItemRenderer(this)));
+        DependenciesUtils.fromAttachedActivity(this, ElevatedExploreWordsSourceActivity.class).inject(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_words_explore_source, container, false);
-        ButterKnife.bind(this, root);
-        return root;
+        return inflater.inflate(R.layout.fragment_words_explore_source, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        possibleWordsFileRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
+        ButterKnife.bind(this, view);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), VERTICAL, false);
+        possibleWordsFileRecyclerView.setLayoutManager(layoutManager);
+
+        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new SimpleFileItemRenderer(this)));
         possibleWordsFileRecyclerView.setAdapter(adapter);
 
         presenter.setView(this);
@@ -94,7 +97,7 @@ public class ExploreWordsSourceFragment extends Fragment implements ExploreWords
 
     @Override
     public void navigateImporting(String filePath) {
-        navigator.navigateWordsImportingFrom(getActivity(), filePath);
+        navigator.navigateToWordsImportingFrom(getActivity(), filePath);
     }
 
 }

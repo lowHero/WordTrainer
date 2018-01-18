@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.add;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.interactors.word.CreateWordUseCase;
 
@@ -10,7 +10,7 @@ import javax.inject.Inject;
  * Created by nz2Dev on 11.12.2017
  */
 @SuppressWarnings("WeakerAccess")
-@PerActivity
+@ForActions
 public class AddWordPresenter extends DisposableBasePresenter<AddWordView> {
 
     private static final int MIN_LENGTH = 2;

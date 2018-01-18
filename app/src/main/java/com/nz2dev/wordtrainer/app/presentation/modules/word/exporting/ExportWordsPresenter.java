@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.exporting;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.interactors.course.LoadCourseUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.word.ExportWordsUseCase;
@@ -11,12 +11,10 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
-import io.reactivex.Single;
-
 /**
  * Created by nz2Dev on 12.01.2018
  */
-@PerActivity
+@ForActions
 public class ExportWordsPresenter extends DisposableBasePresenter<ExportWordsView> {
 
     private final LoadCourseUseCase loadCourseUseCase;

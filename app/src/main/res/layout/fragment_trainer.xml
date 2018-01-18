@@ -1,14 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Trainer Fragment there" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:title="@string/app_name">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/img_trainer_language_flag"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:padding="8dp"
+            tools:src="@drawable/ic_flag_english" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/fl_overview_place"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        tools:background="@color/secondaryColor">
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/shadow_down"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@id/toolbar"
+        android:background="@drawable/shadow_fade_down" />
+
+    <View
+        android:id="@+id/shadow_up"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_above="@id/nv_actions_navigation"
+        android:background="@drawable/shadow_fade_up" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/nv_actions_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/colorPrimary"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@color/primaryTextColor"
+        app:menu="@menu/menu_trainer_navigation" />
+
+    <FrameLayout
+        android:id="@+id/fl_hidden_place_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/nv_actions_navigation"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/backgroundTransparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <FrameLayout
+            android:id="@+id/fl_hidden_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:clickable="true"
+            android:focusable="true"
+            tools:background="@color/primaryLightColor"
+            tools:layout_height="200dp">
+
+        </FrameLayout>
+    </FrameLayout>
 
 </RelativeLayout>

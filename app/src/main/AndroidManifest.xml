@@ -24,10 +24,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.modules.home.HomeActivity"
+            android:name=".presentation.modules.home.elevated.ElevatedHomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.modules.training.exercising.ExerciseTrainingActivity"
+            android:name=".presentation.modules.trainer.exercising.elevated.ElevatedExerciseTrainingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Training" />
         <activity
@@ -35,16 +35,16 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".presentation.modules.courses.creation.CreateCourseActivity"
+            android:name=".presentation.modules.courses.creation.elevated.ElevatedCourseCreationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.modules.word.exporting.ExportWordsActivity"
+            android:name=".presentation.modules.word.exporting.elevated.ExportWordsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.modules.word.explore.ExploreWordsSourceActivity"
+            android:name=".presentation.modules.word.explore.elevated.ElevatedExploreWordsSourceActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.modules.word.importing.ImportWordsActivity"
+            android:name=".presentation.modules.word.importing.elevated.ImportWordsActivity"
             android:screenOrientation="portrait">
 
             <!--

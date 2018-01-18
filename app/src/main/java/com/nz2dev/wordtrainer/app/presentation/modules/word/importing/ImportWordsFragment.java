@@ -11,9 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.renderers.ImportedWordDataItemRenderer;
-import com.nz2dev.wordtrainer.app.presentation.renderers.abstraction.AbstractSelectableItemRenderer.DefaultSelectionHandler;
-import com.nz2dev.wordtrainer.app.presentation.structures.LanguageStructuresHolder;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.ImportedWordDataItemRenderer;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.abstraction.AbstractSelectableItemRenderer.DefaultSelectionHandler;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.single.LanguagesRelationRenderer;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.importing.elevated.ImportWordsActivity;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.models.Language;
 import com.nz2dev.wordtrainer.domain.models.internal.WordData;
@@ -53,29 +54,32 @@ public class ImportWordsFragment extends Fragment implements ImportWordsView {
 
     private RVRendererAdapter<WordData> adapter;
     private DefaultSelectionHandler<WordData> selectionHandler;
-    private LanguageStructuresHolder languageStructuresHolder;
+    private LanguagesRelationRenderer languagesRelationRenderer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DependenciesUtils.fromAttachedActivity(this, ImportWordsActivity.class).inject(this);
-        selectionHandler = new DefaultSelectionHandler<>();
-        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new ImportedWordDataItemRenderer(true, selectionHandler)));
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_words_importing, container, false);
-        ButterKnife.bind(this, root);
-        languageStructuresHolder = LanguageStructuresHolder.withRoot(root);
-        return root;
+        return inflater.inflate(R.layout.fragment_words_importing, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        importingWordList.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
+        ButterKnife.bind(this, view);
+        languagesRelationRenderer = LanguagesRelationRenderer.withRoot(view);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), VERTICAL, false);
+        importingWordList.setLayoutManager(layoutManager);
+
+        selectionHandler = new DefaultSelectionHandler<>();
+        ImportedWordDataItemRenderer itemRenderer = new ImportedWordDataItemRenderer(true, selectionHandler);
+        adapter = new RVRendererAdapter<>(new RendererBuilder<>(itemRenderer));
         importingWordList.setAdapter(adapter);
 
         presenter.setView(this);
@@ -95,7 +99,7 @@ public class ImportWordsFragment extends Fragment implements ImportWordsView {
 
     @Override
     public void showLanguages(Language originalLanguage, Language translationLanguage) {
-        languageStructuresHolder.renderLanguages(originalLanguage, translationLanguage);
+        languagesRelationRenderer.renderLanguages(originalLanguage, translationLanguage);
     }
 
     @Override

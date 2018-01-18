@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.account.registration;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.interactors.account.CreateAccountUseCase;
 
@@ -10,7 +10,7 @@ import javax.inject.Inject;
  * Created by nz2Dev on 01.12.2017
  */
 @SuppressWarnings("WeakerAccess")
-@PerActivity
+@ForActions
 public class RegistrationPresenter extends DisposableBasePresenter<RegistrationView> {
 
     private final CreateAccountUseCase createAccountUseCase;

@@ -5,6 +5,8 @@
     <string name="title_train_word">Train the word</string>
     <string name="title_exercises">Exercises</string>
     <string name="title_scheduling">Scheduling</string>
+    <string name="title_trainer_settings">Setting</string>
+    <string name="title_init_adding">Add word</string>
 
     <string name="prompt_need_password">need password?</string>
     <string name="prompt_email">Email</string>
@@ -34,5 +36,8 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_next_time_unspecified">--:--:--</string>
+    <string name="title_trainer_scheduling">Scheduling</string>
+    <string name="title_trained_language">Trained Language</string>
+    <string name="title_next_training">Next training</string>
 
 </resources>

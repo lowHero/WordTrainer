@@ -2,7 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.word.explore;
 
 import android.os.Environment;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.environtment.Exporter;
 
@@ -13,7 +13,7 @@ import javax.inject.Inject;
 /**
  * Created by nz2Dev on 13.01.2018
  */
-@PerActivity
+@ForActions
 public class ExploreWordsSourcePresenter extends DisposableBasePresenter<ExploreWordsSourceView> {
 
     private File wordsDirectory;

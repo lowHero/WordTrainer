@@ -17,6 +17,8 @@ import io.reactivex.Single;
 @Singleton
 public class LoadCourseUseCase {
 
+    public static final long COURSE_ID_SELECTED = -1;
+
     private final CourseBinder courseBinder;
     private final AppPreferences appPreferences;
     private final CourseRepository courseRepository;

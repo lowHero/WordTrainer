@@ -11,10 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.Navigator;
-import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeActivity;
-import com.nz2dev.wordtrainer.app.presentation.renderers.CourseOverviewItemRenderer;
-import com.nz2dev.wordtrainer.app.presentation.renderers.CourseOverviewItemRenderer.CourseActionListener;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.CourseOverviewItemRenderer;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.CourseOverviewItemRenderer.CourseActionListener;
+import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 import com.nz2dev.wordtrainer.domain.models.internal.CourseInfo;
@@ -35,7 +36,8 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
 /**
  * Created by nz2Dev on 09.01.2018
  */
-public class CoursesOverviewFragment extends Fragment implements CoursesOverviewView, CourseActionListener {
+public class CoursesOverviewFragment extends Fragment implements CoursesOverviewView, CourseActionListener,
+        HasDependencies<CoursesOverviewComponent> {
 
     public static CoursesOverviewFragment newInstance() {
         return new CoursesOverviewFragment();
@@ -48,27 +50,31 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
     @Inject Navigator navigator;
 
     private RVRendererAdapter<CourseInfo> adapter;
+    private CoursesOverviewComponent dependencies;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
-        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new CourseOverviewItemRenderer(this)));
+        getDependencies().inject(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_courses_overview, container, false);
-        ButterKnife.bind(this, root);
-        return root;
+        return inflater.inflate(R.layout.fragment_courses_overview, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        coursesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), VERTICAL, false));
+        ButterKnife.bind(this, view);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), VERTICAL, false);
+        coursesRecyclerView.setLayoutManager(layoutManager);
+
+        adapter = new RVRendererAdapter<>(new RendererBuilder<>(new CourseOverviewItemRenderer(this)));
         coursesRecyclerView.setAdapter(adapter);
+
         coursesRecyclerView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View parent, View child) {
@@ -141,12 +147,21 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
 
     @Override
     public void navigateCourseAddition() {
-        navigator.navigateCourseCreationFrom(getActivity());
+        navigator.navigateToCourseCreationFrom(getActivity());
     }
 
     @Override
     public void navigateWordsExporting(long courseId) {
-        navigator.navigateWordsExportingFrom(getActivity(), courseId);
+        navigator.navigateToWordsExportingFrom(getActivity(), courseId);
     }
 
+    @Override
+    public CoursesOverviewComponent getDependencies() {
+        if (dependencies == null) {
+            dependencies = DependenciesUtils
+                    .fromParentFragment(this, HomeFragment.class)
+                    .createCoursesOverviewComponent();
+        }
+        return dependencies;
+    }
 }

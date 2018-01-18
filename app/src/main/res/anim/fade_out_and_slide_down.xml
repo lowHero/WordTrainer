@@ -4,9 +4,9 @@
         android:interpolator="@android:anim/anticipate_interpolator"
         android:fromAlpha="1.0"
         android:toAlpha="0.0"
-        android:duration="300" />
+        android:duration="200" />
     <translate
         android:fromYDelta="0"
         android:toYDelta="500"
-        android:duration="300"/>
+        android:duration="200"/>
 </set>

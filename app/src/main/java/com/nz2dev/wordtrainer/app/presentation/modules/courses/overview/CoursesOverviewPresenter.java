@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.courses.overview;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.PerActivity;
+import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.interactors.course.CourseEvent;
 import com.nz2dev.wordtrainer.domain.interactors.course.DeleteCourseUseCase;
@@ -22,7 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Created by nz2Dev on 09.01.2018
  */
 @SuppressWarnings("WeakerAccess")
-@PerActivity
+@ForActions
 public class CoursesOverviewPresenter extends DisposableBasePresenter<CoursesOverviewView> {
 
     private final EventBus appEventBus;
