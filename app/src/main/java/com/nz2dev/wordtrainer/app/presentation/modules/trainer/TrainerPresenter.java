@@ -27,8 +27,11 @@ public class TrainerPresenter extends DisposableBasePresenter<TrainerView> {
     @Override
     protected void onViewReady() {
         super.onViewReady();
+        loadCourseIcon();
         appEventBus.observeEvents(CourseEvent.class, CourseEvent::isSelected)
-                .subscribe(courseEvent -> loadCourseIcon());
+                .subscribe(courseEvent -> {
+                    loadCourseIcon();
+                });
     }
 
     public void nextTrainingClick() {
