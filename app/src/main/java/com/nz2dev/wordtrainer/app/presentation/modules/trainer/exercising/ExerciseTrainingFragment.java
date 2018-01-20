@@ -38,6 +38,8 @@ import butterknife.OnClick;
 public class ExerciseTrainingFragment extends Fragment implements ExerciseTrainingView,
         WordTranslationVariantRenderer.VariantListener {
 
+    public static final String TAG = ExerciseTrainingFragment.class.getSimpleName();
+
     private static final String KEY_WORD_ID = "training_word_id";
 
     public static ExerciseTrainingFragment newInstance(long trainingWordId) {

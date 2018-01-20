@@ -4,7 +4,9 @@
     android:id="@+id/ll_insert_actions_container"
     android:layout_width="match_parent"
     android:layout_height="96dp"
-    android:layout_alignParentBottom="true">
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="bottom"
+    android:background="@color/primaryLightColor">
 
     <ImageView
         android:id="@+id/btn_create_word"

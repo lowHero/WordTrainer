@@ -5,6 +5,7 @@ import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePres
 import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 import com.nz2dev.wordtrainer.domain.interactors.course.CourseEvent;
 import com.nz2dev.wordtrainer.domain.interactors.course.LoadCourseUseCase;
+import com.nz2dev.wordtrainer.domain.interactors.training.LoadProposedTrainingUseCase;
 import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import javax.inject.Inject;
@@ -17,11 +18,13 @@ public class TrainerPresenter extends DisposableBasePresenter<TrainerView> {
 
     private EventBus appEventBus;
     private LoadCourseUseCase loadCourseUseCase;
+    private LoadProposedTrainingUseCase loadProposedTrainingUseCase;
 
     @Inject
-    public TrainerPresenter(EventBus appEventBus, LoadCourseUseCase loadCourseUseCase) {
+    public TrainerPresenter(EventBus appEventBus, LoadCourseUseCase loadCourseUseCase, LoadProposedTrainingUseCase loadProposedTrainingUseCase) {
         this.appEventBus = appEventBus;
         this.loadCourseUseCase = loadCourseUseCase;
+        this.loadProposedTrainingUseCase = loadProposedTrainingUseCase;
     }
 
     @Override
@@ -35,9 +38,10 @@ public class TrainerPresenter extends DisposableBasePresenter<TrainerView> {
     }
 
     public void nextTrainingClick() {
-        // Should prepare next trainings (maybe sequences) and show inside current view
-        // without navigation to somewhere else
-        throw new NotImplementedException();
+        manage("NextTraining", loadProposedTrainingUseCase.execute()
+                .subscribe(training -> {
+                    getView().navigateToExercising(training.getId());
+                }));
     }
 
     private void loadCourseIcon() {

@@ -21,6 +21,8 @@ import butterknife.ButterKnife;
  */
 public class SetUpRulesFragment extends Fragment implements SetUpRulesView {
 
+    public static final String TAG = SetUpRulesFragment.class.getSimpleName();
+
     public static SetUpRulesFragment newInstance() {
         return new SetUpRulesFragment();
     }

@@ -27,14 +27,14 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <FrameLayout
-        android:id="@+id/fl_overview_place"
+    <com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewCoverager
+        android:id="@+id/coverager_underground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        tools:background="@color/secondaryColor">
+        android:layout_above="@+id/nv_actions_navigation"
+        android:layout_below="@+id/toolbar">
 
-    </FrameLayout>
+    </com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewCoverager>
 
     <View
         android:id="@+id/shadow_down"
@@ -50,18 +50,8 @@
         android:layout_above="@id/nv_actions_navigation"
         android:background="@drawable/shadow_fade_up" />
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/nv_actions_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentBottom="true"
-        android:background="?attr/colorPrimary"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@color/primaryTextColor"
-        app:menu="@menu/menu_trainer_navigation" />
-
-    <FrameLayout
-        android:id="@+id/fl_hidden_place_container"
+    <com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewCoverager
+        android:id="@+id/coverager_overview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/nv_actions_navigation"
@@ -72,17 +62,16 @@
         android:visibility="invisible"
         tools:visibility="visible">
 
-        <FrameLayout
-            android:id="@+id/fl_hidden_place"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:clickable="true"
-            android:focusable="true"
-            tools:background="@color/primaryLightColor"
-            tools:layout_height="200dp">
+    </com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewCoverager>
 
-        </FrameLayout>
-    </FrameLayout>
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/nv_actions_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/colorPrimary"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@color/primaryTextColor"
+        app:menu="@menu/menu_trainer_navigation" />
 
 </RelativeLayout>

@@ -9,4 +9,6 @@ public interface TrainerView {
 
     void showCourseLanguage(Language originalLanguage);
 
+    void navigateToExercising(long trainingId);
+
 }

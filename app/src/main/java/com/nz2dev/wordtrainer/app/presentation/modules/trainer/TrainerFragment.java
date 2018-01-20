@@ -1,7 +1,5 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,8 +7,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,18 +17,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewCoverager;
+import com.nz2dev.wordtrainer.app.presentation.controlers.coverager.proxies.FragmentViewsProxy;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment;
-import com.nz2dev.wordtrainer.app.presentation.modules.home.elevated.ElevatedHomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeNavigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.ExerciseTrainingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.overview.OverviewTrainingsFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.rules.SetUpRulesFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.scheduling.SetUpSchedulingFragment;
-import com.nz2dev.wordtrainer.app.utils.AnimationsUtils;
+import com.nz2dev.wordtrainer.app.presentation.modules.trainer.tools.AdditionOptionsFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.app.utils.helpers.DrawableIdHelper;
 import com.nz2dev.wordtrainer.app.utils.helpers.FragmentHelper;
+import com.nz2dev.wordtrainer.app.utils.helpers.MenuHelper;
 import com.nz2dev.wordtrainer.domain.models.Language;
 
 import javax.inject.Inject;
@@ -57,8 +56,11 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
     @BindView(R.id.img_trainer_language_flag)
     ImageView trainerLanguageFlagIcon;
 
-    @BindView(R.id.fl_hidden_place_container)
-    View hiddenPlaceContainer;
+    @BindView(R.id.coverager_underground)
+    ViewCoverager undergroundCoverager;
+
+    @BindView(R.id.coverager_overview)
+    ViewCoverager overviewCoverager;
 
     @BindView(R.id.nv_actions_navigation)
     BottomNavigationView internalNavigationView;
@@ -67,8 +69,8 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
     @Inject Navigator navigator;
     @Inject HomeNavigator homeNavigator;
 
-    private SetUpSchedulingFragment setUpSchedulingFragment;
-    private SetUpRulesFragment setUpRulesFragment;
+    private FragmentViewsProxy undergroundProxy;
+    private FragmentViewsProxy overviewProxy;
 
     private TrainerComponent dependencies;
 
@@ -82,32 +84,13 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_trainer_main, menu);
-        int color = ContextCompat.getColor(getContext(), R.color.primaryTextColor);
-        for (int i = 0; i < menu.size(); i++) {
-            Drawable drawable = menu.getItem(i).getIcon();
-            if (drawable != null) {
-                drawable.mutate();
-                drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-            }
-        }
+        MenuHelper.tintMenu(menu, getContext(), android.R.color.white);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_trainer, container, false);
-
-        setUpRulesFragment = SetUpRulesFragment.newInstance();
-        setUpSchedulingFragment = SetUpSchedulingFragment.newInstance();
-
-        getChildFragmentManager().beginTransaction()
-                .add(R.id.fl_hidden_place, setUpRulesFragment)
-                .hide(setUpRulesFragment)
-                .add(R.id.fl_hidden_place, setUpSchedulingFragment)
-                .hide(setUpSchedulingFragment)
-                .commit();
-
-        return root;
+        return inflater.inflate(R.layout.fragment_trainer, container, false);
     }
 
     @Override
@@ -116,12 +99,17 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
         ButterKnife.bind(this, view);
         FragmentHelper.installToolbar(toolbar, this);
 
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.fl_overview_place, OverviewTrainingsFragment.newInstance())
-                .commit();
+        undergroundProxy = new FragmentViewsProxy(getChildFragmentManager());
+        undergroundProxy.charge(OverviewTrainingsFragment.TAG, OverviewTrainingsFragment.newInstance());
+        undergroundCoverager.setViewsProxy(undergroundProxy);
+        undergroundCoverager.coverBy(undergroundProxy.indexOf(OverviewTrainingsFragment.TAG));
+
+        overviewProxy = new FragmentViewsProxy(getChildFragmentManager());
+        overviewProxy.charge(SetUpRulesFragment.TAG, SetUpRulesFragment.newInstance());
+        overviewProxy.charge(SetUpSchedulingFragment.TAG, SetUpSchedulingFragment.newInstance());
+        overviewCoverager.setViewsProxy(overviewProxy);
 
         internalNavigationView.setOnNavigationItemSelectedListener(this);
-
         presenter.setView(this);
     }
 
@@ -134,22 +122,6 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
     @OnClick(R.id.img_trainer_language_flag)
     public void onTrainerLanguageFlagClick() {
         homeNavigator.navigateToCoursesOverview();
-    }
-
-    @OnClick(R.id.fl_hidden_place_container)
-    public void onHiddenPlaceContainerClick() {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        if (setUpSchedulingFragment.isVisible()) {
-            transaction.hide(setUpSchedulingFragment);
-        }
-        if (setUpRulesFragment.isVisible()) {
-            transaction.hide(setUpRulesFragment);
-        }
-        transaction.commit();
-
-        if (hiddenPlaceContainer.getVisibility() == View.VISIBLE) {
-            AnimationsUtils.animateToInvisibleShort(hiddenPlaceContainer);
-        }
     }
 
     @Override
@@ -166,15 +138,19 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_show_set_up_rules:
-                showOnCovered(setUpRulesFragment, setUpSchedulingFragment);
+                overviewCoverager.coverBy(overviewProxy.indexOf(SetUpRulesFragment.TAG));
                 return true;
 
             case R.id.item_init_adding:
-                showOptionsForWordsAdding();
+                overviewCoverager.coverBy(
+                        overviewProxy.charge(
+                                AdditionOptionsFragment.TAG,
+                                true, true,
+                                new AdditionOptionsFragment()));
                 return true;
 
             case R.id.item_show_set_up_scheduling:
-                showOnCovered(setUpSchedulingFragment, setUpRulesFragment);
+                overviewCoverager.coverBy(overviewProxy.indexOf(SetUpSchedulingFragment.TAG));
                 return true;
         }
         return false;
@@ -187,13 +163,21 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
     }
 
     @Override
-    public void navigateToExercising() {
-        // TODO show Exercise in trainer screen
+    public void navigateToExercising(long trainingId) {
+        overviewCoverager.uncover();
+        undergroundCoverager.coverBy(
+                undergroundProxy.charge(
+                        ExerciseTrainingFragment.TAG,
+                        true,
+                        true,
+                        ExerciseTrainingFragment.newInstance(trainingId)),
+                false);
     }
 
     @Override
     public void navigateToStart() {
-        // TODO make navigation like it just started
+        overviewCoverager.uncover();
+        undergroundCoverager.coverBy(undergroundProxy.indexOf(OverviewTrainingsFragment.TAG));
     }
 
     @Override
@@ -204,24 +188,6 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
                     .createTrainerComponent(new TrainerModule(this));
         }
         return dependencies;
-    }
-
-    private void showOnCovered(Fragment targetFragment, Fragment checkVisibilityFragment) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-        if (targetFragment.isVisible()) {
-            transaction.hide(targetFragment);
-            AnimationsUtils.animateToInvisibleShort(hiddenPlaceContainer);
-        } else {
-            if (checkVisibilityFragment.isVisible()) {
-                transaction.hide(checkVisibilityFragment);
-            } else {
-                AnimationsUtils.animateToVisibleShort(hiddenPlaceContainer);
-            }
-            transaction.show(targetFragment);
-        }
-
-        transaction.commit();
     }
 
     private void showOptionsForWordsAdding() {

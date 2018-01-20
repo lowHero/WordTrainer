@@ -5,7 +5,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
  */
 public interface TrainerNavigation {
 
-    void navigateToExercising();
+    void navigateToExercising(long trainingId);
 
     void navigateToStart();
 }

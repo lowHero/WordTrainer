@@ -33,6 +33,8 @@ import butterknife.OnClick;
  */
 public class SetUpSchedulingFragment extends Fragment implements SetUpSchedulingView {
 
+    public static final String TAG = SetUpSchedulingFragment.class.getSimpleName();
+
     public static SetUpSchedulingFragment newInstance() {
         return new SetUpSchedulingFragment();
     }

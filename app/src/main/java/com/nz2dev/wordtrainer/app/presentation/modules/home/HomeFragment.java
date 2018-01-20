@@ -15,6 +15,7 @@ import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.courses.overview.CoursesOverviewFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.elevated.ElevatedHomeActivity;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.WordsFragment;
 import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
 import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 
@@ -55,7 +56,6 @@ public class HomeFragment extends Fragment implements HomeView, HasDependencies<
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.fl_trainer_place, TrainerFragment.newInstance())
                 .replace(R.id.fl_navigation_place, CoursesOverviewFragment.newInstance())
-//                .add(DebugFragment.newInstance(), "DEBUG")
                 .commit();
 
         presenter.setView(this);

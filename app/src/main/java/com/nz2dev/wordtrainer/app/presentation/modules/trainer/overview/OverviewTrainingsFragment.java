@@ -37,6 +37,8 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
  */
 public class OverviewTrainingsFragment extends Fragment implements OverviewTrainingsView, ActionListener {
 
+    public static final String TAG = OverviewTrainingsFragment.class.getSimpleName();
+
     public static OverviewTrainingsFragment newInstance() {
         return new OverviewTrainingsFragment();
     }
@@ -45,6 +47,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     RecyclerView wordsList;
 
     @Inject Navigator navigator;
+    @Inject Optional<TrainerNavigation> trainerNavigation;
     @Inject OverviewTrainingsPresenter presenter;
 
     private RVRendererAdapter<Training> adapter;
@@ -89,8 +92,11 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     public void onTrainingItemSelectAction(Training training, TrainingRenderer.Action trainingAction) {
         switch (trainingAction) {
             case Select:
-                // TODO or use trainingNavigator.navigateToWordTraining() instead
-                navigator.navigateToWordTrainingFrom(getActivity(), training.getId());
+                if (trainerNavigation.isPresent()) {
+                    trainerNavigation.get().navigateToExercising(training.getId());
+                } else {
+                    navigator.navigateToWordTrainingFrom(getActivity(), training.getId());
+                }
                 break;
             case ShowWord:
                 navigator.navigateToWordShowing(getActivity(), training.getWord().getId());
