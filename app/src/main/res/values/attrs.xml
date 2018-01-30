@@ -4,5 +4,6 @@
         <attr name="displayBackground" format="boolean|reference"/>
         <attr name="defaultEnterAnimation" format="reference"/>
         <attr name="defaultExitAnimation" format="reference"/>
+        <attr name="coverager_elevation" format="float|reference"/>
     </declare-styleable>
 </resources>

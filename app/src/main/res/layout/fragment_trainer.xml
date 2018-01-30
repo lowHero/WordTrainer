@@ -27,14 +27,12 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewCoverager
-        android:id="@+id/coverager_underground"
+    <FrameLayout
+        android:id="@+id/fl_trainings_list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/nv_actions_navigation"
-        android:layout_below="@+id/toolbar">
-
-    </com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewCoverager>
+        android:layout_below="@+id/toolbar" />
 
     <View
         android:id="@+id/shadow_down"
@@ -59,10 +57,7 @@
         android:background="@color/backgroundTransparent"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="invisible"
-        tools:visibility="visible">
-
-    </com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewCoverager>
+        android:visibility="invisible"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/nv_actions_navigation"
@@ -73,5 +68,13 @@
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@color/primaryTextColor"
         app:menu="@menu/menu_trainer_navigation" />
+
+    <com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewCoverager
+        android:id="@+id/coverager_exercising"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        app:coverager_elevation="10"
+        tools:background="@color/primaryColor" />
 
 </RelativeLayout>

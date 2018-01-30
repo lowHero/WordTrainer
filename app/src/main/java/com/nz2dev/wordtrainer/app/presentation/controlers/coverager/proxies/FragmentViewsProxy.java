@@ -40,18 +40,18 @@ public class FragmentViewsProxy extends ViewsProxy {
     }
 
     public int charge(Fragment fragment) {
-        return charge(null, true, false, fragment);
+        return charge(fragment, null, true, false);
     }
 
-    public int charge(String key, Fragment fragment) {
-        return charge(key, true, false, fragment);
+    public int charge(Fragment fragment, String key) {
+        return charge(fragment, key, true, false);
     }
 
-    public int charge(boolean attachImmediately, boolean removeOnHide, Fragment fragment) {
-        return charge(null, attachImmediately, removeOnHide, fragment);
+    public int charge(Fragment fragment, boolean attachImmediately, boolean removeOnHide) {
+        return charge(fragment, null, attachImmediately, removeOnHide);
     }
 
-    public int charge(String key, boolean attachImmediately, boolean removeOnHide, Fragment fragment) {
+    public int charge(Fragment fragment, String key, boolean attachImmediately, boolean removeOnHide) {
         FragmentItem item = new FragmentItem(fragment, removeOnHide);
 
         if (key != null) {

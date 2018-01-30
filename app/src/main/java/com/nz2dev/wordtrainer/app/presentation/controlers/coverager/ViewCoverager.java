@@ -2,6 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.controlers.coverager;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,13 +25,13 @@ public class ViewCoverager extends FrameLayout {
     private boolean isCovered;
 
     public ViewCoverager(Context context) {
-        super(context, null);
+        this(context, null);
     }
 
     public ViewCoverager(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttr(attrs);
-        setVisibility(INVISIBLE);
+//        setVisibility(INVISIBLE);
         setOnClickListener((view) -> uncover());
     }
 
@@ -44,6 +45,9 @@ public class ViewCoverager extends FrameLayout {
             defaultEnterAnimation = AnimationUtils.loadAnimation(getContext(), defaultEnterAnimationId);
 
             displayBackground = typedArray.getBoolean(R.styleable.ViewCoverager_displayBackground, true);
+
+            float elevation = typedArray.getFloat(R.styleable.ViewCoverager_coverager_elevation, 0f);
+            ViewCompat.setElevation(this, elevation);
         } finally {
             typedArray.recycle();
         }

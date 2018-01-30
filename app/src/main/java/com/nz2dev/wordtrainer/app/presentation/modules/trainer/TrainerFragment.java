@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -56,21 +55,22 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
     @BindView(R.id.img_trainer_language_flag)
     ImageView trainerLanguageFlagIcon;
 
-    @BindView(R.id.coverager_underground)
-    ViewCoverager undergroundCoverager;
-
     @BindView(R.id.coverager_overview)
     ViewCoverager overviewCoverager;
 
     @BindView(R.id.nv_actions_navigation)
     BottomNavigationView internalNavigationView;
 
+    @BindView(R.id.coverager_exercising)
+    ViewCoverager exercisingCoverager;
+
     @Inject TrainerPresenter presenter;
+
     @Inject Navigator navigator;
     @Inject HomeNavigator homeNavigator;
 
-    private FragmentViewsProxy undergroundProxy;
     private FragmentViewsProxy overviewProxy;
+    private FragmentViewsProxy exercisingProxy;
 
     private TrainerComponent dependencies;
 
@@ -98,16 +98,17 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         FragmentHelper.installToolbar(toolbar, this);
-
-        undergroundProxy = new FragmentViewsProxy(getChildFragmentManager());
-        undergroundProxy.charge(OverviewTrainingsFragment.TAG, OverviewTrainingsFragment.newInstance());
-        undergroundCoverager.setViewsProxy(undergroundProxy);
-        undergroundCoverager.coverBy(undergroundProxy.indexOf(OverviewTrainingsFragment.TAG));
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.fl_trainings_list_container, OverviewTrainingsFragment.newInstance())
+                .commitNow();
 
         overviewProxy = new FragmentViewsProxy(getChildFragmentManager());
-        overviewProxy.charge(SetUpRulesFragment.TAG, SetUpRulesFragment.newInstance());
-        overviewProxy.charge(SetUpSchedulingFragment.TAG, SetUpSchedulingFragment.newInstance());
+        overviewProxy.charge(SetUpRulesFragment.newInstance(), SetUpRulesFragment.TAG);
+        overviewProxy.charge(SetUpSchedulingFragment.newInstance(), SetUpSchedulingFragment.TAG);
         overviewCoverager.setViewsProxy(overviewProxy);
+
+        exercisingProxy = new FragmentViewsProxy(getChildFragmentManager());
+        exercisingCoverager.setViewsProxy(exercisingProxy);
 
         internalNavigationView.setOnNavigationItemSelectedListener(this);
         presenter.setView(this);
@@ -144,9 +145,9 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
             case R.id.item_init_adding:
                 overviewCoverager.coverBy(
                         overviewProxy.charge(
+                                new AdditionOptionsFragment(),
                                 AdditionOptionsFragment.TAG,
-                                true, true,
-                                new AdditionOptionsFragment()));
+                                true, true));
                 return true;
 
             case R.id.item_show_set_up_scheduling:
@@ -165,19 +166,17 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
     @Override
     public void navigateToExercising(long trainingId) {
         overviewCoverager.uncover();
-        undergroundCoverager.coverBy(
-                undergroundProxy.charge(
-                        ExerciseTrainingFragment.TAG,
-                        true,
-                        true,
-                        ExerciseTrainingFragment.newInstance(trainingId)),
+        exercisingCoverager.coverBy(
+                exercisingProxy.charge(
+                        ExerciseTrainingFragment.newInstance(trainingId),
+                        ExerciseTrainingFragment.TAG, true, true),
                 false);
     }
 
     @Override
     public void navigateToStart() {
         overviewCoverager.uncover();
-        undergroundCoverager.coverBy(undergroundProxy.indexOf(OverviewTrainingsFragment.TAG));
+        exercisingCoverager.uncover();
     }
 
     @Override
@@ -188,20 +187,6 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
                     .createTrainerComponent(new TrainerModule(this));
         }
         return dependencies;
-    }
-
-    private void showOptionsForWordsAdding() {
-        BottomSheetDialog dialog = new BottomSheetDialog(getContext());
-        dialog.setContentView(R.layout.include_structure_options_for_words_adding);
-        dialog.findViewById(R.id.btn_create_word).setOnClickListener(v -> {
-            dialog.dismiss();
-            navigator.navigateToWordCreationFrom(getActivity());
-        });
-        dialog.findViewById(R.id.btn_search_words).setOnClickListener(v -> {
-            dialog.dismiss();
-            navigator.navigateToWordsSearchingFrom(getActivity());
-        });
-        dialog.show();
     }
 
 }
