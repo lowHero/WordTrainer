@@ -1,13 +1,12 @@
 package com.nz2dev.wordtrainer.domain.interactors.word;
 
-import com.nz2dev.wordtrainer.domain.binders.CourseBinder;
-import com.nz2dev.wordtrainer.domain.environtment.Exporter;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.device.Exporter;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.models.internal.WordData;
 import com.nz2dev.wordtrainer.domain.models.internal.WordsPacket;
-import com.nz2dev.wordtrainer.domain.repositories.CourseRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.CourseRepository;
 
 import java.util.Collection;
 
@@ -25,13 +24,13 @@ public class ExportWordsUseCase {
 
     private final Exporter exporter;
     private final CourseRepository courseRepository;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public ExportWordsUseCase(Exporter exporter, CourseRepository courseRepository, ExecutionProxy executionProxy) {
+    public ExportWordsUseCase(Exporter exporter, CourseRepository courseRepository, SchedulersFacade schedulersFacade) {
         this.exporter = exporter;
         this.courseRepository = courseRepository;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Boolean> execute(String name, Collection<Word> words) {
@@ -39,7 +38,7 @@ public class ExportWordsUseCase {
         return Observable.fromIterable(words)
                 .map(word -> new WordData(word.getOriginal(), word.getTranslation()))
                 .toList()
-                .subscribeOn(executionProxy.background())
+                .subscribeOn(schedulersFacade.background())
                 .map(wordsDataList -> {
                     CourseBase owner = courseRepository.getCourseBase(first.getCourseId()).blockingGet();
                     WordsPacket wordsPacket = new WordsPacket(
@@ -50,7 +49,7 @@ public class ExportWordsUseCase {
                     exporter.exportWordsPacket(name, wordsPacket);
                     return true;
                 })
-                .observeOn(executionProxy.ui());
+                .observeOn(schedulersFacade.ui());
     }
 
 }

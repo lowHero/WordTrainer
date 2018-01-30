@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.domain.environtment;
+package com.nz2dev.wordtrainer.domain.device;
 
 import com.nz2dev.wordtrainer.domain.models.internal.WordsPacket;
 

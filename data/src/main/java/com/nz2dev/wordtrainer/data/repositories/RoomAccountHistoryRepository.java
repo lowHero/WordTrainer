@@ -5,7 +5,7 @@ import com.nz2dev.wordtrainer.data.core.dao.AccountHistoryDao;
 import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.AccountHistory;
-import com.nz2dev.wordtrainer.domain.repositories.AccountHistoryRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.AccountHistoryRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

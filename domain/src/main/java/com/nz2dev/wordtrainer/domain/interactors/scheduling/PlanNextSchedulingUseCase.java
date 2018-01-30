@@ -1,8 +1,8 @@
 package com.nz2dev.wordtrainer.domain.interactors.scheduling;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.SchedulingRepository;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.SchedulingRepository;
 
 import java.util.Date;
 
@@ -19,13 +19,13 @@ public class PlanNextSchedulingUseCase {
 
     private final AppPreferences appPreferences;
     private final SchedulingRepository schedulingRepository;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public PlanNextSchedulingUseCase(AppPreferences appPreferences, SchedulingRepository schedulingRepository, ExecutionProxy executionProxy) {
+    public PlanNextSchedulingUseCase(AppPreferences appPreferences, SchedulingRepository schedulingRepository, SchedulersFacade schedulersFacade) {
         this.appPreferences = appPreferences;
         this.schedulingRepository = schedulingRepository;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Long> execute(Date lastTrainingDate) {
@@ -35,8 +35,8 @@ public class PlanNextSchedulingUseCase {
                     schedulingRepository.updateScheduling(scheduling).blockingGet();
                     return scheduling.getLastTrainingDate().getTime() + scheduling.getInterval();
                 })
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui());
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
 }

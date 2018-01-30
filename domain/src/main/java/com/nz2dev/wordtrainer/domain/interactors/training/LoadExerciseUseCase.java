@@ -1,24 +1,22 @@
 package com.nz2dev.wordtrainer.domain.interactors.training;
 
 import com.nz2dev.wordtrainer.domain.exceptions.NotEnoughWordForTraining;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
-import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by nz2Dev on 05.01.2018
@@ -33,26 +31,26 @@ public class LoadExerciseUseCase {
     private final TrainingsRepository trainingsRepository;
     private final WordsRepository wordsRepository;
     private final AppPreferences appPreferences;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
     public LoadExerciseUseCase(TrainingsRepository trainingsRepository,
                                WordsRepository wordsRepository,
-                               AppPreferences appPreferences, ExecutionProxy executionProxy) {
+                               AppPreferences appPreferences, SchedulersFacade schedulersFacade) {
         this.trainingsRepository = trainingsRepository;
         this.wordsRepository = wordsRepository;
         this.appPreferences = appPreferences;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Exercise> execute(long wordId) {
         Single<Training> trainingAsync = trainingsRepository
                 .getTrainingByWordId(wordId)
-                .subscribeOn(executionProxy.background());
+                .subscribeOn(schedulersFacade.background());
 
         Single<Collection<Word>> variantsAsync = wordsRepository
                 .getWordsIds(appPreferences.getSelectedCourseId(), EXERCISING_WORDS_VARIANT_RANGE)
-                .subscribeOn(executionProxy.background())
+                .subscribeOn(schedulersFacade.background())
                 .doOnSuccess(ids -> {
                     if (ids.size() < MINIMUM_WORDS_FOR_EXERCISING) {
                         throw new NotEnoughWordForTraining();
@@ -75,8 +73,8 @@ public class LoadExerciseUseCase {
                 });
 
         return Single.zip(trainingAsync, variantsAsync, Exercise::new)
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui());
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
 }

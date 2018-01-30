@@ -15,5 +15,5 @@ public interface ExerciseTrainingView {
     void highlightWord(long wordId, boolean correct);
     void hideTrainings();
 
-    void showError(String errorMessage);
+    void showError(int errorStringResId);
 }

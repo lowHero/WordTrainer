@@ -1,8 +1,7 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
-import com.nz2dev.wordtrainer.data.R;
 import com.nz2dev.wordtrainer.domain.models.Language;
-import com.nz2dev.wordtrainer.domain.repositories.LanguageRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.LanguageRepository;
 
 import java.util.Collection;
 import java.util.HashMap;

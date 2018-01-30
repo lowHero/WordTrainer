@@ -1,17 +1,13 @@
 package com.nz2dev.wordtrainer.app.common.dependencies.modules;
 
-import android.content.Context;
-
-import com.nz2dev.wordtrainer.device.exceptions.AndroidExceptionHandler;
-import com.nz2dev.wordtrainer.device.execution.AndroidExecution;
+import com.nz2dev.wordtrainer.device.execution.AndroidSchedulersFacade;
 import com.nz2dev.wordtrainer.device.files.AndroidJsonExporter;
 import com.nz2dev.wordtrainer.device.files.AndroidJsonImporter;
 import com.nz2dev.wordtrainer.device.locale.AndroidLanguageManager;
-import com.nz2dev.wordtrainer.domain.environtment.Exporter;
-import com.nz2dev.wordtrainer.domain.environtment.Importer;
-import com.nz2dev.wordtrainer.domain.environtment.LanguageManager;
-import com.nz2dev.wordtrainer.domain.execution.ExceptionHandler;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.device.Exporter;
+import com.nz2dev.wordtrainer.domain.device.Importer;
+import com.nz2dev.wordtrainer.domain.device.LanguageManager;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 
 import javax.inject.Singleton;
 
@@ -26,18 +22,8 @@ public class DeviceModule {
 
     @Provides
     @Singleton
-    ExecutionProxy provideExecutionProxy(AndroidExecution androidExecution) {
-        return androidExecution;
-    }
-
-    @Provides
-    @Singleton
-    ExceptionHandler provideExceptionHandler(Context context) {
-        return new AndroidExceptionHandler.Builder()
-                .withDialog(false)
-                .withToast(false)
-                .inContext(context)
-                .create();
+    SchedulersFacade provideExecutionProxy(AndroidSchedulersFacade androidSchedulersFacade) {
+        return androidSchedulersFacade;
     }
 
     @Provides

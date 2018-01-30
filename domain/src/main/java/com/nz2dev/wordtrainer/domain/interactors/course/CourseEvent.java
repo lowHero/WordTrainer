@@ -1,11 +1,12 @@
 package com.nz2dev.wordtrainer.domain.interactors.course;
 
+import com.nz2dev.wordtrainer.domain.events.AppEvent;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 
 /**
  * Created by nz2Dev on 09.01.2018
  */
-public final class CourseEvent {
+public final class CourseEvent extends AppEvent {
 
     public enum Type {
         Select,

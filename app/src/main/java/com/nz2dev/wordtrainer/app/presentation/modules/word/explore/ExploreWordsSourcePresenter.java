@@ -4,7 +4,7 @@ import android.os.Environment;
 
 import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
-import com.nz2dev.wordtrainer.domain.environtment.Exporter;
+import com.nz2dev.wordtrainer.domain.device.Exporter;
 
 import java.io.File;
 

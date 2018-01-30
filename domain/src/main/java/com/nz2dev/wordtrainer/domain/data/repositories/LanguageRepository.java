@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.domain.repositories;
+package com.nz2dev.wordtrainer.domain.data.repositories;
 
 import com.nz2dev.wordtrainer.domain.models.Language;
 

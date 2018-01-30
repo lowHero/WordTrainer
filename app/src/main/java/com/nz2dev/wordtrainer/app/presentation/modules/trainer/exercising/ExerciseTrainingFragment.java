@@ -118,8 +118,8 @@ public class ExerciseTrainingFragment extends Fragment implements ExerciseTraini
     }
 
     @Override
-    public void showError(String errorMessage) {
-        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+    public void showError(int errorStringResId) {
+        Toast.makeText(getContext(), errorStringResId, Toast.LENGTH_SHORT).show();
     }
 
     @Override

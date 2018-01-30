@@ -4,11 +4,6 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
-import com.nz2dev.wordtrainer.data.core.dao.AccountDao;
-import com.nz2dev.wordtrainer.data.core.dao.AccountHistoryDao;
-import com.nz2dev.wordtrainer.data.core.dao.CourseDao;
-import com.nz2dev.wordtrainer.data.core.dao.TrainingDao;
-import com.nz2dev.wordtrainer.data.core.dao.WordDao;
 import com.nz2dev.wordtrainer.data.preferences.SharedAppPreferences;
 import com.nz2dev.wordtrainer.data.repositories.MemoryLanguageRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomAccountHistoryRepository;
@@ -17,14 +12,14 @@ import com.nz2dev.wordtrainer.data.repositories.RoomCourseRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomSchedulingRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomTrainingRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomWordRepository;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.AccountHistoryRepository;
-import com.nz2dev.wordtrainer.domain.repositories.AccountRepository;
-import com.nz2dev.wordtrainer.domain.repositories.CourseRepository;
-import com.nz2dev.wordtrainer.domain.repositories.LanguageRepository;
-import com.nz2dev.wordtrainer.domain.repositories.SchedulingRepository;
-import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
-import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.AccountHistoryRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.AccountRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.CourseRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.LanguageRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.SchedulingRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
 
 import javax.inject.Singleton;
 

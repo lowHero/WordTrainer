@@ -1,9 +1,10 @@
 package com.nz2dev.wordtrainer.domain.interactors.course;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
+import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.CourseRepository;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.CourseRepository;
 import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import java.util.Collection;
@@ -20,22 +21,22 @@ import io.reactivex.Single;
 @Singleton
 public class DeleteCourseUseCase {
 
-    private final EventBus appEventBus;
+    private final AppEventBus appEventBus;
     private final AppPreferences appPreferences;
     private final CourseRepository courseRepository;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public DeleteCourseUseCase(EventBus appEventBus, AppPreferences appPreferences, CourseRepository courseRepository, ExecutionProxy executionProxy) {
+    public DeleteCourseUseCase(AppEventBus appEventBus, AppPreferences appPreferences, CourseRepository courseRepository, SchedulersFacade schedulersFacade) {
         this.appEventBus = appEventBus;
         this.appPreferences = appPreferences;
         this.courseRepository = courseRepository;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Boolean> execute(long courseId) {
         return courseRepository.deleteCourse(courseId)
-                .subscribeOn(executionProxy.background())
+                .subscribeOn(schedulersFacade.background())
                 .map(course -> {
                     Collection<CourseBase> courses = courseRepository.getCoursesBase().blockingGet();
                     if (courses.size() > 0) {
@@ -55,7 +56,7 @@ public class DeleteCourseUseCase {
                     }
                     return true;
                 })
-                .observeOn(executionProxy.ui());
+                .observeOn(schedulersFacade.ui());
     }
 
 }

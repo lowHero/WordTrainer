@@ -1,8 +1,8 @@
 package com.nz2dev.wordtrainer.domain.interactors.word;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.Word;
-import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,18 +16,18 @@ import io.reactivex.Single;
 public class LoadWordUseCase {
 
     private final WordsRepository wordsRepository;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public LoadWordUseCase(WordsRepository wordsRepository, ExecutionProxy executionProxy) {
+    public LoadWordUseCase(WordsRepository wordsRepository, SchedulersFacade schedulersFacade) {
         this.wordsRepository = wordsRepository;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Word> execute(long wordId) {
         return wordsRepository.getWord(wordId)
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui());
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
 }

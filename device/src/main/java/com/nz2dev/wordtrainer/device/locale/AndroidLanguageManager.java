@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.device.locale;
 
-import com.nz2dev.wordtrainer.domain.environtment.LanguageManager;
+import com.nz2dev.wordtrainer.domain.device.LanguageManager;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

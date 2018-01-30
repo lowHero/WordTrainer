@@ -2,6 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
 
 import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActionsContainers;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
+import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 import com.nz2dev.wordtrainer.domain.interactors.course.CourseEvent;
 import com.nz2dev.wordtrainer.domain.interactors.course.LoadCourseUseCase;
@@ -16,12 +17,12 @@ import javax.inject.Inject;
 @ForActionsContainers
 public class TrainerPresenter extends DisposableBasePresenter<TrainerView> {
 
-    private EventBus appEventBus;
+    private AppEventBus appEventBus;
     private LoadCourseUseCase loadCourseUseCase;
     private LoadProposedTrainingUseCase loadProposedTrainingUseCase;
 
     @Inject
-    public TrainerPresenter(EventBus appEventBus, LoadCourseUseCase loadCourseUseCase, LoadProposedTrainingUseCase loadProposedTrainingUseCase) {
+    public TrainerPresenter(AppEventBus appEventBus, LoadCourseUseCase loadCourseUseCase, LoadProposedTrainingUseCase loadProposedTrainingUseCase) {
         this.appEventBus = appEventBus;
         this.loadCourseUseCase = loadCourseUseCase;
         this.loadProposedTrainingUseCase = loadProposedTrainingUseCase;

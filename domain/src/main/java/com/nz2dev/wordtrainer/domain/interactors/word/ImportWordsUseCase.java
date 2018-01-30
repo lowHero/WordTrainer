@@ -1,11 +1,8 @@
 package com.nz2dev.wordtrainer.domain.interactors.word;
 
-import com.nz2dev.wordtrainer.domain.environtment.Importer;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
-import com.nz2dev.wordtrainer.domain.models.Word;
+import com.nz2dev.wordtrainer.domain.device.Importer;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.internal.WordsPacket;
-
-import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,18 +16,18 @@ import io.reactivex.Single;
 public class ImportWordsUseCase {
 
     private final Importer importer;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public ImportWordsUseCase(Importer importer, ExecutionProxy executionProxy) {
+    public ImportWordsUseCase(Importer importer, SchedulersFacade schedulersFacade) {
         this.importer = importer;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<WordsPacket> execute(String pathToFile) {
         return createImportSource(pathToFile)
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui());
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
     private Single<WordsPacket> createImportSource(String pathToFile) {

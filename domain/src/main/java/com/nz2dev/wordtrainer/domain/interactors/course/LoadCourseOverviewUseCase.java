@@ -1,12 +1,12 @@
 package com.nz2dev.wordtrainer.domain.interactors.course;
 
-import com.nz2dev.wordtrainer.domain.binders.CourseBinder;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.data.binders.CourseBinder;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.internal.CourseInfo;
 import com.nz2dev.wordtrainer.domain.models.internal.CoursesOverview;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.CourseRepository;
-import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.CourseRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,20 +24,20 @@ public class LoadCourseOverviewUseCase {
     private final CourseRepository courseRepository;
     private final WordsRepository wordsRepository;
     private final CourseBinder courseBinder;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public LoadCourseOverviewUseCase(AppPreferences appPreferences, CourseRepository courseRepository, WordsRepository wordsRepository, CourseBinder courseBinder, ExecutionProxy executionProxy) {
+    public LoadCourseOverviewUseCase(AppPreferences appPreferences, CourseRepository courseRepository, WordsRepository wordsRepository, CourseBinder courseBinder, SchedulersFacade schedulersFacade) {
         this.appPreferences = appPreferences;
         this.wordsRepository = wordsRepository;
         this.courseBinder = courseBinder;
         this.courseRepository = courseRepository;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<CoursesOverview> execute() {
         return courseRepository.getCoursesBase()
-                .subscribeOn(executionProxy.background())
+                .subscribeOn(schedulersFacade.background())
                 .to(courseBaseCollectionSource -> Observable.fromIterable(courseBaseCollectionSource.blockingGet()))
                 .map(courseBase -> {
                     Single<CourseInfo> zipSource = Single.zip(
@@ -46,10 +46,10 @@ public class LoadCourseOverviewUseCase {
                             CourseInfo::new);
                     return zipSource.blockingGet();
                 })
-                .subscribeOn(executionProxy.background())
+                .subscribeOn(schedulersFacade.background())
                 .toList()
                 .map(courseInfoList -> new CoursesOverview(courseInfoList, appPreferences.getSelectedCourseId()))
-                .observeOn(executionProxy.ui());
+                .observeOn(schedulersFacade.ui());
     }
 
 }

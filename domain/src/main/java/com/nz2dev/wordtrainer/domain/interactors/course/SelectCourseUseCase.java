@@ -1,7 +1,8 @@
 package com.nz2dev.wordtrainer.domain.interactors.course;
 
+import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import javax.inject.Inject;
@@ -15,11 +16,11 @@ import io.reactivex.Single;
 @Singleton
 public class SelectCourseUseCase {
 
-    private final EventBus appEventBus;
+    private final AppEventBus appEventBus;
     private final AppPreferences appPreferences;
 
     @Inject
-    public SelectCourseUseCase(EventBus appEventBus, AppPreferences appPreferences) {
+    public SelectCourseUseCase(AppEventBus appEventBus, AppPreferences appPreferences) {
         this.appEventBus = appEventBus;
         this.appPreferences = appPreferences;
     }

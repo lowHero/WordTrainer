@@ -1,9 +1,8 @@
 package com.nz2dev.wordtrainer.domain.interactors.account;
 
-import com.nz2dev.wordtrainer.domain.execution.ExceptionHandler;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.data.repositories.AccountRepository;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.Account;
-import com.nz2dev.wordtrainer.domain.repositories.AccountRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,21 +16,18 @@ import io.reactivex.Single;
 public class CreateAccountUseCase {
 
     private final AccountRepository accountRepository;
-    private final ExecutionProxy executionProxy;
-    private final ExceptionHandler handler;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public CreateAccountUseCase(AccountRepository accountRepository, ExecutionProxy executionProxy, ExceptionHandler handler) {
+    public CreateAccountUseCase(AccountRepository accountRepository, SchedulersFacade schedulersFacade) {
         this.accountRepository = accountRepository;
-        this.executionProxy = executionProxy;
-        this.handler = handler;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Boolean> execute(String name, String password) {
         return accountRepository.addAccount(Account.unidentified(name), password)
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui())
-                .doOnError(handler::handleThrowable);
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
 }

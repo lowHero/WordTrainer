@@ -6,11 +6,10 @@ import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.data.utils.CollectionToArrayUtils;
 import com.nz2dev.wordtrainer.domain.models.Word;
-import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

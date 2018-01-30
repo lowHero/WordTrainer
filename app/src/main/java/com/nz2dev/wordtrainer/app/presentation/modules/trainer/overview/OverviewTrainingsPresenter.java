@@ -2,6 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.trainer.overview;
 
 import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
+import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 import com.nz2dev.wordtrainer.domain.interactors.course.CourseEvent;
 import com.nz2dev.wordtrainer.domain.interactors.training.LoadTrainingsUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.training.TrainingEvent;
@@ -19,13 +20,13 @@ import io.reactivex.Observable;
 @ForActions
 public class OverviewTrainingsPresenter extends DisposableBasePresenter<OverviewTrainingsView> {
 
-    private final EventBus appEventBus;
+    private final AppEventBus appEventBus;
     private final LoadTrainingsUseCase loadTrainingsUseCase;
 
     private boolean needToShowNow = true;
 
     @Inject
-    public OverviewTrainingsPresenter(EventBus appEventBus, LoadTrainingsUseCase loadTrainingsUseCase) {
+    public OverviewTrainingsPresenter(AppEventBus appEventBus, LoadTrainingsUseCase loadTrainingsUseCase) {
         this.appEventBus = appEventBus;
         this.loadTrainingsUseCase = loadTrainingsUseCase;
     }

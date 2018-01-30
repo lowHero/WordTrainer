@@ -1,10 +1,10 @@
 package com.nz2dev.wordtrainer.domain.interactors.training;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
+import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
-import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
-import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import java.util.Date;
 
@@ -21,15 +21,15 @@ public class CommitExerciseUseCase {
 
     private static final int DEFAULT_UNIT_PROGRESS = 50;
 
-    private final EventBus appEventBus;
+    private final AppEventBus appEventBus;
     private final TrainingsRepository trainingsRepository;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public CommitExerciseUseCase(EventBus appEventBus, TrainingsRepository trainingsRepository, ExecutionProxy executionProxy) {
+    public CommitExerciseUseCase(AppEventBus appEventBus, TrainingsRepository trainingsRepository, SchedulersFacade schedulersFacade) {
         this.appEventBus = appEventBus;
         this.trainingsRepository = trainingsRepository;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Boolean> execute(Exercise exercise, boolean correct) {
@@ -43,9 +43,9 @@ public class CommitExerciseUseCase {
         training.setLastTrainingDate(new Date());
 
         return trainingsRepository.updateTraining(training)
-                .subscribeOn(executionProxy.background())
+                .subscribeOn(schedulersFacade.background())
                 .doOnSuccess(r -> appEventBus.post(TrainingEvent.newUpdated(training)))
-                .observeOn(executionProxy.ui());
+                .observeOn(schedulersFacade.ui());
     }
 
 }

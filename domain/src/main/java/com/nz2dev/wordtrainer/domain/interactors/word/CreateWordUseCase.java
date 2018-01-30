@@ -1,11 +1,12 @@
 package com.nz2dev.wordtrainer.domain.interactors.word;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
+import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
-import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
 import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import javax.inject.Inject;
@@ -21,24 +22,24 @@ public class CreateWordUseCase {
 
     private final WordsRepository wordsRepository;
     private final TrainingsRepository trainingsRepository;
-    private final EventBus appEventBus;
+    private final AppEventBus appEventBus;
     private final AppPreferences appPreferences;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public CreateWordUseCase(WordsRepository wordsRepository, TrainingsRepository trainingsRepository, EventBus appEventBus, AppPreferences appPreferences, ExecutionProxy executionProxy) {
+    public CreateWordUseCase(WordsRepository wordsRepository, TrainingsRepository trainingsRepository, AppEventBus appEventBus, AppPreferences appPreferences, SchedulersFacade schedulersFacade) {
         this.wordsRepository = wordsRepository;
         this.trainingsRepository = trainingsRepository;
         this.appEventBus = appEventBus;
         this.appPreferences = appPreferences;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Boolean> execute(String original, String translation) {
         Word word = Word.unidentified(appPreferences.getSelectedCourseId(), original, translation);
 
         return wordsRepository.addWord(word)
-                .subscribeOn(executionProxy.background())
+                .subscribeOn(schedulersFacade.background())
                 .map(wordId -> {
                     word.setId(wordId);
 
@@ -48,8 +49,8 @@ public class CreateWordUseCase {
                     appEventBus.post(WordEvent.newWordAndTrainingAdded(word));
                     return true;
                 })
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui());
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
 }

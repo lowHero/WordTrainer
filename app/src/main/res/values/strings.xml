@@ -39,5 +39,6 @@
     <string name="title_trainer_scheduling">Scheduling</string>
     <string name="title_trained_language">Trained Language</string>
     <string name="title_next_training">Next training</string>
+    <string name="error_not_enought_word_for_training">Not enough word for training, add more wordsData</string>
 
 </resources>

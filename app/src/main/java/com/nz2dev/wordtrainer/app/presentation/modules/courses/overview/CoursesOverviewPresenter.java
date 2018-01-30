@@ -2,6 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.courses.overview;
 
 import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
+import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 import com.nz2dev.wordtrainer.domain.interactors.course.CourseEvent;
 import com.nz2dev.wordtrainer.domain.interactors.course.DeleteCourseUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.course.LoadCourseOverviewUseCase;
@@ -25,13 +26,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 @ForActions
 public class CoursesOverviewPresenter extends DisposableBasePresenter<CoursesOverviewView> {
 
-    private final EventBus appEventBus;
+    private final AppEventBus appEventBus;
     private final LoadCourseOverviewUseCase loadCourseOverviewUseCase;
     private final DeleteCourseUseCase deleteCourseUseCase;
     private final SelectCourseUseCase selectCourseUseCase;
 
     @Inject
-    public CoursesOverviewPresenter(EventBus appEventBus, LoadCourseOverviewUseCase loadCourseOverviewUseCase, DeleteCourseUseCase deleteCourseUseCase, SelectCourseUseCase selectCourseUseCase) {
+    public CoursesOverviewPresenter(AppEventBus appEventBus, LoadCourseOverviewUseCase loadCourseOverviewUseCase, DeleteCourseUseCase deleteCourseUseCase, SelectCourseUseCase selectCourseUseCase) {
         this.appEventBus = appEventBus;
         this.loadCourseOverviewUseCase = loadCourseOverviewUseCase;
         this.deleteCourseUseCase = deleteCourseUseCase;

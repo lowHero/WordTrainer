@@ -1,17 +1,16 @@
 package com.nz2dev.wordtrainer.domain.interactors.word;
 
-import com.nz2dev.wordtrainer.domain.binders.CourseBinder;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
+import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.models.internal.WordData;
-import com.nz2dev.wordtrainer.domain.repositories.CourseRepository;
-import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
-import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.CourseRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
 import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,26 +24,24 @@ import io.reactivex.Single;
 @Singleton
 public class AddWordDataSetUseCase {
 
-    private final EventBus appEventBus;
+    private final AppEventBus appEventBus;
     private final CourseRepository courseRepository;
     private final WordsRepository wordsRepository;
     private final TrainingsRepository trainingsRepository;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public AddWordDataSetUseCase(EventBus appEventBus, CourseRepository courseRepository,
-                                 WordsRepository wordsRepository, TrainingsRepository trainingsRepository,
-                                 ExecutionProxy executionProxy) {
+    public AddWordDataSetUseCase(AppEventBus appEventBus, CourseRepository courseRepository, WordsRepository wordsRepository, TrainingsRepository trainingsRepository, SchedulersFacade schedulersFacade) {
         this.appEventBus = appEventBus;
         this.courseRepository = courseRepository;
         this.wordsRepository = wordsRepository;
         this.trainingsRepository = trainingsRepository;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Boolean> execute(String languageKey, Collection<WordData> wordDataSet) {
         return courseRepository.getCourseBaseByOriginalLanguageKey(languageKey)
-                .subscribeOn(executionProxy.background())
+                .subscribeOn(schedulersFacade.background())
                 .map(courseBase -> {
                     Observable.fromIterable(wordDataSet)
                             .blockingForEach(wordData -> {
@@ -56,7 +53,7 @@ public class AddWordDataSetUseCase {
                     appEventBus.post(WordEvent.newWordAndTrainingPackAdded());
                     return true;
                 })
-                .observeOn(executionProxy.ui());
+                .observeOn(schedulersFacade.ui());
     }
 
 }

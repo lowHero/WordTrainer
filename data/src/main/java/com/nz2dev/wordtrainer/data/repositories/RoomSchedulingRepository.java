@@ -1,7 +1,7 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
 import com.nz2dev.wordtrainer.domain.models.Scheduling;
-import com.nz2dev.wordtrainer.domain.repositories.SchedulingRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.SchedulingRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

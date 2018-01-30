@@ -1,11 +1,10 @@
 package com.nz2dev.wordtrainer.domain.interactors.account;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
-import com.nz2dev.wordtrainer.domain.models.Account;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.AccountHistory;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.AccountHistoryRepository;
-import com.nz2dev.wordtrainer.domain.repositories.AccountRepository;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.AccountHistoryRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.AccountRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -21,14 +20,14 @@ public class AuthenticateAccountUseCase {
     private final AccountRepository accountRepository;
     private final AccountHistoryRepository accountHistoryRepository;
     private final AppPreferences appPreferences;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public AuthenticateAccountUseCase(AccountRepository accountRepository, AccountHistoryRepository accountHistoryRepository, AppPreferences appPreferences, ExecutionProxy executionProxy) {
+    public AuthenticateAccountUseCase(AccountRepository accountRepository, AccountHistoryRepository accountHistoryRepository, AppPreferences appPreferences, SchedulersFacade schedulersFacade) {
         this.accountRepository = accountRepository;
         this.accountHistoryRepository = accountHistoryRepository;
         this.appPreferences = appPreferences;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Boolean> execute(String name, String password) {
@@ -41,8 +40,8 @@ public class AuthenticateAccountUseCase {
                     }
                     return true;
                 })
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui());
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
 }

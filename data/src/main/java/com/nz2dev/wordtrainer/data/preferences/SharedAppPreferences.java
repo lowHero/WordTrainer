@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.nz2dev.wordtrainer.domain.models.Account;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

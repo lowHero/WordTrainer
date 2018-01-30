@@ -5,10 +5,9 @@ import com.nz2dev.wordtrainer.data.core.dao.CourseDao;
 import com.nz2dev.wordtrainer.data.core.entity.CourseEntity;
 import com.nz2dev.wordtrainer.data.core.relation.CourseBaseSet;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
-import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 import com.nz2dev.wordtrainer.domain.models.Course;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
-import com.nz2dev.wordtrainer.domain.repositories.CourseRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.CourseRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

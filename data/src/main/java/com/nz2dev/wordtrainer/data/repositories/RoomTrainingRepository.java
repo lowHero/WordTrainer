@@ -6,7 +6,7 @@ import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
 import com.nz2dev.wordtrainer.data.core.relation.TrainingAndWordJoin;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.Training;
-import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

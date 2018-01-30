@@ -1,10 +1,9 @@
 package com.nz2dev.wordtrainer.domain.interactors.training;
 
-import com.nz2dev.wordtrainer.domain.execution.ExceptionHandler;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.Training;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
 
 import java.util.Collection;
 
@@ -21,22 +20,19 @@ public class LoadTrainingsUseCase {
 
     private final TrainingsRepository trainingsRepository;
     private final AppPreferences appPreferences;
-    private final ExecutionProxy executionProxy;
-    private final ExceptionHandler handler;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public LoadTrainingsUseCase(TrainingsRepository trainingsRepository, AppPreferences appPreferences, ExecutionProxy executionProxy, ExceptionHandler handler) {
+    public LoadTrainingsUseCase(TrainingsRepository trainingsRepository, AppPreferences appPreferences, SchedulersFacade schedulersFacade) {
         this.trainingsRepository = trainingsRepository;
         this.appPreferences = appPreferences;
-        this.executionProxy = executionProxy;
-        this.handler = handler;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Collection<Training>> execute() {
         return trainingsRepository.getSortedTrainings(appPreferences.getSelectedCourseId())
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui())
-                .doOnError(handler::handleThrowable);
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
 }

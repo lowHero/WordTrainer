@@ -3,6 +3,8 @@ package com.nz2dev.wordtrainer.app.common.dependencies.modules;
 import android.content.Context;
 
 import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
+import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import javax.inject.Singleton;
@@ -31,8 +33,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    EventBus provideAppEventBus() {
-        return new EventBus();
+    AppEventBus provideAppEventBus(SchedulersFacade schedulersFacade) {
+        return new AppEventBus(schedulersFacade);
     }
 
 }

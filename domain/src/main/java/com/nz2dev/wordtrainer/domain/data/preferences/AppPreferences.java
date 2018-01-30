@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.domain.preferences;
+package com.nz2dev.wordtrainer.domain.data.preferences;
 
 import com.nz2dev.wordtrainer.domain.models.Account;
 

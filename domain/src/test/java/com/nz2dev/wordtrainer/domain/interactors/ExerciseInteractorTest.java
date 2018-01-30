@@ -1,13 +1,13 @@
 package com.nz2dev.wordtrainer.domain.interactors;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.interactors.training.LoadExerciseUseCase;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.models.internal.Exercise;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.TrainingsRepository;
-import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
 
 import org.assertj.core.api.Condition;
 import org.junit.Before;
@@ -36,7 +36,7 @@ public class ExerciseInteractorTest {
 
     @Mock WordsRepository wordsRepository;
     @Mock TrainingsRepository trainingsRepository;
-    @Mock ExecutionProxy executionProxy;
+    @Mock SchedulersFacade schedulersFacade;
     @Mock AppPreferences appPreferences;
 
     private TestScheduler testScheduler;
@@ -60,13 +60,13 @@ public class ExerciseInteractorTest {
     public void init() {
         testScheduler = new TestScheduler();
 
-        when(executionProxy.background()).thenReturn(Schedulers.trampoline());
-        when(executionProxy.ui()).thenReturn(Schedulers.trampoline());
+        when(schedulersFacade.background()).thenReturn(Schedulers.trampoline());
+        when(schedulersFacade.ui()).thenReturn(Schedulers.trampoline());
 
         when(appPreferences.getSelectedCourseId()).thenReturn(1L);
 
         loadExerciseUseCase = new LoadExerciseUseCase(
-                trainingsRepository, wordsRepository, appPreferences, executionProxy);
+                trainingsRepository, wordsRepository, appPreferences, schedulersFacade);
     }
 
     @Test

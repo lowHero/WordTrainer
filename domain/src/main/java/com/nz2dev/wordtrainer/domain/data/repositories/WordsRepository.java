@@ -1,9 +1,8 @@
-package com.nz2dev.wordtrainer.domain.repositories;
+package com.nz2dev.wordtrainer.domain.data.repositories;
 
 import com.nz2dev.wordtrainer.domain.models.Word;
 
 import java.util.Collection;
-import java.util.List;
 
 import io.reactivex.Single;
 

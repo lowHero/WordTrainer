@@ -1,9 +1,8 @@
 package com.nz2dev.wordtrainer.domain.interactors.language;
 
-import com.nz2dev.wordtrainer.domain.execution.ExceptionHandler;
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.data.repositories.LanguageRepository;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.Language;
-import com.nz2dev.wordtrainer.domain.repositories.LanguageRepository;
 
 import java.util.Collection;
 
@@ -19,21 +18,18 @@ import io.reactivex.Single;
 public class LoadAllLanguagesUseCase {
 
     private final LanguageRepository languageRepository;
-    private final ExecutionProxy executionProxy;
-    private final ExceptionHandler handler;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public LoadAllLanguagesUseCase(LanguageRepository languageRepository, ExecutionProxy executionProxy, ExceptionHandler handler) {
+    public LoadAllLanguagesUseCase(LanguageRepository languageRepository, SchedulersFacade schedulersFacade) {
         this.languageRepository = languageRepository;
-        this.executionProxy = executionProxy;
-        this.handler = handler;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Collection<Language>> execute() {
         return languageRepository.getAllLanguages()
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui())
-                .doOnError(handler::handleThrowable);
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
 }

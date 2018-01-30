@@ -7,7 +7,7 @@ import com.nz2dev.wordtrainer.domain.exceptions.AccountNotExistException;
 import com.nz2dev.wordtrainer.domain.exceptions.AccountNotExistOrPasswordIncorrectException;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.Account;
-import com.nz2dev.wordtrainer.domain.repositories.AccountRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.AccountRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

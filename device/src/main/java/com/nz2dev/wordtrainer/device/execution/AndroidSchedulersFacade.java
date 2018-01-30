@@ -2,7 +2,7 @@ package com.nz2dev.wordtrainer.device.execution;
 
 import android.support.annotation.NonNull;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -20,12 +20,12 @@ import io.reactivex.schedulers.Schedulers;
  * Created by nz2Dev on 04.01.2018
  */
 @Singleton
-public class AndroidExecution implements ExecutionProxy, Executor {
+public class AndroidSchedulersFacade implements SchedulersFacade, Executor {
 
     private final ThreadPoolExecutor mThreadPoolExecutor;
 
     @Inject
-    public AndroidExecution() {
+    public AndroidSchedulersFacade() {
         mThreadPoolExecutor = new ThreadPoolExecutor(4, 10, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
     }
 

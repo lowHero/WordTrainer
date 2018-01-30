@@ -1,10 +1,9 @@
 package com.nz2dev.wordtrainer.domain.interactors.word;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
-import com.nz2dev.wordtrainer.domain.models.CourseBase;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.Word;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.WordsRepository;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
 
 import java.util.Collection;
 
@@ -21,20 +20,20 @@ public class LoadCourseWordsUseCase {
 
     private final AppPreferences appPreferences;
     private final WordsRepository wordsRepository;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public LoadCourseWordsUseCase(AppPreferences appPreferences, WordsRepository wordsRepository, ExecutionProxy executionProxy) {
+    public LoadCourseWordsUseCase(AppPreferences appPreferences, WordsRepository wordsRepository, SchedulersFacade schedulersFacade) {
         this.appPreferences = appPreferences;
         this.wordsRepository = wordsRepository;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
     }
 
     public Single<Collection<Word>> execute(long courseId) {
         long exportedCourseId = courseId <= 0 ? appPreferences.getSelectedCourseId() : courseId;
         return wordsRepository.getAllWords(exportedCourseId)
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui());
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
 }

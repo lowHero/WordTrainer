@@ -1,9 +1,9 @@
 package com.nz2dev.wordtrainer.domain.interactors.scheduling;
 
-import com.nz2dev.wordtrainer.domain.execution.ExecutionProxy;
+import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.Scheduling;
-import com.nz2dev.wordtrainer.domain.preferences.AppPreferences;
-import com.nz2dev.wordtrainer.domain.repositories.SchedulingRepository;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
+import com.nz2dev.wordtrainer.domain.data.repositories.SchedulingRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,19 +18,19 @@ public class DownloadSchedulingUseCase {
 
     private final AppPreferences appPreferences;
     private final SchedulingRepository schedulingRepository;
-    private final ExecutionProxy executionProxy;
+    private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public DownloadSchedulingUseCase(SchedulingRepository schedulingRepository, ExecutionProxy executionProxy, AppPreferences appPreferences) {
+    public DownloadSchedulingUseCase(SchedulingRepository schedulingRepository, SchedulersFacade schedulersFacade, AppPreferences appPreferences) {
         this.schedulingRepository = schedulingRepository;
-        this.executionProxy = executionProxy;
+        this.schedulersFacade = schedulersFacade;
         this.appPreferences = appPreferences;
     }
 
     public Single<Scheduling> execute() {
         return schedulingRepository.getSchedulingByCourseId(appPreferences.getSelectedCourseId())
-                .subscribeOn(executionProxy.background())
-                .observeOn(executionProxy.ui());
+                .subscribeOn(schedulersFacade.background())
+                .observeOn(schedulersFacade.ui());
     }
 
 }
