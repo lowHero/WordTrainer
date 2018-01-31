@@ -2,7 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.eleva
 
 import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerNavigation;
-import com.nz2dev.wordtrainer.app.utils.helpers.Optional;
+import com.nz2dev.wordtrainer.app.utils.generic.Optional;
 
 import dagger.Module;
 import dagger.Provides;

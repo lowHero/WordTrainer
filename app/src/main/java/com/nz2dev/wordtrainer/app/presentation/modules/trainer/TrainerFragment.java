@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,18 +15,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewCoverager;
-import com.nz2dev.wordtrainer.app.presentation.controlers.coverager.proxies.FragmentViewsProxy;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.controlers.coverager.ViewCoverager;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.controlers.coverager.proxies.FragmentViewsProxy;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.BaseFragment;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
-import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeNavigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.ExerciseTrainingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.overview.OverviewTrainingsFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.rules.SetUpRulesFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.scheduling.SetUpSchedulingFragment;
-import com.nz2dev.wordtrainer.app.presentation.modules.trainer.tools.AdditionOptionsFragment;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.units.tools.AdditionOptionsFragment;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.app.utils.helpers.DrawableIdHelper;
 import com.nz2dev.wordtrainer.app.utils.helpers.FragmentHelper;
 import com.nz2dev.wordtrainer.app.utils.helpers.MenuHelper;
@@ -42,8 +42,10 @@ import butterknife.OnClick;
 /**
  * Created by nz2Dev on 30.11.2017
  */
-public class TrainerFragment extends Fragment implements TrainerView, TrainerNavigation, HasDependencies<TrainerComponent>,
+public class TrainerFragment extends BaseFragment implements TrainerView, TrainerNavigation, HasDependencies<TrainerComponent>,
         OnNavigationItemSelectedListener {
+
+    public static final String TAG = TrainerFragment.class.getSimpleName();
 
     public static TrainerFragment newInstance() {
         return new TrainerFragment();
@@ -66,7 +68,7 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
 
     @Inject TrainerPresenter presenter;
 
-    @Inject Navigator navigator;
+    @Inject ActivityNavigator activityNavigator;
     @Inject HomeNavigator homeNavigator;
 
     private FragmentViewsProxy overviewProxy;
@@ -120,6 +122,16 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
         presenter.detachView();
     }
 
+    @Override
+    protected boolean onBackPressed() {
+        if (overviewCoverager.isCovered() || exercisingCoverager.isCovered()) {
+            navigateToStart();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @OnClick(R.id.img_trainer_language_flag)
     public void onTrainerLanguageFlagClick() {
         homeNavigator.navigateToCoursesOverview();
@@ -143,11 +155,19 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
                 return true;
 
             case R.id.item_init_adding:
-                overviewCoverager.coverBy(
-                        overviewProxy.charge(
-                                new AdditionOptionsFragment(),
-                                AdditionOptionsFragment.TAG,
-                                true, true));
+                AdditionOptionsFragment fragment = AdditionOptionsFragment.newInstance();
+                fragment.setOnOptionsSelectListener(options -> {
+                    switch (options) {
+                        case Create:
+                            homeNavigator.navigateToWordsOverviewWithOpenedCreation();
+                            break;
+                        case Explore:
+                            activityNavigator.navigateToWordsSearchingFrom(getActivity());
+                            break;
+                    }
+//                  TODO  navigateToStart();
+                });
+                overviewCoverager.coverBy(overviewProxy.charge(fragment, true, true));
                 return true;
 
             case R.id.item_show_set_up_scheduling:
@@ -174,6 +194,11 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
     }
 
     @Override
+    public void navigateToShowingWord(long wordId) {
+        homeNavigator.navigateToWordsOverviewWithOpened(wordId);
+    }
+
+    @Override
     public void navigateToStart() {
         overviewCoverager.uncover();
         exercisingCoverager.uncover();
@@ -182,7 +207,7 @@ public class TrainerFragment extends Fragment implements TrainerView, TrainerNav
     @Override
     public TrainerComponent getDependencies() {
         if (dependencies == null) {
-            dependencies = DependenciesUtils
+            dependencies = Dependencies
                     .fromParentFragment(this, HomeFragment.class)
                     .createTrainerComponent(new TrainerModule(this));
         }

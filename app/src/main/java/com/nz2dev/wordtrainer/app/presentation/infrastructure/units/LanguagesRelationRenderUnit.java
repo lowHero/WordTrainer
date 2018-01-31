@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.single;
+package com.nz2dev.wordtrainer.app.presentation.infrastructure.units;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -14,10 +14,10 @@ import butterknife.ButterKnife;
 /**
  * Created by nz2Dev on 13.01.2018
  */
-public class LanguagesRelationRenderer {
+public class LanguagesRelationRenderUnit {
 
-    public static LanguagesRelationRenderer withRoot(View rootView) {
-        return new LanguagesRelationRenderer(rootView);
+    public static LanguagesRelationRenderUnit withRoot(View rootView) {
+        return new LanguagesRelationRenderUnit(rootView);
     }
 
     @BindView(R.id.img_original_language_icon)
@@ -32,7 +32,7 @@ public class LanguagesRelationRenderer {
     @BindView(R.id.tv_translation_language_name)
     TextView translationLanguageName;
 
-    private LanguagesRelationRenderer(View root) {
+    private LanguagesRelationRenderUnit(View root) {
         ButterKnife.bind(this, root);
     }
 

@@ -6,6 +6,9 @@ package com.nz2dev.wordtrainer.domain.exceptions;
 public class NotImplementedException extends RuntimeException {
 
     public NotImplementedException() {
-        super("this method is not implemented yet!");
+    }
+
+    public NotImplementedException(String description) {
+        super(description);
     }
 }

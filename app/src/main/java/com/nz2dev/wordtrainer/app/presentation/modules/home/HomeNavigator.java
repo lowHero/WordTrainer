@@ -8,5 +8,7 @@ public interface HomeNavigator {
     void navigateToCoursesOverview();
     void navigateToTrainer();
     void navigateToWordsOverview();
+    void navigateToWordsOverviewWithOpenedCreation();
+    void navigateToWordsOverviewWithOpened(long wordId);
 
 }

@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.SimpleFileItemRenderer;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.explore.elevated.ElevatedExploreWordsSourceActivity;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.app.utils.generic.OnItemClickListener;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;
@@ -42,7 +42,7 @@ public class ExploreWordsSourceFragment extends Fragment implements ExploreWords
     @BindView(R.id.rv_possible_words_file)
     RecyclerView possibleWordsFileRecyclerView;
 
-    @Inject Navigator navigator;
+    @Inject ActivityNavigator activityNavigator;
     @Inject ExploreWordsSourcePresenter presenter;
 
     private RVRendererAdapter<String> adapter;
@@ -50,7 +50,7 @@ public class ExploreWordsSourceFragment extends Fragment implements ExploreWords
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.fromAttachedActivity(this, ElevatedExploreWordsSourceActivity.class).inject(this);
+        Dependencies.fromAttachedActivity(this, ElevatedExploreWordsSourceActivity.class).inject(this);
     }
 
     @Nullable
@@ -97,7 +97,7 @@ public class ExploreWordsSourceFragment extends Fragment implements ExploreWords
 
     @Override
     public void navigateImporting(String filePath) {
-        navigator.navigateToWordsImportingFrom(getActivity(), filePath);
+        activityNavigator.navigateToWordsImportingFrom(getActivity(), filePath);
     }
 
 }

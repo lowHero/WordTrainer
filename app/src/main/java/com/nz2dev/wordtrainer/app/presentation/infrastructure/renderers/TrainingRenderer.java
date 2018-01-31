@@ -58,7 +58,7 @@ public class TrainingRenderer extends Renderer<Training> {
                 if (item.getTitle().equals("Explore word")) {
                     actionListener.onTrainingItemSelectAction(getContent(), Action.ShowWord);
                 } else if (item.getTitle().equals("Help?")) {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("Activity for word creation not implemented");
                 }
                 popupMenu.dismiss();
                 return true;

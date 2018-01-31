@@ -12,7 +12,7 @@ import android.widget.Spinner;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.adapters.LanguagesAdapter;
 import com.nz2dev.wordtrainer.app.presentation.modules.courses.creation.elevated.ElevatedCourseCreationActivity;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.domain.models.Language;
 
 import java.util.Collection;
@@ -42,7 +42,7 @@ public class CourseCreationFragment extends Fragment implements CourseCreationVi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.fromAttachedActivity(this, ElevatedCourseCreationActivity.class).inject(this);
+        Dependencies.fromAttachedActivity(this, ElevatedCourseCreationActivity.class).inject(this);
     }
 
     @Nullable

@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment;
 import com.nz2dev.wordtrainer.app.utils.AnimationsUtils;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.app.utils.TimeUtils;
 import com.nz2dev.wordtrainer.app.utils.defaults.OnSeekBarChangeAdapter;
 import com.nz2dev.wordtrainer.domain.utils.Millisecond;
@@ -67,7 +67,7 @@ public class SetUpSchedulingFragment extends Fragment implements SetUpScheduling
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.fromParentFragment(this, TrainerFragment.class).inject(this);
+        Dependencies.fromParentFragment(this, TrainerFragment.class).inject(this);
     }
 
     @Nullable

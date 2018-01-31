@@ -15,9 +15,9 @@ import android.widget.Toast;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.ExportedWordItemRenderer;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.abstraction.AbstractSelectableItemRenderer.DefaultSelectionHandler;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.single.LanguagesRelationRenderer;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.units.LanguagesRelationRenderUnit;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.exporting.elevated.ExportWordsActivity;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.domain.models.Language;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.pedrogomez.renderers.RVRendererAdapter;
@@ -57,14 +57,14 @@ public class ExportWordsFragment extends Fragment implements ExportWordsView {
 
     @Inject ExportWordsPresenter presenter;
 
-    private LanguagesRelationRenderer languagesRelationRenderer;
+    private LanguagesRelationRenderUnit languagesRelationRenderUnit;
     private RVRendererAdapter<Word> wordsAdapter;
     private DefaultSelectionHandler<Word> selectionHandler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.fromAttachedActivity(this, ExportWordsActivity.class).inject(this);
+        Dependencies.fromAttachedActivity(this, ExportWordsActivity.class).inject(this);
     }
 
     @Nullable
@@ -77,7 +77,7 @@ public class ExportWordsFragment extends Fragment implements ExportWordsView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        languagesRelationRenderer = LanguagesRelationRenderer.withRoot(view);
+        languagesRelationRenderUnit = LanguagesRelationRenderUnit.withRoot(view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), VERTICAL, false);
         exportedWordsRecyclerView.setLayoutManager(layoutManager);
@@ -109,7 +109,7 @@ public class ExportWordsFragment extends Fragment implements ExportWordsView {
 
     @Override
     public void showExportedLanguages(Language originalLanguage, Language translationLanguage) {
-        languagesRelationRenderer.renderLanguages(originalLanguage, translationLanguage);
+        languagesRelationRenderUnit.renderLanguages(originalLanguage, translationLanguage);
     }
 
     @Override

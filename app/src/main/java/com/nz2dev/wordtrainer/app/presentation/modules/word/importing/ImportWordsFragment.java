@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.ImportedWordDataItemRenderer;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.abstraction.AbstractSelectableItemRenderer.DefaultSelectionHandler;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.single.LanguagesRelationRenderer;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.units.LanguagesRelationRenderUnit;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.importing.elevated.ImportWordsActivity;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.domain.models.Language;
 import com.nz2dev.wordtrainer.domain.models.internal.WordData;
 import com.pedrogomez.renderers.RVRendererAdapter;
@@ -54,12 +54,12 @@ public class ImportWordsFragment extends Fragment implements ImportWordsView {
 
     private RVRendererAdapter<WordData> adapter;
     private DefaultSelectionHandler<WordData> selectionHandler;
-    private LanguagesRelationRenderer languagesRelationRenderer;
+    private LanguagesRelationRenderUnit languagesRelationRenderUnit;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.fromAttachedActivity(this, ImportWordsActivity.class).inject(this);
+        Dependencies.fromAttachedActivity(this, ImportWordsActivity.class).inject(this);
     }
 
     @Nullable
@@ -72,7 +72,7 @@ public class ImportWordsFragment extends Fragment implements ImportWordsView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        languagesRelationRenderer = LanguagesRelationRenderer.withRoot(view);
+        languagesRelationRenderUnit = LanguagesRelationRenderUnit.withRoot(view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), VERTICAL, false);
         importingWordList.setLayoutManager(layoutManager);
@@ -99,7 +99,7 @@ public class ImportWordsFragment extends Fragment implements ImportWordsView {
 
     @Override
     public void showLanguages(Language originalLanguage, Language translationLanguage) {
-        languagesRelationRenderer.renderLanguages(originalLanguage, translationLanguage);
+        languagesRelationRenderUnit.renderLanguages(originalLanguage, translationLanguage);
     }
 
     @Override

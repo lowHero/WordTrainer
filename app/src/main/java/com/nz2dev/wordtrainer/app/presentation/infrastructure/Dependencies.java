@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.utils;
+package com.nz2dev.wordtrainer.app.presentation.infrastructure;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +12,7 @@ import com.nz2dev.wordtrainer.app.common.dependencies.AppComponent;
 /**
  * Created by nz2Dev on 30.11.2017
  */
-public class DependenciesUtils {
+public class Dependencies {
 
     @NonNull
     public static AppComponent fromApplication(Context context) {
@@ -36,6 +36,20 @@ public class DependenciesUtils {
             throw new RuntimeException("fragment's parent fragment isn't " + type.toString());
         }
         return parent.getDependencies();
+    }
+
+    @NonNull
+    public static <C, A extends Fragment & HasDependencies<C>> C fromParentFragmentInHierarchy(Fragment f, Class<A> type) {
+        Fragment variant = f;
+        Fragment variantParent;
+        while((variantParent = variant.getParentFragment()) != null) {
+            if (variantParent.getClass().isAssignableFrom(type)) {
+                return type.cast(variantParent).getDependencies();
+            } else {
+                variant = variantParent;
+            }
+        }
+        throw new RuntimeException("fragment with type: " + type + " not found in hierarchy");
     }
 
 }

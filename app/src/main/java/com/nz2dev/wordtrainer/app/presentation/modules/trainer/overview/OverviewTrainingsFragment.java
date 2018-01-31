@@ -12,13 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.TrainingRenderer;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.TrainingRenderer.ActionListener;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerNavigation;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
-import com.nz2dev.wordtrainer.app.utils.helpers.Optional;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
+import com.nz2dev.wordtrainer.app.utils.generic.Optional;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;
@@ -46,7 +46,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     @BindView(R.id.rv_words_list)
     RecyclerView wordsList;
 
-    @Inject Navigator navigator;
+    @Inject ActivityNavigator activityNavigator;
     @Inject Optional<TrainerNavigation> trainerNavigation;
     @Inject OverviewTrainingsPresenter presenter;
 
@@ -56,7 +56,7 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        DependenciesUtils.fromParentFragment(this, TrainerFragment.class).inject(this);
+        Dependencies.fromParentFragment(this, TrainerFragment.class).inject(this);
     }
 
     @Nullable
@@ -95,11 +95,15 @@ public class OverviewTrainingsFragment extends Fragment implements OverviewTrain
                 if (trainerNavigation.isPresent()) {
                     trainerNavigation.get().navigateToExercising(training.getId());
                 } else {
-                    navigator.navigateToWordTrainingFrom(getActivity(), training.getId());
+                    activityNavigator.navigateToWordTrainingFrom(getActivity(), training.getId());
                 }
                 break;
             case ShowWord:
-                navigator.navigateToWordShowing(getActivity(), training.getWord().getId());
+                if (trainerNavigation.isPresent()) {
+                    trainerNavigation.get().navigateToShowingWord(training.getWord().getId());
+                } else {
+                    activityNavigator.navigateToWordShowing(getActivity(), training.getWord().getId());
+                }
                 break;
         }
     }

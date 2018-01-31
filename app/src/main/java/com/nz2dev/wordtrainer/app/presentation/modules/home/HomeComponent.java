@@ -5,6 +5,7 @@ import com.nz2dev.wordtrainer.app.presentation.modules.courses.overview.CoursesO
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerComponent;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerModule;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.WordsComponent;
 
 import dagger.Subcomponent;
 
@@ -17,5 +18,6 @@ public interface HomeComponent {
 
     TrainerComponent createTrainerComponent(TrainerModule trainerModule);
     CoursesOverviewComponent createCoursesOverviewComponent();
+    WordsComponent createWordsComponent();
 
 }

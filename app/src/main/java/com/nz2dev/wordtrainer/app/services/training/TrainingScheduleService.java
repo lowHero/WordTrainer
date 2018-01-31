@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.elevated.ElevatedExerciseTrainingActivity;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.domain.models.Training;
 
 import javax.inject.Inject;
@@ -54,7 +54,7 @@ public class TrainingScheduleService extends Service implements TrainingSchedule
 
     @Override // maybe provide some wake lock before if needed. TODO test it
     public int onStartCommand(Intent intent, int flags, int startId) {
-        DependenciesUtils.fromApplication(this)
+        Dependencies.fromApplication(this)
                 .createTrainingScheduleComponent()
                 .inject(this);
 

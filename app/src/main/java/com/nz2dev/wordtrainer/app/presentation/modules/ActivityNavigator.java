@@ -17,10 +17,10 @@ import javax.inject.Singleton;
  * Created by nz2Dev on 30.11.2017
  */
 @Singleton
-public class Navigator {
+public class ActivityNavigator {
 
     @Inject
-    public Navigator() {
+    public ActivityNavigator() {
     }
 
     public void navigateToHomeFrom(Activity source) {
@@ -37,7 +37,7 @@ public class Navigator {
     }
 
     public void navigateToWordCreationFrom(Activity source) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Activity for word creation");
     }
 
     public void navigateToWordsImportingFrom(Activity source, String filePath) {
@@ -53,7 +53,7 @@ public class Navigator {
     }
 
     public void navigateToWordShowing(Activity activity, long wordId) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Activity for word showing");
     }
 
 }

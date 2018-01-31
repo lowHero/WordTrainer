@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.infrastructure;
 
-import android.support.annotation.CallSuper;
+import android.support.v4.app.Fragment;
 
 /**
  * Created by nz2Dev on 29.11.2017
@@ -10,7 +10,7 @@ public abstract class BasePresenter<V> {
     private V view;
 
     /**
-     * Should be called from fragment somewhere inside {@link android.app.Fragment#onViewCreated} method
+     * should be called from fragment somewhere inside {@link Fragment#onActivityCreated} method
      * where it's already properly loaded and can receive call
      */
     public final void setView(V view) {
@@ -21,33 +21,27 @@ public abstract class BasePresenter<V> {
         onViewReady();
     }
 
-    protected V getView() {
-        return view;
+    /**
+     * should be called from fragment somewhere inside {@link Fragment#onDestroy} method
+     * where it's detached from activity and can't still receive call
+     */
+    public final void detachView() {
+        view = null;
+        onViewRecycled();
     }
 
     public boolean isViewAttached() {
         return view != null;
     }
 
-    /**
-     * Should be called from fragment somewhere inside {@link android.app.Fragment#onDestroy} method
-     * where it's detached from activity and can't still receive call
-     */
-    @CallSuper
-    public void detachView() {
-        view = null;
-    }
-
-    /**
-     * Called write after #setView method and indicate that view is properly loaded and can receive calls.
-     * Override this method if you want to receive noInternet of this operation.
-     */
     protected void onViewReady() {
     }
 
-    protected void checkViewReady() {
-        if (!isViewAttached()) {
-            throw new NullPointerException("view == null");
-        }
+    protected void onViewRecycled() {
     }
+
+    protected V getView() {
+        return view;
+    }
+
 }

@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.RecentlyAccountsRenderer;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.RecentlyAccountsRenderer.OnRecentlyAccountClickListener;
-import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.utils.defaults.TextWatcherAdapter;
 import com.nz2dev.wordtrainer.domain.models.Account;
 import com.pedrogomez.renderers.RVRendererAdapter;
@@ -67,7 +67,7 @@ public class AuthorizationFragment extends Fragment implements AuthorizationView
     ImageView lockedIndicator;
 
     @Inject AuthorizationPresenter presenter;
-    @Inject Navigator navigator;
+    @Inject ActivityNavigator activityNavigator;
 
     private RVRendererAdapter<Account> rendererAdapter;
 
@@ -185,6 +185,6 @@ public class AuthorizationFragment extends Fragment implements AuthorizationView
 
     @Override
     public void navigateHome() {
-        navigator.navigateToHomeFrom(getActivity());
+        activityNavigator.navigateToHomeFrom(getActivity());
     }
 }

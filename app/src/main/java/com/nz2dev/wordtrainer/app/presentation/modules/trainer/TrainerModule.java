@@ -1,11 +1,8 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
 
 import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
-import com.nz2dev.wordtrainer.app.utils.helpers.Optional;
+import com.nz2dev.wordtrainer.app.utils.generic.Optional;
 
-import javax.inject.Provider;
-
-import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 

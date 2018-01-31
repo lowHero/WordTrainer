@@ -17,8 +17,8 @@ import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.WordTran
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerNavigation;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.elevated.ElevatedExerciseTrainingActivity;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
-import com.nz2dev.wordtrainer.app.utils.helpers.Optional;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
+import com.nz2dev.wordtrainer.app.utils.generic.Optional;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;
@@ -140,9 +140,9 @@ public class ExerciseTrainingFragment extends Fragment implements ExerciseTraini
 
     private void provideInjections() {
         if (getActivity() instanceof ElevatedExerciseTrainingActivity) {
-            DependenciesUtils.fromAttachedActivity(this, ElevatedExerciseTrainingActivity.class).inject(this);
+            Dependencies.fromAttachedActivity(this, ElevatedExerciseTrainingActivity.class).inject(this);
         }  else if (getParentFragment() instanceof TrainerFragment){
-            DependenciesUtils.fromParentFragment(this, TrainerFragment.class).inject(this);
+            Dependencies.fromParentFragment(this, TrainerFragment.class).inject(this);
         } else {
             throw new RuntimeException("can't inject dependencies");
         }

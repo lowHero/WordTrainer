@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.WordsFragment;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.app.utils.defaults.TextWatcherAdapter;
 import com.nz2dev.wordtrainer.domain.models.Word;
 
@@ -26,6 +28,8 @@ import static com.nz2dev.wordtrainer.app.utils.AnimationsUtils.animateToVisibleS
  * Created by nz2Dev on 03.01.2018
  */
 public class EditWordFragment extends Fragment implements EditWordView {
+
+    public static final String TAG = EditWordFragment.class.getSimpleName();
 
     private static final String KEY_WORD_ID = "WordId";
 
@@ -55,8 +59,7 @@ public class EditWordFragment extends Fragment implements EditWordView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO provide place for that fragment
-        //DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
+        Dependencies.fromParentFragment(this, WordsFragment.class).inject(this);
     }
 
     @Nullable

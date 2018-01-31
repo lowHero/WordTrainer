@@ -1,11 +1,11 @@
-package com.nz2dev.wordtrainer.app.presentation.controlers.coverager.proxies;
+package com.nz2dev.wordtrainer.app.presentation.infrastructure.controlers.coverager.proxies;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.ViewGroup;
 
-import com.nz2dev.wordtrainer.app.presentation.controlers.coverager.ViewsProxy;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.controlers.coverager.ViewsProxy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,6 +88,23 @@ public class FragmentViewsProxy extends ViewsProxy {
         return fragments.indexOf(fragmentsMap.get(key));
     }
 
+    public int indexFor(Fragment fragment) {
+        for (int index = 0; index < fragments.size(); index++) {
+            if (fragments.get(index).fragment.equals(fragment)) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    public Fragment fragmentOf(String tag) {
+        return fragmentsMap.get(tag).fragment;
+    }
+
+    public Fragment fragmentAt(int index) {
+        return fragments.get(index).fragment;
+    }
+
     @Override
     protected void initializeContainer(ViewGroup container) {
         if (instantiationBuffer != null && instantiationBuffer.size() > 0) {
@@ -107,10 +124,12 @@ public class FragmentViewsProxy extends ViewsProxy {
         if (!item.fragment.isAdded()) {
             fragmentManager.beginTransaction()
                     .add(container.getId(), item.fragment)
+                    .addToBackStack(null)
                     .commit();
         } else {
             fragmentManager.beginTransaction()
                     .show(item.fragment)
+                    .addToBackStack(null)
                     .commit();
         }
     }

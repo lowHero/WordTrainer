@@ -7,5 +7,7 @@ public interface TrainerNavigation {
 
     void navigateToExercising(long trainingId);
 
+    void navigateToShowingWord(long wordId);
+
     void navigateToStart();
 }

@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.controlers.coverager;
+package com.nz2dev.wordtrainer.app.presentation.infrastructure.controlers.coverager;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -22,7 +22,7 @@ public class ViewCoverager extends FrameLayout {
 
     private ViewsProxy viewsProxy;
     private int lastCoveredIndex;
-    private boolean isCovered;
+    private boolean covered;
 
     public ViewCoverager(Context context) {
         this(context, null);
@@ -63,16 +63,16 @@ public class ViewCoverager extends FrameLayout {
     }
 
     public void coverBy(int index, boolean uncoverIfCovered) {
-        if (uncoverIfCovered && isCovered && lastCoveredIndex == index) {
+        if (uncoverIfCovered && covered && lastCoveredIndex == index) {
             uncover();
             return;
         }
 
-        if (isCovered) {
+        if (covered) {
             viewsProxy.hideView(lastCoveredIndex);
         } else {
             showBackground(true);
-            isCovered = true;
+            covered = true;
         }
 
         lastCoveredIndex = index;
@@ -80,10 +80,10 @@ public class ViewCoverager extends FrameLayout {
     }
 
     public void uncover() {
-        if (!isCovered) {
+        if (!covered) {
             return;
         }
-        isCovered = false;
+        covered = false;
         viewsProxy.hideView(lastCoveredIndex);
         lastCoveredIndex = -1;
         showBackground(false);
@@ -91,6 +91,14 @@ public class ViewCoverager extends FrameLayout {
 
     public int getCurrentCoveredIndex() {
         return lastCoveredIndex;
+    }
+
+    public boolean isCovered() {
+        return covered;
+    }
+
+    public boolean isCovered(int index) {
+        return covered && lastCoveredIndex == index;
     }
 
     private void showBackground(boolean show) {

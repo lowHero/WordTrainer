@@ -4,6 +4,15 @@
         <item name="android:windowBackground">@drawable/bg_splash</item>
     </style>
 
+    <style name="TransparentTheme" parent="Theme.AppCompat.Light">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
@@ -24,7 +33,7 @@
     <style name="MyActionOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="tint">@android:color/white</item>
     </style>
-    
+
     <style name="Button.Accent.Primary" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">@color/primaryColor</item>
     </style>

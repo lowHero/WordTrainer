@@ -16,52 +16,54 @@ import io.reactivex.disposables.Disposable;
 public class DisposableBasePresenter<V> extends BasePresenter<V> {
 
     private CompositeDisposable compositeDisposable;
-
     private Map<Integer, Disposable> namedDisposable;
 
     @CallSuper
     @Override
-    protected void onViewReady() {
-        super.onViewReady();
-        compositeDisposable = new CompositeDisposable();
+    public void onViewRecycled() {
+        disposeAll();
     }
 
-    @CallSuper
-    @Override
-    public void detachView() {
-        super.detachView();
-        if (!compositeDisposable.isDisposed()) {
-            compositeDisposable.dispose();
+    protected void manage(Disposable disposable) {
+        if (compositeDisposable == null) {
+            compositeDisposable = new CompositeDisposable();
         }
-        if (namedDisposable != null) {
+        compositeDisposable.add(disposable);
+    }
+
+    protected void manage(Object key, Disposable disposable) {
+        manageInternal(key.hashCode(), disposable);
+    }
+
+    protected void dispose(Object key) {
+        disposeInternal(key.hashCode());
+    }
+
+    protected void disposeAll() {
+        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+            compositeDisposable = null;
+        }
+        if (namedDisposable != null && namedDisposable.size() > 0) {
             Observable.fromIterable(namedDisposable.values())
                     .doFinally(namedDisposable::clear)
                     .forEach(DisposableBasePresenter::forceDispose);
         }
     }
 
-    protected void manage(Disposable disposable) {
-        compositeDisposable.add(disposable);
-    }
-
-    protected void unmanage(Disposable disposable) {
-        if (disposable != null) {
-            forceDispose(disposable);
-            compositeDisposable.remove(disposable);
-        }
-    }
-
-    protected void manage(String key, Disposable disposable) {
-        manage(key.hashCode(), disposable);
-    }
-
-    @SuppressLint("UseSparseArrays")
-    protected void manage(int key, Disposable disposable) {
+    private void manageInternal(int key, Disposable disposable) {
         if (namedDisposable == null) {
             namedDisposable = new HashMap<>();
         }
         forceDispose(namedDisposable.get(key));
         namedDisposable.put(key, disposable);
+    }
+
+    private void disposeInternal(int key) {
+        if (namedDisposable == null) {
+            return;
+        }
+        forceDispose(namedDisposable.get(key));
     }
 
     private static void forceDispose(Disposable disposable) {

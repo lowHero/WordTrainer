@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 
 import javax.inject.Inject;
 
@@ -32,7 +32,7 @@ public class SetUpRulesFragment extends Fragment implements SetUpRulesView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DependenciesUtils.fromParentFragment(this, TrainerFragment.class).inject(this);
+        Dependencies.fromParentFragment(this, TrainerFragment.class).inject(this);
     }
 
     @Nullable

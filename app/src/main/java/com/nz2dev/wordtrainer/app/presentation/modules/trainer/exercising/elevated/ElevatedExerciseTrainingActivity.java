@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.ExerciseTrainingFragment;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 
@@ -53,7 +53,7 @@ public class ElevatedExerciseTrainingActivity extends AppCompatActivity
     @Override
     public ElevatedExerciseTrainingComponent getDependencies() {
         if (dependencies == null) {
-            dependencies = DependenciesUtils
+            dependencies = Dependencies
                     .fromApplication(getApplicationContext())
                     .createElevatedExerciseTrainingComponent();
         }

@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.exporting.ExportWordsFragment;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 
 /**
  * Created by nz2Dev on 12.01.2018
@@ -38,7 +38,7 @@ public class ExportWordsActivity extends AppCompatActivity implements HasDepende
     @Override
     public ExportWordsComponent getDependencies() {
         if (dependencies == null) {
-            dependencies = DependenciesUtils
+            dependencies = Dependencies
                     .fromApplication(this)
                     .createExportWordsComponent();
         }

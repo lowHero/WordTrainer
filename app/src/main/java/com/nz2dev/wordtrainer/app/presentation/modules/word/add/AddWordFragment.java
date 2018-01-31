@@ -13,6 +13,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.WordsFragment;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.app.utils.defaults.TextWatcherAdapter;
 
 import javax.inject.Inject;
@@ -28,6 +30,8 @@ import static com.nz2dev.wordtrainer.app.utils.AnimationsUtils.animateToVisibleS
  * Created by nz2Dev on 11.12.2017
  */
 public class AddWordFragment extends Fragment implements AddWordView {
+
+    public static final String TAG = AddWordFragment.class.getSimpleName();
 
     public static AddWordFragment newInstance() {
         return new AddWordFragment();
@@ -50,8 +54,7 @@ public class AddWordFragment extends Fragment implements AddWordView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO provide AddWordActivity or else place where to place this fragment
-//        DependenciesUtils.fromAttachedActivity(this, HomeActivity.class).inject(this);
+        Dependencies.fromParentFragment(this, WordsFragment.class).inject(this);
     }
 
     @Nullable

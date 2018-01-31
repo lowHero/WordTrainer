@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.controlers.coverager;
+package com.nz2dev.wordtrainer.app.presentation.infrastructure.controlers.coverager;
 
 import android.view.ViewGroup;
 

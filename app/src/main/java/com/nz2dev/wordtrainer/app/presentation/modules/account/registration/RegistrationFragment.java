@@ -12,9 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.account.registration.elevated.ElevatedRegistrationActivity;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 
 import javax.inject.Inject;
@@ -50,13 +50,13 @@ public class RegistrationFragment extends DialogFragment implements Registration
     EditText regPasswordEditor;
 
     @Inject RegistrationPresenter presenter;
-    @Inject Navigator navigator;
+    @Inject ActivityNavigator activityNavigator;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, 0);
-        DependenciesUtils.fromAttachedActivity(this, ElevatedRegistrationActivity.class).inject(this);
+        Dependencies.fromAttachedActivity(this, ElevatedRegistrationActivity.class).inject(this);
     }
 
     @Nullable
@@ -106,7 +106,7 @@ public class RegistrationFragment extends DialogFragment implements Registration
 
     @Override
     public void showProgressIndicator(boolean b) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Activity for word creation not implemented");
     }
 
     private void setRegNameEditorFromBundle() {

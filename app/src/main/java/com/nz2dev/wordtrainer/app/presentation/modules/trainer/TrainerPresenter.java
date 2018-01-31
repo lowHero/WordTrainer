@@ -32,10 +32,10 @@ public class TrainerPresenter extends DisposableBasePresenter<TrainerView> {
     protected void onViewReady() {
         super.onViewReady();
         loadCourseIcon();
-        appEventBus.observeEvents(CourseEvent.class, CourseEvent::isSelected)
+        manage(appEventBus.observeEvents(CourseEvent.class, CourseEvent::isSelected)
                 .subscribe(courseEvent -> {
                     loadCourseIcon();
-                });
+                }));
     }
 
     public void nextTrainingClick() {

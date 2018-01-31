@@ -58,15 +58,14 @@ public class SetUpSchedulingPresenter extends BasePresenter<SetUpSchedulingView>
     }
 
     @Override
-    public void detachView() {
-        super.detachView();
+    protected void onViewRecycled() {
         if (timer != null) {
             timer.cancel();
         }
         context.unregisterReceiver(receiver);
     }
 
-    public void schedulingIntervalChanged(long intervalMillis) {
+    void schedulingIntervalChanged(long intervalMillis) {
         if (intervalMillis < Scheduling.MIN_INTERVAL) {
             intervalMillis = Scheduling.MIN_INTERVAL;
         }
@@ -79,7 +78,7 @@ public class SetUpSchedulingPresenter extends BasePresenter<SetUpSchedulingView>
         getView().setFutureInterval(intervalMillis);
     }
 
-    public void acceptFutureIntervalClick() {
+    void acceptFutureIntervalClick() {
         changeSchedulingIntervalUseCase.execute(futureInterval).subscribe(result -> {
             getView().showIntervalChanging(false);
             getView().setActualInterval(futureInterval);
@@ -91,18 +90,18 @@ public class SetUpSchedulingPresenter extends BasePresenter<SetUpSchedulingView>
         });
     }
 
-    public void rejectFutureIntervalClick() {
+    void rejectFutureIntervalClick() {
         futureInterval = FUTURE_INTERVAL_UNSPECIFIED;
         getView().showIntervalChanging(false);
         getView().setActualInterval(currentScheduling.getInterval());
     }
 
-    public void startSchedulingClick() {
+    void startSchedulingClick() {
         getView().showSchedulingLaunched();
         context.startService(TrainingScheduleService.getStartingIntent(context));
     }
 
-    public void stopSchedulingClick() {
+    void stopSchedulingClick() {
         if (timer != null) {
             timer.cancel();
         }

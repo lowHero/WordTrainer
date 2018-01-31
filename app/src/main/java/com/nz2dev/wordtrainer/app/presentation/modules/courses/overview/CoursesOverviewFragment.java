@@ -14,9 +14,9 @@ import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.CourseOverviewItemRenderer;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.CourseOverviewItemRenderer.CourseActionListener;
-import com.nz2dev.wordtrainer.app.presentation.modules.Navigator;
+import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment;
-import com.nz2dev.wordtrainer.app.utils.DependenciesUtils;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 import com.nz2dev.wordtrainer.domain.models.internal.CourseInfo;
 import com.pedrogomez.renderers.RVRendererAdapter;
@@ -47,7 +47,7 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
     RecyclerView coursesRecyclerView;
 
     @Inject CoursesOverviewPresenter presenter;
-    @Inject Navigator navigator;
+    @Inject ActivityNavigator activityNavigator;
 
     private RVRendererAdapter<CourseInfo> adapter;
     private CoursesOverviewComponent dependencies;
@@ -74,25 +74,6 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
 
         adapter = new RVRendererAdapter<>(new RendererBuilder<>(new CourseOverviewItemRenderer(this)));
         coursesRecyclerView.setAdapter(adapter);
-
-        coursesRecyclerView.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
-            @Override
-            public void onChildViewAdded(View parent, View child) {
-                verifyOverScrollMode();
-            }
-            @Override
-            public void onChildViewRemoved(View parent, View child) {
-                verifyOverScrollMode();
-            }
-            private void verifyOverScrollMode() {
-                LinearLayoutManager manager = (LinearLayoutManager) coursesRecyclerView.getLayoutManager();
-                if (manager.findLastCompletelyVisibleItemPosition() < adapter.getItemCount() - 1) {
-                    coursesRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
-                } else {
-                    coursesRecyclerView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
-                }
-            }
-        });
 
         presenter.setView(this);
     }
@@ -147,18 +128,18 @@ public class CoursesOverviewFragment extends Fragment implements CoursesOverview
 
     @Override
     public void navigateCourseAddition() {
-        navigator.navigateToCourseCreationFrom(getActivity());
+        activityNavigator.navigateToCourseCreationFrom(getActivity());
     }
 
     @Override
     public void navigateWordsExporting(long courseId) {
-        navigator.navigateToWordsExportingFrom(getActivity(), courseId);
+        activityNavigator.navigateToWordsExportingFrom(getActivity(), courseId);
     }
 
     @Override
     public CoursesOverviewComponent getDependencies() {
         if (dependencies == null) {
-            dependencies = DependenciesUtils
+            dependencies = Dependencies
                     .fromParentFragment(this, HomeFragment.class)
                     .createCoursesOverviewComponent();
         }
