@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     def config = rootProject.ext
@@ -48,6 +49,7 @@ dependencies {
     implementation globalDependencies["butterKnife"]
     implementation globalDependencies["rxJava"]
     implementation globalDependencies["rxAndroid"]
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     annotationProcessor globalDependencies["daggerCompiler"]
     annotationProcessor globalDependencies["butterKnifeCompiler"]
@@ -61,6 +63,7 @@ dependencies {
     testImplementation testDependencies["assertj"]
     testImplementation testDependencies["robolectric"]
     testImplementation testDependencies["mockito"]
+
     androidTestImplementation testDependencies["testRunner"]
     androidTestImplementation testDependencies["espressoCore"]
 }

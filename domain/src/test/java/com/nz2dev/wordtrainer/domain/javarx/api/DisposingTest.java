@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.domain.javarx;
+package com.nz2dev.wordtrainer.domain.javarx.api;
 
 import org.junit.Test;
 
