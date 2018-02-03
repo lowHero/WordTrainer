@@ -8,7 +8,7 @@ import android.util.Log;
 /**
  * Created by nz2Dev on 31.01.2018
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     @CallSuper
     @Override

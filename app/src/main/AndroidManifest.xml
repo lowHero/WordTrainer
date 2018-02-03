@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nz2dev.wordtrainer.app">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
@@ -116,10 +117,6 @@
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.wrds" />
                 <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.wrds" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".presentation.infrastructure.tools.ExceptionReportingActivity"
-            android:theme="@style/TransparentTheme">
         </activity>
 
         <service android:name=".services.training.TrainingScheduleService" />

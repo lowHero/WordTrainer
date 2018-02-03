@@ -1,6 +1,5 @@
 package com.nz2dev.wordtrainer.app.presentation.infrastructure;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.CallSuper;
 
 import java.util.HashMap;

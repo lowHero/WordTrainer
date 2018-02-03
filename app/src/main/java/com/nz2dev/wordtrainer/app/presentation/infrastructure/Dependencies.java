@@ -12,7 +12,7 @@ import com.nz2dev.wordtrainer.app.common.dependencies.AppComponent;
 /**
  * Created by nz2Dev on 30.11.2017
  */
-public class Dependencies {
+public final class Dependencies {
 
     @NonNull
     public static AppComponent fromApplication(Context context) {

@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.preferences.SharedAppPreferences;
+import com.nz2dev.wordtrainer.data.repositories.GoogleEngUkrDictionartRepository;
 import com.nz2dev.wordtrainer.data.repositories.MemoryLanguageRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomAccountHistoryRepository;
 import com.nz2dev.wordtrainer.data.repositories.RoomAccountRepository;
@@ -16,6 +17,7 @@ import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
 import com.nz2dev.wordtrainer.domain.data.repositories.AccountHistoryRepository;
 import com.nz2dev.wordtrainer.domain.data.repositories.AccountRepository;
 import com.nz2dev.wordtrainer.domain.data.repositories.CourseRepository;
+import com.nz2dev.wordtrainer.domain.data.repositories.EngUkrDictionaryRepository;
 import com.nz2dev.wordtrainer.domain.data.repositories.LanguageRepository;
 import com.nz2dev.wordtrainer.domain.data.repositories.SchedulingRepository;
 import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
@@ -80,6 +82,12 @@ public class DataModule {
     @Provides
     LanguageRepository provideLanguageRepository(MemoryLanguageRepository memoryLanguageRepository) {
         return memoryLanguageRepository;
+    }
+
+    @Singleton
+    @Provides
+    EngUkrDictionaryRepository provideEngUkrDictionaryRepository(GoogleEngUkrDictionartRepository googleEngUkrDictionartRepository) {
+        return googleEngUkrDictionartRepository;
     }
 
     @Provides
