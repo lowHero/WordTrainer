@@ -35,6 +35,9 @@ dependencies {
     implementation globalDependencies["rxJava"]
     implementation globalDependencies["rxAndroid"]
     implementation globalDependencies["androidArchRoomRx"]
+    implementation globalDependencies["okHttp"]
+    implementation globalDependencies["okHttpLogging"]
+
     annotationProcessor globalDependencies["androidArchRoomCompiler"]
 
     def testDependencies = rootProject.ext.testDependencies
