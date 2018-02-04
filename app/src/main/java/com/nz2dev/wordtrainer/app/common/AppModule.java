@@ -1,8 +1,8 @@
-package com.nz2dev.wordtrainer.app.dependencies;
+package com.nz2dev.wordtrainer.app.common;
 
 import android.content.Context;
 
-import com.nz2dev.wordtrainer.app.WordTrainerApp;
+import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
 import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 

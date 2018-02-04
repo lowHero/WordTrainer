@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.ExerciseTrainingFragment;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
@@ -53,8 +54,8 @@ public class ElevatedExerciseTrainingActivity extends AppCompatActivity
     @Override
     public ElevatedExerciseTrainingComponent getDependencies() {
         if (dependencies == null) {
-            dependencies = Dependencies
-                    .fromApplication(getApplicationContext())
+            dependencies = WordTrainerApp
+                    .getDependencies(getApplicationContext())
                     .createElevatedExerciseTrainingComponent();
         }
         return dependencies;

@@ -5,19 +5,14 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
-import com.nz2dev.wordtrainer.app.WordTrainerApp;
-import com.nz2dev.wordtrainer.app.dependencies.AppComponent;
+import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
+import com.nz2dev.wordtrainer.app.common.AppComponent;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 
 /**
  * Created by nz2Dev on 30.11.2017
  */
 public final class Dependencies {
-
-    @NonNull
-    public static AppComponent fromApplication(Context context) {
-        WordTrainerApp application = (WordTrainerApp) context.getApplicationContext();
-        return application.getDependencies();
-    }
 
     @NonNull
     public static <C, A extends Activity & HasDependencies<C>> C fromAttachedActivity(Fragment f, Class<A> type) {

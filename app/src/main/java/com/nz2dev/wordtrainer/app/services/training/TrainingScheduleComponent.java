@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.services.training;
 
-import com.nz2dev.wordtrainer.app.dependencies.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.common.scopes.ForActions;
 
 import dagger.Subcomponent;
 

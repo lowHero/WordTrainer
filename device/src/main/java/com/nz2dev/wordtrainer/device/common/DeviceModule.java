@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.device.dependencies;
+package com.nz2dev.wordtrainer.device.common;
 
 import com.nz2dev.wordtrainer.device.execution.AndroidSchedulersFacade;
 import com.nz2dev.wordtrainer.device.files.AndroidJsonExporter;

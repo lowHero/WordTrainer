@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.importing.ImportWordsFragment;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
@@ -37,8 +38,8 @@ public class ImportWordsActivity extends AppCompatActivity implements HasDepende
     @Override
     public ImportWordsComponent getDependencies() {
         if (dependencies == null) {
-            dependencies = Dependencies
-                    .fromApplication(this)
+            dependencies = WordTrainerApp
+                    .getDependencies(this)
                     .createImportWordsComponent();
         }
         return dependencies;

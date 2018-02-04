@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.data.dependencies;
+package com.nz2dev.wordtrainer.data.common;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;

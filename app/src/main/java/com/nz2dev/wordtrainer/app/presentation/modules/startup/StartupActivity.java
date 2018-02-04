@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
 import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 
@@ -20,7 +21,7 @@ public class StartupActivity extends AppCompatActivity implements StartupView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Dependencies.fromApplication(this)
+        WordTrainerApp.getDependencies(this)
                 .createStartupComponent()
                 .inject(this);
     }

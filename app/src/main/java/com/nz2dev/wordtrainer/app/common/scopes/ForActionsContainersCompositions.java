@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.dependencies.scopes;
+package com.nz2dev.wordtrainer.app.common.scopes;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

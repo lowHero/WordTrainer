@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.courses.creation.CourseCreationFragment;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
@@ -35,8 +36,8 @@ public class ElevatedCourseCreationActivity extends AppCompatActivity
     @Override
     public ElevatedCourseCreationComponent getDependencies() {
         if (dependencies == null) {
-            dependencies = Dependencies
-                    .fromApplication(this)
+            dependencies = WordTrainerApp
+                    .getDependencies(this)
                     .createElevatedCourseCreationComponent();
         }
         return dependencies;

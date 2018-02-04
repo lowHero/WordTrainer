@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
 import com.nz2dev.wordtrainer.app.R;
+import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BaseActivity;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment;
@@ -53,8 +54,8 @@ public class ElevatedHomeActivity extends BaseActivity implements HasDependencie
     @Override
     public ElevatedHomeComponent getDependencies() {
         if (dependencies == null) {
-            dependencies = Dependencies
-                    .fromApplication(this)
+            dependencies = WordTrainerApp
+                    .getDependencies(this)
                     .createElevatedHomeComponent();
         }
         return dependencies;

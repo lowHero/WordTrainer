@@ -1,15 +1,17 @@
-package com.nz2dev.wordtrainer.app;
+package com.nz2dev.wordtrainer.app.common;
 
 import android.app.Application;
-
-import com.nz2dev.wordtrainer.app.dependencies.AppComponent;
-import com.nz2dev.wordtrainer.app.dependencies.DaggerAppComponent;
-import com.nz2dev.wordtrainer.app.dependencies.AppModule;
+import android.content.Context;
 
 /**
  * Created by nz2Dev on 29.11.2017
  */
 public class WordTrainerApp extends Application {
+
+    public static AppComponent getDependencies(Context context) {
+        WordTrainerApp appInstance = (WordTrainerApp) context.getApplicationContext();
+        return appInstance.getDependencies();
+    }
 
     private AppComponent dependenciesComponent;
 
