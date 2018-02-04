@@ -2,13 +2,13 @@ package com.nz2dev.wordtrainer.data.mapping;
 
 import android.text.TextUtils;
 
-import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
-import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
-import com.nz2dev.wordtrainer.data.core.entity.CourseEntity;
-import com.nz2dev.wordtrainer.data.core.entity.TrainingEntity;
-import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
-import com.nz2dev.wordtrainer.data.core.relation.CourseBaseSet;
-import com.nz2dev.wordtrainer.data.core.relation.TrainingAndWordJoin;
+import com.nz2dev.wordtrainer.data.source.local.entity.AccountEntity;
+import com.nz2dev.wordtrainer.data.source.local.entity.AccountHistoryEntity;
+import com.nz2dev.wordtrainer.data.source.local.entity.CourseEntity;
+import com.nz2dev.wordtrainer.data.source.local.entity.TrainingEntity;
+import com.nz2dev.wordtrainer.data.source.local.entity.WordEntity;
+import com.nz2dev.wordtrainer.data.source.local.relation.CourseBaseSet;
+import com.nz2dev.wordtrainer.data.source.local.relation.TrainingAndWordJoin;
 import com.nz2dev.wordtrainer.domain.models.Account;
 import com.nz2dev.wordtrainer.domain.models.AccountHistory;
 import com.nz2dev.wordtrainer.domain.models.Course;

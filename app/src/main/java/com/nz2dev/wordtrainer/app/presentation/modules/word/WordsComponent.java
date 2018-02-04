@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.edit.EditWordFragment;
 

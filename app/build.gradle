@@ -2,19 +2,18 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    def config = rootProject.ext
-    compileSdkVersion config["androidCompileSdkVersion"]
-    buildToolsVersion config["androidBuildToolsVersion"]
+    compileSdkVersion androidCompileSdk_version
+    buildToolsVersion androidBuildTools_version
 
     defaultConfig {
-        minSdkVersion config["androidMinSdkVersion"]
-        targetSdkVersion config["androidTargetSdkVersion"]
+        minSdkVersion androidMinSdk_version
+        targetSdkVersion androidTargetSdk_version
 
-        applicationId config["applicationId"]
-        versionCode config["versionCode"]
-        versionName config["versionName"]
-        testInstrumentationRunner config["testInstrumentationRunner"]
-        testApplicationId config["testApplicationId"]
+        applicationId applicationId
+        versionCode versionCode
+        versionName versionName
+        testInstrumentationRunner testInstrumentationRunner
+        testApplicationId testApplicationId
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -35,35 +34,28 @@ dependencies {
     implementation project(path: ':data')
     implementation project(path: ':device')
 
-    def globalDependencies = rootProject.ext.globalDependencies
-    implementation globalDependencies["androidSupportAppcompat"]
-    implementation globalDependencies["androidSupportDesign"]
-    implementation globalDependencies["androidSupportRecyclerView"]
-    implementation globalDependencies["androidSupportCardView"]
-    implementation globalDependencies["androidConstraintLayout"]
-    implementation globalDependencies["androidArchRoom"]
-    implementation globalDependencies["dagger"]
-    implementation globalDependencies["renderers"]
-    implementation globalDependencies["smartTabLayout"]
-    implementation globalDependencies["smartTabLayoutUtils"]
-    implementation globalDependencies["butterKnife"]
-    implementation globalDependencies["rxJava"]
-    implementation globalDependencies["rxAndroid"]
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation androidSupportAppcompatV7
+    implementation androidSupportAnnotations
+    implementation androidSupportDesign
+    implementation kotlinStdlib
 
-    annotationProcessor globalDependencies["daggerCompiler"]
-    annotationProcessor globalDependencies["butterKnifeCompiler"]
-    annotationProcessor globalDependencies["androidArchRoomCompiler"]
+    implementation recyclerView
+    implementation cardView
+    implementation constraintLayout
+    implementation renderers
 
-    def developmentDependencies = rootProject.ext.developmentDependencies
-    implementation developmentDependencies["leakCanary"]
+    implementation archRoom
+    implementation dagger
+    implementation butterKnife
+    implementation rxJava
+    implementation rxAndroid
 
-    def testDependencies = rootProject.ext.testDependencies
-    testImplementation testDependencies["junit"]
-    testImplementation testDependencies["assertj"]
-    testImplementation testDependencies["robolectric"]
-    testImplementation testDependencies["mockito"]
+    annotationProcessor daggerCompiler
+    annotationProcessor butterKnifeCompiler
+    annotationProcessor archRoomCompiler
 
-    androidTestImplementation testDependencies["testRunner"]
-    androidTestImplementation testDependencies["espressoCore"]
+    testImplementation junit
+    testImplementation assertj
+    testImplementation robolectric
+    testImplementation mockito
 }

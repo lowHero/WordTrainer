@@ -1,8 +1,8 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
-import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
-import com.nz2dev.wordtrainer.data.core.dao.AccountDao;
-import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
+import com.nz2dev.wordtrainer.data.source.local.WordTrainerDatabase;
+import com.nz2dev.wordtrainer.data.source.local.dao.AccountDao;
+import com.nz2dev.wordtrainer.data.source.local.entity.AccountEntity;
 import com.nz2dev.wordtrainer.domain.exceptions.AccountNotExistException;
 import com.nz2dev.wordtrainer.domain.exceptions.AccountNotExistOrPasswordIncorrectException;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;

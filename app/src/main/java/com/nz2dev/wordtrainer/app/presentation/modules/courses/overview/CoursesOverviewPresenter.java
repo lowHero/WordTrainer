@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.courses.overview;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 import com.nz2dev.wordtrainer.domain.interactors.course.CourseEvent;
@@ -9,7 +9,6 @@ import com.nz2dev.wordtrainer.domain.interactors.course.LoadCourseOverviewUseCas
 import com.nz2dev.wordtrainer.domain.interactors.course.SelectCourseUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.word.WordEvent;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
-import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import java.util.concurrent.TimeUnit;
 

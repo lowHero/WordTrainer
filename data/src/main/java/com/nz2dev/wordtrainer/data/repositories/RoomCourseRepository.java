@@ -1,9 +1,9 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
-import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
-import com.nz2dev.wordtrainer.data.core.dao.CourseDao;
-import com.nz2dev.wordtrainer.data.core.entity.CourseEntity;
-import com.nz2dev.wordtrainer.data.core.relation.CourseBaseSet;
+import com.nz2dev.wordtrainer.data.source.local.WordTrainerDatabase;
+import com.nz2dev.wordtrainer.data.source.local.dao.CourseDao;
+import com.nz2dev.wordtrainer.data.source.local.entity.CourseEntity;
+import com.nz2dev.wordtrainer.data.source.local.relation.CourseBaseSet;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.Course;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;

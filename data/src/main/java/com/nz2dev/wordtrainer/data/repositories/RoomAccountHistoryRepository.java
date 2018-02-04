@@ -1,8 +1,8 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
-import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
-import com.nz2dev.wordtrainer.data.core.dao.AccountHistoryDao;
-import com.nz2dev.wordtrainer.data.core.entity.AccountHistoryEntity;
+import com.nz2dev.wordtrainer.data.source.local.WordTrainerDatabase;
+import com.nz2dev.wordtrainer.data.source.local.dao.AccountHistoryDao;
+import com.nz2dev.wordtrainer.data.source.local.entity.AccountHistoryEntity;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.AccountHistory;
 import com.nz2dev.wordtrainer.domain.data.repositories.AccountHistoryRepository;

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.CountDownTimer;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.app.services.training.TrainingScheduleService;
 import com.nz2dev.wordtrainer.domain.interactors.scheduling.ChangeSchedulingIntervalUseCase;

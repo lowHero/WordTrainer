@@ -3,7 +3,7 @@ package com.nz2dev.wordtrainer.data.repositories;
 import android.content.Context;
 
 import com.nz2dev.wordtrainer.data.R;
-import com.nz2dev.wordtrainer.data.core.web.TranslationClient;
+import com.nz2dev.wordtrainer.data.source.remote.TranslationApi;
 import com.nz2dev.wordtrainer.domain.data.repositories.EngUkrDictionaryRepository;
 
 import javax.inject.Inject;
@@ -20,19 +20,19 @@ public class GoogleEngUkrDictionartRepository implements EngUkrDictionaryReposit
     private static final String ENGLISH = "en";
     private static final String UKRAINIAN = "uk";
 
-    private final TranslationClient translationClient;
+    private final TranslationApi translationApi;
     private final String apiKey;
 
     @Inject
-    public GoogleEngUkrDictionartRepository(Context context, TranslationClient translationClient) {
-        this.translationClient = translationClient;
+    public GoogleEngUkrDictionartRepository(Context context, TranslationApi translationApi) {
+        this.translationApi = translationApi;
         this.apiKey = context.getString(R.string.api_key);
     }
 
     @Override
     public Single<String> getUkrainianTranslation(String englishText) {
         return Single.create(emitter -> {
-            emitter.onSuccess(translationClient.translate(englishText, UKRAINIAN, ENGLISH, apiKey));
+            emitter.onSuccess(translationApi.translate(englishText, UKRAINIAN, ENGLISH, apiKey));
         });
     }
 

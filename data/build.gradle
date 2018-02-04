@@ -1,16 +1,15 @@
 apply plugin: 'com.android.library'
 
 android {
-    def config = rootProject.ext
-    compileSdkVersion config["androidCompileSdkVersion"]
+    compileSdkVersion androidCompileSdk_version
 
     defaultConfig {
-        minSdkVersion config["androidMinSdkVersion"]
-        targetSdkVersion config["androidTargetSdkVersion"]
+        minSdkVersion androidMinSdk_version
+        targetSdkVersion androidTargetSdk_version
 
-        versionCode config["versionCode"]
-        versionName config["versionName"]
-        testInstrumentationRunner config["testInstrumentationRunner"]
+        versionCode versionCode
+        versionName versionName
+        testInstrumentationRunner testInstrumentationRunner
     }
 
     buildTypes {
@@ -29,22 +28,17 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ":domain")
 
-    def globalDependencies = rootProject.ext.globalDependencies
-    implementation globalDependencies["androidArchRoom"]
-    implementation globalDependencies["javaxInject"]
-    implementation globalDependencies["rxJava"]
-    implementation globalDependencies["rxAndroid"]
-    implementation globalDependencies["androidArchRoomRx"]
-    implementation globalDependencies["okHttp"]
-    implementation globalDependencies["okHttpLogging"]
+    implementation archRoom
+    implementation javaxInject
+    implementation dagger
+    implementation rxJava
+    implementation rxAndroid
+    implementation okHttp
+    implementation okHttpLogging
+    annotationProcessor archRoomCompiler
+    annotationProcessor daggerCompiler
 
-    annotationProcessor globalDependencies["androidArchRoomCompiler"]
-
-    def testDependencies = rootProject.ext.testDependencies
-    testImplementation testDependencies["junit"]
-    testImplementation testDependencies["assertj"]
-    testImplementation testDependencies["robolectric"]
-    testImplementation testDependencies["androidArchRoomRxTest"]
-    androidTestImplementation testDependencies["testRunner"]
-    androidTestImplementation testDependencies["espressoCore"]
+    testImplementation junit
+    testImplementation assertj
+    testImplementation robolectric
 }

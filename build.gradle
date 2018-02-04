@@ -1,4 +1,10 @@
-apply from: 'dependencies.gradle'
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
+}
 
 buildscript {
     ext.kotlin_version = '1.2.21'
@@ -13,20 +19,63 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        jcenter()
-    }
-}
-
 ext {
-    applicationId = 'com.nz2dev.wordtrainer'
+    // main
     versionCode = 1
     versionName = "1.0"
-    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+    applicationId = 'com.nz2dev.wordtrainer'
     testApplicationId = 'com.nz2dev.wordtrainer.test'
+    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+    androidCompileSdk_version = 26
+    androidMinSdk_version = 15
+    androidTargetSdk_version = 19
+    androidBuildTools_version = '26.0.2'
+
+    // kotlin-support
+    kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    // android-support
+    androidSupport_version = '27.0.2'
+    androidSupportAppcompatV7 = "com.android.support:appcompat-v7:$androidSupport_version"
+    androidSupportAnnotations = "com.android.support:support-annotations:$androidSupport_version"
+    androidSupportV4 = "com.android.support:support-v4:$androidSupport_version"
+    androidSupportVector = "com.android.support:support-vector-drawable:$androidSupport_version"
+    androidSupportDesign = "com.android.support:design:$androidSupport_version"
+
+    // ui
+    constraintLayout = "com.android.support.constraint:constraint-layout:1.0.2"
+    recyclerView = "com.android.support:recyclerview-v7:$androidSupport_version"
+    cardView = "com.android.support:cardview-v7:$androidSupport_version"
+    renderers = "com.github.pedrovgs:renderers:3.3.3"
+
+    // tools
+    androidArch_version = "1.0.0"
+    archRoom = "android.arch.persistence.room:runtime:$androidArch_version"
+    archRoomCompiler = "android.arch.persistence.room:compiler:$androidArch_version"
+    dagger_version = '2.8'
+    dagger  = "com.google.dagger:dagger:$dagger_version"
+    daggerCompiler = "com.google.dagger:dagger-compiler:$dagger_version"
+    butterKnife_version = '8.5.1'
+    butterKnife  = "com.jakewharton:butterknife:$butterKnife_version"
+    butterKnifeCompiler = "com.jakewharton:butterknife-compiler:$butterKnife_version"
+    okHttp_version = '3.4.1'
+    okHttp = "com.squareup.okhttp3:okhttp:$okHttp_version"
+    okHttpLogging = "com.squareup.okhttp3:logging-interceptor:$okHttp_version"
+    retrofit_version = '2.2.0'
+    retrofit = "com.squareup.retrofit2:retrofit:$retrofit_version"
+    retrofitGson = "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    rxJava = "io.reactivex.rxjava2:rxjava:2.1.7"
+    rxAndroid  = "io.reactivex.rxjava2:rxandroid:2.0.1"
+    javaxAnnotation = "javax.annotation:jsr250-api:1.0"
+    javaxInject = "javax.inject:javax.inject:1"
+    gson = "com.google.code.gson:gson:2.3"
+    commonsIO = "commons-io:commons-io:2.4"
+
+    // testing
+    mockito = "org.mockito:mockito-core:1.9.5"
+    junit = "junit:junit:4.12"
+    assertj = "org.assertj:assertj-core:1.7.1"
+    robolectric = "org.robolectric:robolectric:3.5.1"
 }
 
 task clean(type: Delete) {

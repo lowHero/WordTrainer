@@ -1,9 +1,8 @@
 package com.nz2dev.wordtrainer.data.mapping;
 
-import com.nz2dev.wordtrainer.data.core.entity.AccountEntity;
-import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
-import com.nz2dev.wordtrainer.data.core.relation.TrainingAndWordJoin;
-import com.nz2dev.wordtrainer.data.mapping.Mapper;
+import com.nz2dev.wordtrainer.data.source.local.entity.AccountEntity;
+import com.nz2dev.wordtrainer.data.source.local.entity.WordEntity;
+import com.nz2dev.wordtrainer.data.source.local.relation.TrainingAndWordJoin;
 import com.nz2dev.wordtrainer.domain.models.Account;
 import com.nz2dev.wordtrainer.domain.models.Training;
 

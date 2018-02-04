@@ -2,7 +2,7 @@ package com.nz2dev.wordtrainer.app.presentation.modules.word.explore;
 
 import android.os.Environment;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.device.Exporter;
 

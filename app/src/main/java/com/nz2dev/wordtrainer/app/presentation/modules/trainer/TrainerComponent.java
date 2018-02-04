@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.ExerciseTrainingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.overview.OverviewTrainingsFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.rules.SetUpRulesFragment;

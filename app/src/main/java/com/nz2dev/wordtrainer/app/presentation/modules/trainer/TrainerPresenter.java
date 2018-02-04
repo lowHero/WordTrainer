@@ -1,13 +1,11 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActionsContainers;
+import com.nz2dev.wordtrainer.app.dependencies.scopes.ForActionsContainers;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.events.AppEventBus;
-import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;
 import com.nz2dev.wordtrainer.domain.interactors.course.CourseEvent;
 import com.nz2dev.wordtrainer.domain.interactors.course.LoadCourseUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.training.LoadProposedTrainingUseCase;
-import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
 
 import javax.inject.Inject;
 

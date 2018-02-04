@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.home.elevated;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActionsContainersCompositions;
+import com.nz2dev.wordtrainer.app.dependencies.scopes.ForActionsContainersCompositions;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeComponent;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeModule;

@@ -1,8 +1,8 @@
 package com.nz2dev.wordtrainer.data.repositories;
 
-import com.nz2dev.wordtrainer.data.core.WordTrainerDatabase;
-import com.nz2dev.wordtrainer.data.core.dao.WordDao;
-import com.nz2dev.wordtrainer.data.core.entity.WordEntity;
+import com.nz2dev.wordtrainer.data.source.local.WordTrainerDatabase;
+import com.nz2dev.wordtrainer.data.source.local.dao.WordDao;
+import com.nz2dev.wordtrainer.data.source.local.entity.WordEntity;
 import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.data.utils.CollectionToArrayUtils;
 import com.nz2dev.wordtrainer.domain.models.Word;

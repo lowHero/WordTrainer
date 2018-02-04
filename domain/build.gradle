@@ -3,14 +3,12 @@ apply plugin: 'java-library'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    def globalDependencies = rootProject.ext.globalDependencies
-    implementation globalDependencies["javaxInject"]
-    implementation globalDependencies["rxJava"]
+    implementation javaxInject
+    implementation rxJava
 
-    def testDependencies = rootProject.ext.testDependencies
-    testImplementation testDependencies["junit"]
-    testImplementation testDependencies["assertj"]
-    testImplementation testDependencies["mockito"]
+    testImplementation junit
+    testImplementation assertj
+    testImplementation mockito
 }
 
 sourceCompatibility = "1.8"

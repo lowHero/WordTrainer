@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.exporting.elevated;
 
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.exporting.ExportWordsFragment;
 
 import dagger.Subcomponent;

@@ -1,16 +1,15 @@
 apply plugin: 'com.android.library'
 
 android {
-    def config = rootProject.ext
-    compileSdkVersion config["androidCompileSdkVersion"]
+    compileSdkVersion androidCompileSdk_version
 
     defaultConfig {
-        minSdkVersion config["androidMinSdkVersion"]
-        targetSdkVersion config["androidTargetSdkVersion"]
+        minSdkVersion androidMinSdk_version
+        targetSdkVersion androidTargetSdk_version
 
-        versionCode config["versionCode"]
-        versionName config["versionName"]
-        testInstrumentationRunner config["testInstrumentationRunner"]
+        versionCode versionCode
+        versionName versionName
+        testInstrumentationRunner testInstrumentationRunner
     }
 
     buildTypes {
@@ -29,19 +28,17 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ":domain")
 
-    def globalDependencies = rootProject.ext.globalDependencies
-    implementation globalDependencies["androidSupportAnnotations"]
-    implementation globalDependencies["javaxInject"]
-    implementation globalDependencies["rxJava"]
-    implementation globalDependencies["rxAndroid"]
-    implementation globalDependencies["gson"]
-    implementation globalDependencies["commonsIO"]
+    implementation androidSupportAnnotations
+    implementation javaxInject
+    implementation dagger
+    implementation rxJava
+    implementation rxAndroid
+    implementation gson
+    implementation commonsIO
 
-    def testDependencies = rootProject.ext.testDependencies
-    testImplementation testDependencies["junit"]
-    testImplementation testDependencies["assertj"]
-    testImplementation testDependencies["robolectric"]
-    testImplementation testDependencies["androidArchRoomRxTest"]
-    androidTestImplementation testDependencies["testRunner"]
-    androidTestImplementation testDependencies["espressoCore"]
+    annotationProcessor daggerCompiler
+
+    testImplementation junit
+    testImplementation assertj
+    testImplementation robolectric
 }

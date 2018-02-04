@@ -1,10 +1,8 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.common.dependencies.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.dependencies.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
-import com.nz2dev.wordtrainer.domain.exceptions.NotEnoughWordForTraining;
-import com.nz2dev.wordtrainer.domain.exceptions.SelectorsFactory;
 import com.nz2dev.wordtrainer.domain.interactors.training.CommitExerciseUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.training.LoadExerciseUseCase;
 import com.nz2dev.wordtrainer.domain.models.Word;
