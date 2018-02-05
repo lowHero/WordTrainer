@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.importing;
 
-import com.nz2dev.wordtrainer.app.common.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.presentation.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.interactors.language.LoadLanguageUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.word.AddWordDataSetUseCase;

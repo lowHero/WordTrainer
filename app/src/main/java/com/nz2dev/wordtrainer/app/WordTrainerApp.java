@@ -1,7 +1,9 @@
-package com.nz2dev.wordtrainer.app.common;
+package com.nz2dev.wordtrainer.app;
 
 import android.app.Application;
 import android.content.Context;
+
+import com.nz2dev.wordtrainer.app.common.DaggerAppComponent;
 
 /**
  * Created by nz2Dev on 29.11.2017

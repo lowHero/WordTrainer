@@ -14,9 +14,8 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
+import com.nz2dev.wordtrainer.app.WordTrainerApp;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.elevated.ElevatedExerciseTrainingActivity;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.domain.models.Training;
 
 import javax.inject.Inject;

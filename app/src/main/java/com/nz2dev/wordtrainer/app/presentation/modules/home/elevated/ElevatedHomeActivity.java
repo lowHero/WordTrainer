@@ -8,11 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
+import com.nz2dev.wordtrainer.app.WordTrainerApp;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BaseActivity;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 
 /**
  * Created by nz2Dev on 30.11.2017

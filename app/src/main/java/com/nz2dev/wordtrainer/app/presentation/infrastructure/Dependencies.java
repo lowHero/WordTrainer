@@ -1,13 +1,8 @@
 package com.nz2dev.wordtrainer.app.presentation.infrastructure;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-
-import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
-import com.nz2dev.wordtrainer.app.common.AppComponent;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 
 /**
  * Created by nz2Dev on 30.11.2017

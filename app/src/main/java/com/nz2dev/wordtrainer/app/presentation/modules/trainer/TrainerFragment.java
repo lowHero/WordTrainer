@@ -26,7 +26,7 @@ import com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.Exerci
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.overview.OverviewTrainingsFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.rules.SetUpRulesFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.scheduling.SetUpSchedulingFragment;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.units.tools.AdditionOptionsFragment;
+import com.nz2dev.wordtrainer.app.presentation.modules.trainer.additions.AdditionOptionsFragment;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.app.utils.helpers.DrawableIdHelper;
 import com.nz2dev.wordtrainer.app.utils.helpers.FragmentHelper;

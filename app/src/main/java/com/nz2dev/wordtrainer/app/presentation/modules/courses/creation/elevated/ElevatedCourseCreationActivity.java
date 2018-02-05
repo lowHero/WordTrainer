@@ -7,10 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
+import com.nz2dev.wordtrainer.app.WordTrainerApp;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.modules.courses.creation.CourseCreationFragment;
-import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 
 /**
  * Created by nz2Dev on 30.12.2017

@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.services.training;
 
-import com.nz2dev.wordtrainer.app.common.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.services.PerService;
 import com.nz2dev.wordtrainer.app.utils.TimeUtils;
 import com.nz2dev.wordtrainer.domain.interactors.scheduling.PlanNextSchedulingUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.scheduling.StopSchedulingUseCase;
@@ -12,7 +12,7 @@ import javax.inject.Inject;
  * Created by nz2Dev on 22.12.2017
  */
 @SuppressWarnings("WeakerAccess")
-@ForActions
+@PerService
 public class TrainingScheduleController {
 
     private final PlanNextSchedulingUseCase planNextSchedulingUseCase;

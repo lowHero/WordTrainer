@@ -1,8 +1,7 @@
-package com.nz2dev.wordtrainer.app.common;
+package com.nz2dev.wordtrainer.app;
 
 import android.content.Context;
 
-import com.nz2dev.wordtrainer.app.common.WordTrainerApp;
 import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.events.AppEventBus;
 
@@ -16,11 +15,11 @@ import dagger.Provides;
  * Created by nz2Dev on 29.11.2017
  */
 @Module
-public class AppModule {
+class AppModule {
 
     private final WordTrainerApp appInstance;
 
-    public AppModule(WordTrainerApp appInstance) {
+    AppModule(WordTrainerApp appInstance) {
         this.appInstance = appInstance;
     }
 

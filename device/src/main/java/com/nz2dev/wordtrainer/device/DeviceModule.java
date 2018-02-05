@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.device.common;
+package com.nz2dev.wordtrainer.device;
 
 import com.nz2dev.wordtrainer.device.execution.AndroidSchedulersFacade;
 import com.nz2dev.wordtrainer.device.files.AndroidJsonExporter;

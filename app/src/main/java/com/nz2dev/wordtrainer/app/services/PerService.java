@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.common.scopes;
+package com.nz2dev.wordtrainer.app.services;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import javax.inject.Scope;
 
 /**
- * Created by nz2Dev on 17.01.2018
+ * Created by nz2Dev on 05.02.2018
  */
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ForActionsContainersCompositions {}
+public @interface PerService {}

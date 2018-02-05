@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.elevated;
 
-import com.nz2dev.wordtrainer.app.common.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.presentation.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerNavigation;
 import com.nz2dev.wordtrainer.app.utils.generic.Optional;
 

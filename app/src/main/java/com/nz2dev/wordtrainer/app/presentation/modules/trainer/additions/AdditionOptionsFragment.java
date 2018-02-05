@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.infrastructure.units.tools;
+package com.nz2dev.wordtrainer.app.presentation.modules.trainer.additions;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

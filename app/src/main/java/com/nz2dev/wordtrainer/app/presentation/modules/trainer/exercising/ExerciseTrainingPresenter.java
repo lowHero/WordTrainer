@@ -1,7 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.common.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.presentation.scopes.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.interactors.training.CommitExerciseUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.training.LoadExerciseUseCase;

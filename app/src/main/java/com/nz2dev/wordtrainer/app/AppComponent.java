@@ -1,7 +1,7 @@
-package com.nz2dev.wordtrainer.app.common;
+package com.nz2dev.wordtrainer.app;
 
-import com.nz2dev.wordtrainer.data.common.DataModule;
-import com.nz2dev.wordtrainer.device.common.DeviceModule;
+import com.nz2dev.wordtrainer.data.DataModule;
+import com.nz2dev.wordtrainer.device.DeviceModule;
 import com.nz2dev.wordtrainer.app.presentation.modules.account.registration.elevated.ElevatedRegistrationComponent;
 import com.nz2dev.wordtrainer.app.presentation.modules.courses.creation.elevated.ElevatedCourseCreationComponent;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.elevated.ElevatedHomeComponent;
