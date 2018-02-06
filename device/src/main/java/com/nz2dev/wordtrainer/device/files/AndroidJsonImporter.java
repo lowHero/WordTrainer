@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.nz2dev.wordtrainer.device.files.serialization.JsonWordData;
 import com.nz2dev.wordtrainer.device.files.serialization.JsonWordsPacket;
 import com.nz2dev.wordtrainer.domain.device.Importer;
-import com.nz2dev.wordtrainer.domain.models.internal.WordData;
-import com.nz2dev.wordtrainer.domain.models.internal.WordsPacket;
+import com.nz2dev.wordtrainer.domain.models.WordData;
+import com.nz2dev.wordtrainer.domain.models.WordsPacket;
 import com.nz2dev.wordtrainer.domain.utils.ultralightmapper.UltraLightMapper;
 
 import org.apache.commons.io.IOUtils;

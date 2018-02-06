@@ -51,10 +51,11 @@ public class LoadExerciseUseCase {
         Single<Collection<Word>> variantsAsync = wordsRepository
                 .getWordsIds(appPreferences.getSelectedCourseId(), EXERCISING_WORDS_VARIANT_RANGE)
                 .subscribeOn(schedulersFacade.background())
-                .doOnSuccess(ids -> {
+                .map(ids -> {
                     if (ids.size() < MINIMUM_WORDS_FOR_EXERCISING) {
                         throw new NotEnoughWordForTraining();
                     }
+                    return ids;
                 })
                 .to(wordIdsSingle -> Observable.fromIterable(wordIdsSingle.blockingGet()))
                 .filter(unfilteredId -> unfilteredId != wordId)

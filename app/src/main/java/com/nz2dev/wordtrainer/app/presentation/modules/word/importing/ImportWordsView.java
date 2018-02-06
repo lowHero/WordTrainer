@@ -1,7 +1,7 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.importing;
 
 import com.nz2dev.wordtrainer.domain.models.Language;
-import com.nz2dev.wordtrainer.domain.models.internal.WordData;
+import com.nz2dev.wordtrainer.domain.models.WordData;
 
 import java.util.Collection;
 

@@ -5,8 +5,8 @@ import android.arch.persistence.room.Room;
 import com.nz2dev.wordtrainer.data.source.local.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.source.local.entity.TrainingEntity;
 import com.nz2dev.wordtrainer.data.source.local.entity.WordEntity;
+import com.nz2dev.wordtrainer.data.source.local.mapping.DatabaseMapper;
 import com.nz2dev.wordtrainer.data.source.local.relation.TrainingAndWordJoin;
-import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.Training;
 
 import org.junit.After;
@@ -32,7 +32,7 @@ public class TrainingDaoTest {
     private WordDao wordDao;
     private TrainingDao trainingDao;
     private WordTrainerDatabase database;
-    private Mapper mapper = new Mapper();
+    private DatabaseMapper databaseMapper = new DatabaseMapper();
 
     @Before
     public void createDB() {
@@ -73,7 +73,7 @@ public class TrainingDaoTest {
         assertThat(sortedTraining).isNotEmpty();
 
         TrainingAndWordJoin trainingAndWordJoin = sortedTraining.get(0);
-        Training training = mapper.map(trainingAndWordJoin, Training.class);
+        Training training = databaseMapper.map(trainingAndWordJoin, Training.class);
 
         assertThat(trainingAndWordJoin.tId).isEqualTo(trainingId);
         assertThat(trainingAndWordJoin.word.getId()).isEqualTo(wordId);

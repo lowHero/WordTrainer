@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.scopes;
+package com.nz2dev.wordtrainer.app.presentation;
 
 /**
  * Created by nz2Dev on 17.01.2018

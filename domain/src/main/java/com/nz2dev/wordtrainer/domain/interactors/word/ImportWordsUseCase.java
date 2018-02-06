@@ -2,7 +2,7 @@ package com.nz2dev.wordtrainer.domain.interactors.word;
 
 import com.nz2dev.wordtrainer.domain.device.Importer;
 import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
-import com.nz2dev.wordtrainer.domain.models.internal.WordsPacket;
+import com.nz2dev.wordtrainer.domain.models.WordsPacket;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

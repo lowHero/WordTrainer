@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nz2dev.wordtrainer.app.WordTrainerApp;
-import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
+import com.nz2dev.wordtrainer.app.presentation.ActivityNavigator;
 
 import javax.inject.Inject;
 

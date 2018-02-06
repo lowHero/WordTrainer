@@ -5,18 +5,20 @@ package com.nz2dev.wordtrainer.domain.models;
  */
 public class Word {
 
-    public static Word unidentified(long courseId, String original, String translation) {
-        return new Word(0L, courseId, original, translation);
+    public static Word unidentified(long courseId, long deckId, String original, String translation) {
+        return new Word(0L, courseId, deckId, original, translation);
     }
 
     private long id;
     private long courseId;
+    private long deckId;
     private String original;
     private String translation;
 
-    public Word(long id, long courseId, String original, String translation) {
+    public Word(long id, long courseId, long deckId, String original, String translation) {
         this.id = id;
         this.courseId = courseId;
+        this.deckId = deckId;
         this.original = original;
         this.translation = translation;
     }
@@ -53,4 +55,11 @@ public class Word {
         this.translation = translation;
     }
 
+    public long getDeckId() {
+        return deckId;
+    }
+
+    public void setDeckId(long deckId) {
+        this.deckId = deckId;
+    }
 }

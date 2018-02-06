@@ -3,7 +3,7 @@ package com.nz2dev.wordtrainer.data.repositories;
 import com.nz2dev.wordtrainer.data.source.local.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.source.local.dao.WordDao;
 import com.nz2dev.wordtrainer.data.source.local.entity.WordEntity;
-import com.nz2dev.wordtrainer.data.mapping.Mapper;
+import com.nz2dev.wordtrainer.data.source.local.mapping.DatabaseMapper;
 import com.nz2dev.wordtrainer.data.utils.CollectionToArrayUtils;
 import com.nz2dev.wordtrainer.domain.models.Word;
 import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
@@ -23,18 +23,18 @@ import io.reactivex.Single;
 public class RoomWordRepository implements WordsRepository {
 
     private final WordDao wordDao;
-    private final Mapper mapper;
+    private final DatabaseMapper databaseMapper;
 
     @Inject
-    public RoomWordRepository(WordTrainerDatabase database, Mapper mapper) {
+    public RoomWordRepository(WordTrainerDatabase database, DatabaseMapper databaseMapper) {
         this.wordDao = database.getWordDao();
-        this.mapper = mapper;
+        this.databaseMapper = databaseMapper;
     }
 
     @Override
     public Single<Long> addWord(Word word) {
         return Single.create(emitter -> {
-            WordEntity entity = mapper.map(word, WordEntity.class);
+            WordEntity entity = databaseMapper.map(word, WordEntity.class);
             emitter.onSuccess(wordDao.addWord(entity));
         });
     }
@@ -43,7 +43,7 @@ public class RoomWordRepository implements WordsRepository {
     public Single<Collection<Word>> getAllWords(long courseId) {
         return Single.create(emitter -> {
             Collection<WordEntity> entityList = wordDao.getAllWords(courseId);
-            Collection<Word> words = mapper.mapList(entityList, new ArrayList<>(entityList.size()), Word.class);
+            Collection<Word> words = databaseMapper.mapList(entityList, new ArrayList<>(entityList.size()), Word.class);
             emitter.onSuccess(words);
         });
     }
@@ -52,7 +52,7 @@ public class RoomWordRepository implements WordsRepository {
     public Single<Collection<Word>> getWords(Collection<Long> ids) {
         return Single.create(emitter -> {
             Collection<WordEntity> entityList = wordDao.getWords(CollectionToArrayUtils.convertToLongArray(ids));
-            Collection<Word> words = mapper.mapList(entityList, new ArrayList<>(entityList.size()), Word.class);
+            Collection<Word> words = databaseMapper.mapList(entityList, new ArrayList<>(entityList.size()), Word.class);
             emitter.onSuccess(words);
         });
     }
@@ -60,7 +60,7 @@ public class RoomWordRepository implements WordsRepository {
     @Override
     public Single<Word> getWord(long wordId) {
         return Single.create(emitter -> {
-            emitter.onSuccess(mapper.map(wordDao.getWordById(wordId), Word.class));
+            emitter.onSuccess(databaseMapper.map(wordDao.getWordById(wordId), Word.class));
         });
     }
 
@@ -72,7 +72,7 @@ public class RoomWordRepository implements WordsRepository {
     @Override
     public Single<Boolean> updateWord(Word word) {
         return Single.create(emitter -> {
-            wordDao.updateWord(mapper.map(word, WordEntity.class));
+            wordDao.updateWord(databaseMapper.map(word, WordEntity.class));
             emitter.onSuccess(true);
         });
     }
@@ -80,7 +80,7 @@ public class RoomWordRepository implements WordsRepository {
     @Override
     public Single<Boolean> deleteWord(Word word) {
         return Single.create(emitter -> {
-            wordDao.deleteWord(mapper.map(word, WordEntity.class));
+            wordDao.deleteWord(databaseMapper.map(word, WordEntity.class));
             emitter.onSuccess(true);
         });
     }

@@ -1,8 +1,9 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.startup;
 
-import com.nz2dev.wordtrainer.app.presentation.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.presentation.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BasePresenter;
 import com.nz2dev.wordtrainer.data.preferences.SharedAppPreferences;
+import com.nz2dev.wordtrainer.domain.data.preferences.AppPreferences;
 
 import javax.inject.Inject;
 
@@ -19,10 +20,10 @@ public class StartupPresenter extends BasePresenter<StartupView> {
 
     private static final long SPLASH_DELAY_MS = 300;
 
-    private SharedAppPreferences appPreferences;
+    private AppPreferences appPreferences;
 
     @Inject
-    public StartupPresenter(SharedAppPreferences appPreferences) {
+    public StartupPresenter(AppPreferences appPreferences) {
         this.appPreferences = appPreferences;
     }
 

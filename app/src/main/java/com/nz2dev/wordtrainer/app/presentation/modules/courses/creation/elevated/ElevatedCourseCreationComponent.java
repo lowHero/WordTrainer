@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.courses.creation.elevated;
 
-import com.nz2dev.wordtrainer.app.presentation.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.presentation.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.modules.courses.creation.CourseCreationFragment;
 
 import dagger.Subcomponent;

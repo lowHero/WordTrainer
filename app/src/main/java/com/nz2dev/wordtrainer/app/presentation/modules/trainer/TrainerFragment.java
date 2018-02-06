@@ -19,7 +19,7 @@ import com.nz2dev.wordtrainer.app.presentation.infrastructure.controlers.coverag
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.controlers.coverager.proxies.FragmentViewsProxy;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.BaseFragment;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
-import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
+import com.nz2dev.wordtrainer.app.presentation.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeNavigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.exercising.ExerciseTrainingFragment;
@@ -28,6 +28,7 @@ import com.nz2dev.wordtrainer.app.presentation.modules.trainer.rules.SetUpRulesF
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.scheduling.SetUpSchedulingFragment;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.additions.AdditionOptionsFragment;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.add.AddWordFragment;
 import com.nz2dev.wordtrainer.app.utils.helpers.DrawableIdHelper;
 import com.nz2dev.wordtrainer.app.utils.helpers.FragmentHelper;
 import com.nz2dev.wordtrainer.app.utils.helpers.MenuHelper;
@@ -159,7 +160,8 @@ public class TrainerFragment extends BaseFragment implements TrainerView, Traine
                 fragment.setOnOptionsSelectListener(options -> {
                     switch (options) {
                         case Create:
-                            homeNavigator.navigateToWordsOverviewWithOpenedCreation();
+                            AddWordFragment.newInstance().show(getActivity().getSupportFragmentManager(), "Add");
+                            overviewCoverager.uncover();
                             break;
                         case Explore:
                             activityNavigator.navigateToWordsSearchingFrom(getActivity());

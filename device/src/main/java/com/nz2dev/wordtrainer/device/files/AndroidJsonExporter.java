@@ -8,8 +8,8 @@ import com.google.gson.Gson;
 import com.nz2dev.wordtrainer.device.files.serialization.JsonWordsPacket;
 import com.nz2dev.wordtrainer.device.files.serialization.JsonWordData;
 import com.nz2dev.wordtrainer.domain.device.Exporter;
-import com.nz2dev.wordtrainer.domain.models.internal.WordData;
-import com.nz2dev.wordtrainer.domain.models.internal.WordsPacket;
+import com.nz2dev.wordtrainer.domain.models.WordData;
+import com.nz2dev.wordtrainer.domain.models.WordsPacket;
 import com.nz2dev.wordtrainer.domain.utils.ultralightmapper.UltraLightMapper;
 
 import java.io.File;
@@ -65,18 +65,18 @@ public class AndroidJsonExporter implements Exporter {
         File exportedFolder = new File(docsFolder.getAbsolutePath(), "/Words");
         if (!exportedFolder.exists()) {
             if (!exportedFolder.mkdir()) {
-                Log.e("Export", "wordsData dir not created");
+                Log.e("Export", "data dir not created");
             }
         }
         return exportedFolder;
     }
 
     private JsonWordsPacket toJsonWordsPacket(WordsPacket wordsPacket) {
-        Collection<JsonWordData> jsonWordsData = mapper.mapList(wordsPacket.wordsData, new ArrayList<>(wordsPacket.wordsData.size()), JsonWordData.class);
+        Collection<JsonWordData> jsonWordsData = mapper.mapList(wordsPacket.data, new ArrayList<>(wordsPacket.data.size()), JsonWordData.class);
 
         return new JsonWordsPacket(
-                wordsPacket.originalLanguageKey,
-                wordsPacket.translationlanguageKey,
+                wordsPacket.originalLangCode,
+                wordsPacket.translationLangCode,
                 jsonWordsData);
     }
 

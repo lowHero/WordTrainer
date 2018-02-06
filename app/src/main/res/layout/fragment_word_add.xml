@@ -1,23 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="36dp"
-    android:layout_marginRight="36dp"
-    android:layout_marginTop="36dp"
+    android:layout_height="wrap_content"
     android:background="?attr/colorBackgroundFloating"
     android:clickable="true"
-    android:focusable="true"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:paddingTop="24dp"
-    tools:background="#d6d6d6">
+    android:focusable="true">
 
-    <include
-        layout="@layout/include_structure_word_input"
-        android:id="@+id/word_input"
+    <RelativeLayout
+        android:id="@+id/relativeLayout3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="48dp"
+        android:background="@color/primaryColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-</FrameLayout>
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_word_creation_close"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_close_simple_black"
+            app:tint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tv_word_creation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/title_create_word"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_word_creation_accept"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:padding="4dp"
+            app:srcCompat="@drawable/ic_accept_simple_black"
+            app:tint="@android:color/white" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/iv_word_original_lang"
+        android:layout_width="48dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_word_original_input"
+        app:layout_constraintEnd_toStartOf="@+id/et_word_original_input"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_word_original_input"
+        tools:srcCompat="@drawable/ic_flag_english" />
+
+    <EditText
+        android:id="@+id/et_word_original_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="Original"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/iv_word_original_options"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/iv_word_original_lang"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout3" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/iv_word_original_options"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_word_original_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/et_word_original_input"
+        app:layout_constraintTop_toTopOf="@+id/et_word_original_input"
+        app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/img_translation_direction"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_word_original_input"
+        app:srcCompat="@drawable/ic_arrow_downward_black_24dp" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/iv_word_translation_lang"
+        android:layout_width="48dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_word_translation_input"
+        app:layout_constraintEnd_toStartOf="@+id/et_word_translation_input"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_word_translation_input"
+        app:srcCompat="@drawable/ic_flag_ukraine" />
+
+    <EditText
+        android:id="@+id/et_word_translation_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Transaltion"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/iv_word_translation_options"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/iv_word_translation_lang"
+        app:layout_constraintTop_toBottomOf="@+id/img_translation_direction" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/iv_word_translation_options"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_word_translation_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/et_word_translation_input"
+        app:layout_constraintTop_toTopOf="@+id/et_word_translation_input"
+        app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+
+    <Spinner
+        android:id="@+id/spinner_decks"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_word_translation_input"
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/include_item_deck" />
+
+</android.support.constraint.ConstraintLayout>

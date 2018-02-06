@@ -10,11 +10,11 @@ public interface AppPreferences {
     int UNSPECIFIED_ACCOUNT_ID = -1;
     int UNSPECIFIED_COURSE_ID = -1;
 
+    void signIn(Account account, String password);
+    boolean isSignIn();
     long getSignedAccountId();
 
-    long getSelectedCourseId();
-
-    void signIn(Account account, String password);
-
     void selectPrimaryCourseId(long courseId);
+    boolean isCourseIdSpecified();
+    long getSelectedCourseId();
 }

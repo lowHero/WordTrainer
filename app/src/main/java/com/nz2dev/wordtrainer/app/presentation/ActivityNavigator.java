@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.modules;
+package com.nz2dev.wordtrainer.app.presentation;
 
 import android.app.Activity;
 

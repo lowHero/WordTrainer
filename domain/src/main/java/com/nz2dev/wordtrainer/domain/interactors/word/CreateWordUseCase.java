@@ -23,32 +23,24 @@ public class CreateWordUseCase {
     private final WordsRepository wordsRepository;
     private final TrainingsRepository trainingsRepository;
     private final AppEventBus appEventBus;
-    private final AppPreferences appPreferences;
     private final SchedulersFacade schedulersFacade;
 
     @Inject
-    public CreateWordUseCase(WordsRepository wordsRepository, TrainingsRepository trainingsRepository, AppEventBus appEventBus, AppPreferences appPreferences, SchedulersFacade schedulersFacade) {
+    public CreateWordUseCase(WordsRepository wordsRepository, TrainingsRepository trainingsRepository, AppEventBus appEventBus, SchedulersFacade schedulersFacade) {
         this.wordsRepository = wordsRepository;
         this.trainingsRepository = trainingsRepository;
         this.appEventBus = appEventBus;
-        this.appPreferences = appPreferences;
         this.schedulersFacade = schedulersFacade;
     }
 
-    public Single<Boolean> execute(String original, String translation) {
-        Word word = Word.unidentified(appPreferences.getSelectedCourseId(), original, translation);
-
+    public Single<Boolean> execute(Word word) {
         return wordsRepository.addWord(word)
                 .subscribeOn(schedulersFacade.background())
-                .map(wordId -> {
+                .flatMap(wordId -> {
                     word.setId(wordId);
-
-                    Training trainingDto = new Training(0L, word, null, 0);
-                    trainingsRepository.addTraining(trainingDto).blockingGet();
-
-                    appEventBus.post(WordEvent.newWordAndTrainingAdded(word));
-                    return true;
+                    return trainingsRepository.addTraining(Training.unidentified(word));
                 })
+                .doOnSuccess(r -> appEventBus.post(WordEvent.newWordAndTrainingAdded(word)))
                 .subscribeOn(schedulersFacade.background())
                 .observeOn(schedulersFacade.ui());
     }

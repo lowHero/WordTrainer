@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.data.mapping;
+package com.nz2dev.wordtrainer.data.source.local.mapping;
 
 import com.nz2dev.wordtrainer.data.source.local.entity.AccountEntity;
 import com.nz2dev.wordtrainer.data.source.local.entity.WordEntity;
@@ -16,28 +16,28 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class MappingTest {
 
-    private Mapper mapper;
+    private DatabaseMapper databaseMapper;
 
     @Before
     public void init() {
-        mapper = new Mapper();
+        databaseMapper = new DatabaseMapper();
     }
 
     @Test
     public void mapNotNull_TrainingAndWordJoinToTraining_WithoutExceptions() {
-        TrainingAndWordJoin trainingAndWordJoin = new TrainingAndWordJoin(1, new WordEntity(1, "", ""), null, 0);
+        TrainingAndWordJoin trainingAndWordJoin = new TrainingAndWordJoin(1, new WordEntity(1, 1, 1, "", ""), null, 0);
 
-        Training training = mapper.map(trainingAndWordJoin, Training.class);
+        Training training = databaseMapper.map(trainingAndWordJoin, Training.class);
 
         assertThat(training).isNotNull();
-        assertThat(mapper.map(null, Training.class)).isNull();
+        assertThat(databaseMapper.map(null, Training.class)).isNull();
     }
 
     @Test
     public void map_AccountToAccountEntity_ShouldMapCorrect() {
         final Account account = new Account("name1");
 
-        AccountEntity accountEntity = mapper.map(account, AccountEntity.class);
+        AccountEntity accountEntity = databaseMapper.map(account, AccountEntity.class);
 
         assertThat(account.getName()).isEqualTo(accountEntity.getName());
     }

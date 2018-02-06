@@ -3,7 +3,7 @@ package com.nz2dev.wordtrainer.data.repositories;
 import com.nz2dev.wordtrainer.data.source.local.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.source.local.dao.AccountHistoryDao;
 import com.nz2dev.wordtrainer.data.source.local.entity.AccountHistoryEntity;
-import com.nz2dev.wordtrainer.data.mapping.Mapper;
+import com.nz2dev.wordtrainer.data.source.local.mapping.DatabaseMapper;
 import com.nz2dev.wordtrainer.domain.models.AccountHistory;
 import com.nz2dev.wordtrainer.domain.data.repositories.AccountHistoryRepository;
 
@@ -23,18 +23,18 @@ import io.reactivex.Single;
 public class RoomAccountHistoryRepository implements AccountHistoryRepository {
 
     private AccountHistoryDao accountHistoryDao;
-    private Mapper mapper;
+    private DatabaseMapper databaseMapper;
 
     @Inject
-    public RoomAccountHistoryRepository(WordTrainerDatabase database, Mapper mapper) {
+    public RoomAccountHistoryRepository(WordTrainerDatabase database, DatabaseMapper databaseMapper) {
         this.accountHistoryDao = database.getAccountHistoryDao();
-        this.mapper = mapper;
+        this.databaseMapper = databaseMapper;
     }
 
     @Override
     public Single<Boolean> addRecord(AccountHistory history) {
         return Single.create(emitter -> {
-            AccountHistoryEntity entity = mapper.map(history, AccountHistoryEntity.class);
+            AccountHistoryEntity entity = databaseMapper.map(history, AccountHistoryEntity.class);
             emitter.onSuccess(accountHistoryDao.add(entity) != -1);
         });
     }
@@ -43,7 +43,7 @@ public class RoomAccountHistoryRepository implements AccountHistoryRepository {
     public Single<Collection<AccountHistory>> getAllRecords() {
         return Single.create(emitter -> {
             List<AccountHistoryEntity> historyEntities = accountHistoryDao.getAllHistories();
-            Collection<AccountHistory> histories = mapper.mapList(
+            Collection<AccountHistory> histories = databaseMapper.mapList(
                     historyEntities,
                     new ArrayList<>(historyEntities.size()),
                     AccountHistory.class);

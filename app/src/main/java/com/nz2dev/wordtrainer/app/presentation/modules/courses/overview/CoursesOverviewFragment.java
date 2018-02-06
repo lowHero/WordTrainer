@@ -14,7 +14,7 @@ import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.HasDependencies;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.CourseOverviewItemRenderer;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.CourseOverviewItemRenderer.CourseActionListener;
-import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
+import com.nz2dev.wordtrainer.app.presentation.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.home.HomeFragment;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;

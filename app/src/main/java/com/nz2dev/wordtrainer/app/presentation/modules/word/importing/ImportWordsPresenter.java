@@ -1,12 +1,13 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.importing;
 
-import com.nz2dev.wordtrainer.app.presentation.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.presentation.ForActions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.wordtrainer.domain.interactors.language.LoadLanguageUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.word.AddWordDataSetUseCase;
 import com.nz2dev.wordtrainer.domain.interactors.word.ImportWordsUseCase;
-import com.nz2dev.wordtrainer.domain.models.internal.WordData;
-import com.nz2dev.wordtrainer.domain.models.internal.WordsPacket;
+import com.nz2dev.wordtrainer.domain.models.Deck;
+import com.nz2dev.wordtrainer.domain.models.WordData;
+import com.nz2dev.wordtrainer.domain.models.WordsPacket;
 
 import java.util.Collection;
 
@@ -35,30 +36,22 @@ public class ImportWordsPresenter extends DisposableBasePresenter<ImportWordsVie
 
     public void importFrom(String pathToFile) {
         manage(importWordsUseCase.execute(pathToFile)
+                .flatMap(packet -> Single.zip(
+                        loadLanguageUseCase.execute(packet.originalLangCode),
+                        loadLanguageUseCase.execute(packet.translationLangCode),
+                        (original, translation) -> {
+                            getView().showLanguages(original, translation);
+                            return packet;
+                        }))
                 .subscribe(wordsPacket -> {
                     loadedPacket = wordsPacket;
-                    loadLanguages(wordsPacket);
-
-                    getView().showImportableWords(wordsPacket.wordsData);
+                    getView().showImportableWords(wordsPacket.data);
                 }));
     }
 
-    public void acceptImportClick(Collection<WordData> selectedWords) {
-        manage(addWordDataSetUseCase.execute(loadedPacket.originalLanguageKey, selectedWords)
-                .subscribe(r -> {
-                    getView().hideIt();
-                }));
-    }
-
-    private void loadLanguages(WordsPacket wordsPacket) {
-        manage(Single.zip(
-                loadLanguageUseCase.execute(wordsPacket.originalLanguageKey),
-                loadLanguageUseCase.execute(wordsPacket.translationlanguageKey),
-                (original, translation) -> {
-                    getView().showLanguages(original, translation);
-                    return true;
-                })
-                .subscribe());
+    public void acceptImportClick(Collection<WordData> selectedWords, long targetDeckId) {
+        manage(addWordDataSetUseCase.execute(loadedPacket.separate(selectedWords), targetDeckId)
+                .subscribe(r -> getView().hideIt()));
     }
 
 }

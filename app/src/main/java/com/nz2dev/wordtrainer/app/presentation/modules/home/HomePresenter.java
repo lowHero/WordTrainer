@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.home;
 
-import com.nz2dev.wordtrainer.app.presentation.scopes.ForActionsContainersCompositions;
+import com.nz2dev.wordtrainer.app.presentation.ForActionsContainersCompositions;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.DisposableBasePresenter;
 
 import javax.inject.Inject;

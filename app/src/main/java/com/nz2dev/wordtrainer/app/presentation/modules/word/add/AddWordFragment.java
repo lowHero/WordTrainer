@@ -1,21 +1,28 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.word.add;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.modules.word.WordsFragment;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
+import com.nz2dev.wordtrainer.app.presentation.infrastructure.adapters.DecksAdapter;
+import com.nz2dev.wordtrainer.app.presentation.modules.home.elevated.ElevatedHomeActivity;
+import com.nz2dev.wordtrainer.app.presentation.modules.word.WordsFragment;
 import com.nz2dev.wordtrainer.app.utils.defaults.TextWatcherAdapter;
+import com.nz2dev.wordtrainer.app.utils.helpers.DrawableIdHelper;
+import com.nz2dev.wordtrainer.domain.models.Deck;
+import com.nz2dev.wordtrainer.domain.models.Language;
+
+import java.util.Collection;
 
 import javax.inject.Inject;
 
@@ -23,13 +30,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.nz2dev.wordtrainer.app.utils.AnimationsUtils.animateToInvisibleShort;
-import static com.nz2dev.wordtrainer.app.utils.AnimationsUtils.animateToVisibleShort;
-
 /**
  * Created by nz2Dev on 11.12.2017
  */
-public class AddWordFragment extends Fragment implements AddWordView {
+public class AddWordFragment extends BottomSheetDialogFragment implements AddWordView {
 
     public static final String TAG = AddWordFragment.class.getSimpleName();
 
@@ -37,24 +41,31 @@ public class AddWordFragment extends Fragment implements AddWordView {
         return new AddWordFragment();
     }
 
-    @BindView(R.id.et_word_original)
-    EditText originalWordEditor;
+    @BindView(R.id.iv_word_original_lang)
+    AppCompatImageView originalLangIcon;
 
-    @BindView(R.id.et_word_translate)
-    EditText translateWordEditor;
+    @BindView(R.id.et_word_original_input)
+    EditText originalTextInput;
 
-    @BindView(R.id.btn_accept_word)
-    View insertWordClicker;
+    @BindView(R.id.iv_word_translation_lang)
+    AppCompatImageView translationLangIcon;
 
-    @BindView(R.id.btn_reject_word)
-    View closeInsertWordClicker;
+    @BindView(R.id.et_word_translation_input)
+    EditText translationTextInput;
+
+    @BindView(R.id.spinner_decks)
+    Spinner decksSpinner;
 
     @Inject AddWordPresenter presenter;
+
+    private DecksAdapter decksAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Dependencies.fromParentFragment(this, WordsFragment.class).inject(this);
+        Dependencies.fromAttachedActivity(this, ElevatedHomeActivity.class)
+                .createAddWordComponent()
+                .inject(this);
     }
 
     @Nullable
@@ -67,76 +78,76 @@ public class AddWordFragment extends Fragment implements AddWordView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
-        originalWordEditor.addTextChangedListener(new TextWatcherAdapter() {
+        originalTextInput.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                presenter.validateOriginalInputs(text.toString());
+                presenter.validateOriginal(text.toString());
             }
         });
 
-        translateWordEditor.addTextChangedListener(new TextWatcherAdapter() {
+        translationTextInput.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                presenter.validateTranslationInputs(text.toString());
+                presenter.validateTranslation(text.toString());
             }
         });
 
-        forceShowKeyboard();
+        decksAdapter = new DecksAdapter(getContext());
+        decksSpinner.setAdapter(decksAdapter);
+
         presenter.setView(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        forceHideKeyboard();
         presenter.detachView();
     }
 
-    @OnClick(R.id.btn_accept_word)
-    public void onAcceptClick() {
-        presenter.acceptClick(originalWordEditor.getText().toString(),
-                translateWordEditor.getText().toString());
+    @OnClick(R.id.iv_word_creation_accept)
+    public void onCreateClick() {
+        presenter.createClick(originalTextInput.getText().toString(),
+                translationTextInput.getText().toString(),
+                decksAdapter.getItem(decksSpinner.getSelectedItemPosition()));
     }
 
-    @OnClick(R.id.btn_reject_word)
+    @OnClick(R.id.iv_word_creation_close)
     public void onRejectClick() {
-        presenter.rejectClick();
+        presenter.closeClick();
+    }
+
+    @Override
+    public void showOriginalLanguage(Language originalLanguage) {
+        originalLangIcon.setImageResource(DrawableIdHelper
+                .getIdByFieldName(originalLanguage.getDrawableUri()));
+    }
+
+    @Override
+    public void showTranslationLanguage(Language translationLanguage) {
+        translationLangIcon.setImageResource(DrawableIdHelper
+                .getIdByFieldName(translationLanguage.getDrawableUri()));
+    }
+
+    @Override
+    public void showCourseDecks(Collection<Deck> decks) {
+        decksAdapter.setCollection(decks);
+        decksAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showCreationAllowed(boolean allowed) {
+        // TODO maybe should use AppCompatButton instead AppCompatImageView for that purpose
+        // and toggle setEnable(boolean) to show allowed or not.
     }
 
     @Override
     public void showWordSuccessfulAdded() {
-        Log.d(getClass().getSimpleName(), "word added");
-        hideIt();
-    }
-
-    @Override
-    public void showInsertionAllowed(boolean allowed) {
-        if (allowed) {
-            animateToInvisibleShort(closeInsertWordClicker);
-            animateToVisibleShort(insertWordClicker);
-        } else {
-            animateToInvisibleShort(insertWordClicker);
-            animateToVisibleShort(closeInsertWordClicker);
-        }
+        Toast.makeText(getContext(), "word added", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void hideIt() {
-        getActivity().finish();
+        dismiss();
     }
 
-    @SuppressWarnings("ConstantConditions")
-    private void forceShowKeyboard() {
-        originalWordEditor.requestFocus();
-
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(originalWordEditor, InputMethodManager.SHOW_IMPLICIT);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private void forceHideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(originalWordEditor.getWindowToken(), 0);
-    }
 }

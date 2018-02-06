@@ -39,7 +39,7 @@ public class AdditionOptionsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.include_structure_options_for_words_adding, container, false);
+        return inflater.inflate(R.layout.include_unit_options_for_words_adding, container, false);
     }
 
     @Override

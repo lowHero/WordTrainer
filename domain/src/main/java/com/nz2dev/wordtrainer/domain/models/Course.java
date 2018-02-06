@@ -5,6 +5,10 @@ package com.nz2dev.wordtrainer.domain.models;
  */
 public class Course extends CourseBase {
 
+    public static Course unidentified(long schedulingId, Language originalLang, Language translationLang) {
+        return new Course(0L, schedulingId, originalLang, translationLang);
+    }
+
     private long schedulingId;
 
     public Course(long id, long schedulingId, Language originalLanguage, Language translationLanguage) {

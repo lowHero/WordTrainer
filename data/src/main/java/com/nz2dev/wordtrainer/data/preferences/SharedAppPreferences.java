@@ -44,12 +44,12 @@ public class SharedAppPreferences implements AppPreferences {
                 .apply();
     }
 
-    public long getSelectedCourseId() {
-        return sharedPreferences.getLong(KEY_SELECTED_COURSE_ID, UNSPECIFIED_COURSE_ID);
-    }
-
     public boolean isCourseIdSpecified() {
         return getSelectedCourseId() != UNSPECIFIED_COURSE_ID;
+    }
+
+    public long getSelectedCourseId() {
+        return sharedPreferences.getLong(KEY_SELECTED_COURSE_ID, UNSPECIFIED_COURSE_ID);
     }
 
     public void signIn(Account account, String password) {
@@ -68,12 +68,12 @@ public class SharedAppPreferences implements AppPreferences {
                 .apply();
     }
 
-    public long getSignedAccountId() {
-        return sharedPreferences.getLong(KEY_ACCOUNT_ID, UNSPECIFIED_ACCOUNT_ID);
+    public boolean isSignIn() {
+        return getSignedAccountId() != UNSPECIFIED_ACCOUNT_ID;
     }
 
-    public boolean isSignedIn() {
-        return getSignedAccountId() != UNSPECIFIED_ACCOUNT_ID;
+    public long getSignedAccountId() {
+        return sharedPreferences.getLong(KEY_ACCOUNT_ID, UNSPECIFIED_ACCOUNT_ID);
     }
 
     public void selectDeviceLanguageId() {

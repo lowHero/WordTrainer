@@ -16,8 +16,9 @@ import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.abstract
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.units.LanguagesRelationRenderUnit;
 import com.nz2dev.wordtrainer.app.presentation.modules.word.importing.elevated.ImportWordsActivity;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
+import com.nz2dev.wordtrainer.domain.models.Deck;
 import com.nz2dev.wordtrainer.domain.models.Language;
-import com.nz2dev.wordtrainer.domain.models.internal.WordData;
+import com.nz2dev.wordtrainer.domain.models.WordData;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.RendererBuilder;
 
@@ -94,7 +95,8 @@ public class ImportWordsFragment extends Fragment implements ImportWordsView {
 
     @OnClick(R.id.btn_import_accept)
     public void onAcceptImportClick() {
-        presenter.acceptImportClick(selectionHandler.obtainSelected());
+//      TODO  selectedDeck = deckSpinner.getSelectedDeck();
+        presenter.acceptImportClick(selectionHandler.obtainSelected(), -1L);
     }
 
     @Override

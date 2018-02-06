@@ -11,6 +11,10 @@ public class Language extends EmbeddedModel {
     public static final String KEY_UK = "uk";
     public static final String KEY_RU = "ru";
 
+    public static Language likeKey(String key) {
+        return new Language(key, null, null);
+    }
+
     private String key;
     private String drawableUri;
     private String localizedName;

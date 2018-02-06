@@ -49,7 +49,7 @@ public class ExerciseInteractorTest {
     };
 
     private static Word[] wordsDummy = new Word[]{
-            new Word(1, 1, "A", "N")
+            new Word(1, 1, deckId, "A", "N")
 //            new Word(2, 1, "A", "N"),
 //            new Word(3, 1, "A", "N")
 //            new Word(3, 1, "A", "N"),

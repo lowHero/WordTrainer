@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.domain.models.internal;
+package com.nz2dev.wordtrainer.domain.models;
 
 /**
  * Created by nz2Dev on 11.01.2018

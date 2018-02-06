@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.nz2dev.wordtrainer.app.R;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.abstraction.AbstractSelectableItemRenderer;
-import com.nz2dev.wordtrainer.domain.models.internal.WordData;
+import com.nz2dev.wordtrainer.domain.models.WordData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

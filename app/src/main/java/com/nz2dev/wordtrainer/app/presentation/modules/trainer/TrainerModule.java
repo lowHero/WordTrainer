@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.app.presentation.modules.trainer;
 
-import com.nz2dev.wordtrainer.app.presentation.scopes.ForActions;
+import com.nz2dev.wordtrainer.app.presentation.ForActions;
 import com.nz2dev.wordtrainer.app.utils.generic.Optional;
 
 import dagger.Module;

@@ -3,8 +3,8 @@ package com.nz2dev.wordtrainer.data.repositories;
 import com.nz2dev.wordtrainer.data.source.local.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.source.local.dao.CourseDao;
 import com.nz2dev.wordtrainer.data.source.local.entity.CourseEntity;
+import com.nz2dev.wordtrainer.data.source.local.mapping.DatabaseMapper;
 import com.nz2dev.wordtrainer.data.source.local.relation.CourseBaseSet;
-import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.Course;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 import com.nz2dev.wordtrainer.domain.data.repositories.CourseRepository;
@@ -25,18 +25,18 @@ import io.reactivex.Single;
 public class RoomCourseRepository implements CourseRepository {
 
     private CourseDao courseDao;
-    private Mapper mapper;
+    private DatabaseMapper databaseMapper;
 
     @Inject
-    public RoomCourseRepository(WordTrainerDatabase database, Mapper mapper) {
+    public RoomCourseRepository(WordTrainerDatabase database, DatabaseMapper databaseMapper) {
         this.courseDao = database.getCourseDao();
-        this.mapper = mapper;
+        this.databaseMapper = databaseMapper;
     }
 
     @Override
     public Single<Long> addCourse(Course course) {
         return Single.create(emitter -> {
-            long id = courseDao.add(mapper.map(course, CourseEntity.class));
+            long id = courseDao.add(databaseMapper.map(course, CourseEntity.class));
             emitter.onSuccess(id);
         });
     }
@@ -45,7 +45,7 @@ public class RoomCourseRepository implements CourseRepository {
     public Single<CourseBase> getCourseBase(long courseId) {
         return Single.create(emitter -> {
             CourseBaseSet entity = courseDao.getCourseBase(courseId);
-            emitter.onSuccess(mapper.map(entity, CourseBase.class));
+            emitter.onSuccess(databaseMapper.map(entity, CourseBase.class));
         });
     }
 
@@ -53,7 +53,7 @@ public class RoomCourseRepository implements CourseRepository {
     public Single<Collection<CourseBase>> getCoursesBase() {
         return Single.create(emitter -> {
             List<CourseBaseSet> entityList = courseDao.getCoursesBase();
-            Collection<CourseBase> courses = mapper.mapList(entityList, new ArrayList<>(entityList.size()), CourseBase.class);
+            Collection<CourseBase> courses = databaseMapper.mapList(entityList, new ArrayList<>(entityList.size()), CourseBase.class);
             emitter.onSuccess(courses);
         });
     }
@@ -62,7 +62,7 @@ public class RoomCourseRepository implements CourseRepository {
     public Single<CourseBase> getCourseBaseByOriginalLanguageKey(String originalLanguageKey) {
         return Single.create(emitter -> {
             CourseBaseSet entity = courseDao.getCourseBaseByOriginalLanguageKey(originalLanguageKey);
-            CourseBase course = mapper.map(entity, CourseBase.class);
+            CourseBase course = databaseMapper.map(entity, CourseBase.class);
             emitter.onSuccess(course);
         });
     }
@@ -72,7 +72,7 @@ public class RoomCourseRepository implements CourseRepository {
         return Single.create(emitter -> {
             CourseEntity entity = courseDao.getCourse(courseId);
             courseDao.deleteCourse(entity);
-            emitter.onSuccess(mapper.map(entity, Course.class));
+            emitter.onSuccess(databaseMapper.map(entity, Course.class));
         });
     }
 

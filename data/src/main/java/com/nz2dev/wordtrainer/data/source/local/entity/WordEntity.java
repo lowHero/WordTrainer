@@ -13,50 +13,23 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 public class WordEntity {
 
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    public final long id;
 
     @ForeignKey(entity = CourseEntity.class, parentColumns = "id", childColumns = "courseId", onDelete = CASCADE)
-    private long courseId;
+    public final long courseId;
 
-    private String original;
-    private String translate;
+    @ForeignKey(entity = DeckEntity.class, parentColumns = "id", childColumns = "deckId", onDelete = CASCADE)
+    public final long deckId;
 
-    public WordEntity(long id, long courseId, String original, String translate) {
+    public final String original;
+    public final String translate;
+
+    public WordEntity(long id, long courseId, long deckId, String original, String translate) {
         this.id = id;
         this.courseId = courseId;
+        this.deckId = deckId;
         this.original = original;
         this.translate = translate;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(long courseId) {
-        this.courseId = courseId;
-    }
-
-    public String getOriginal() {
-        return original;
-    }
-
-    public void setOriginal(String original) {
-        this.original = original;
-    }
-
-    public String getTranslate() {
-        return translate;
-    }
-
-    public void setTranslate(String translate) {
-        this.translate = translate;
-    }
 }

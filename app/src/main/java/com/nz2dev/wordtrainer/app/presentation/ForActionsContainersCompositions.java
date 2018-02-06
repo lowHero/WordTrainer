@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.app.presentation.scopes;
+package com.nz2dev.wordtrainer.app.presentation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

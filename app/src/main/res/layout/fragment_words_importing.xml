@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/include_structure_language_holder"
-        layout="@layout/include_structure_languages"
+        layout="@layout/include_unit_languages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp" />

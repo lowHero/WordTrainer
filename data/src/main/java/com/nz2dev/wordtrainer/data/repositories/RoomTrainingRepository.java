@@ -3,8 +3,8 @@ package com.nz2dev.wordtrainer.data.repositories;
 import com.nz2dev.wordtrainer.data.source.local.WordTrainerDatabase;
 import com.nz2dev.wordtrainer.data.source.local.dao.TrainingDao;
 import com.nz2dev.wordtrainer.data.source.local.entity.TrainingEntity;
+import com.nz2dev.wordtrainer.data.source.local.mapping.DatabaseMapper;
 import com.nz2dev.wordtrainer.data.source.local.relation.TrainingAndWordJoin;
-import com.nz2dev.wordtrainer.data.mapping.Mapper;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
 
@@ -24,18 +24,18 @@ import io.reactivex.Single;
 public class RoomTrainingRepository implements TrainingsRepository {
 
     private TrainingDao trainingDao;
-    private Mapper mapper;
+    private DatabaseMapper databaseMapper;
 
     @Inject
-    public RoomTrainingRepository(WordTrainerDatabase database, Mapper mapper) {
+    public RoomTrainingRepository(WordTrainerDatabase database, DatabaseMapper databaseMapper) {
         this.trainingDao = database.getTrainingDao();
-        this.mapper = mapper;
+        this.databaseMapper = databaseMapper;
     }
 
     @Override
     public Single<Boolean> addTraining(Training primitive) {
         return Single.create(emitter -> {
-            long resultId = trainingDao.insertTraining(mapper.map(primitive, TrainingEntity.class));
+            long resultId = trainingDao.insertTraining(databaseMapper.map(primitive, TrainingEntity.class));
 
             if (resultId != -1L) {
                 emitter.onSuccess(true);
@@ -48,7 +48,7 @@ public class RoomTrainingRepository implements TrainingsRepository {
     @Override
     public Single<Boolean> updateTraining(Training training) {
         return Single.create(emitter -> {
-            trainingDao.updateTraining(mapper.map(training, TrainingEntity.class));
+            trainingDao.updateTraining(databaseMapper.map(training, TrainingEntity.class));
             emitter.onSuccess(true);
         });
     }
@@ -57,7 +57,7 @@ public class RoomTrainingRepository implements TrainingsRepository {
     public Single<Training> getTraining(long id) {
         return Single.create(emitter -> {
             TrainingAndWordJoin trainingEntity = trainingDao.getTrainingById(id);
-            Training training = mapper.map(trainingEntity, Training.class);
+            Training training = databaseMapper.map(trainingEntity, Training.class);
             emitter.onSuccess(training);
         });
     }
@@ -66,7 +66,7 @@ public class RoomTrainingRepository implements TrainingsRepository {
     public Single<Training> getTrainingByWordId(long wordId) {
         return Single.create(emitter -> {
             TrainingAndWordJoin trainingEntity = trainingDao.getTrainingByWordId(wordId);
-            Training training = mapper.map(trainingEntity, Training.class);
+            Training training = databaseMapper.map(trainingEntity, Training.class);
             emitter.onSuccess(training);
         });
     }
@@ -75,7 +75,7 @@ public class RoomTrainingRepository implements TrainingsRepository {
     public Single<Training> getFirstSortedTraining(long courseId) {
         return Single.create(emitter -> {
             TrainingAndWordJoin trainingEntity = trainingDao.getFirstSortedTraining(courseId);
-            Training training = mapper.map(trainingEntity, Training.class);
+            Training training = databaseMapper.map(trainingEntity, Training.class);
             emitter.onSuccess(training);
         });
     }
@@ -84,7 +84,7 @@ public class RoomTrainingRepository implements TrainingsRepository {
     public Single<Collection<Training>> getSortedTrainings(long courseId) {
         return Single.create(emitter -> {
             List<TrainingAndWordJoin> sortedTrainingEntityList = trainingDao.getSortedTraining(courseId);
-            Collection<Training> sortedTrainings = mapper.mapList(sortedTrainingEntityList, new ArrayList<>(), Training.class);
+            Collection<Training> sortedTrainings = databaseMapper.mapList(sortedTrainingEntityList, new ArrayList<>(), Training.class);
             emitter.onSuccess(sortedTrainings);
         });
     }

@@ -1,4 +1,4 @@
-package com.nz2dev.wordtrainer.domain.data.binders;
+package com.nz2dev.wordtrainer.domain.binders;
 
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 import com.nz2dev.wordtrainer.domain.data.repositories.LanguageRepository;

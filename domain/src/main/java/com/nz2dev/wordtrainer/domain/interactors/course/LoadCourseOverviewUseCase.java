@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.domain.interactors.course;
 
-import com.nz2dev.wordtrainer.domain.data.binders.CourseBinder;
+import com.nz2dev.wordtrainer.domain.binders.CourseBinder;
 import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.internal.CourseInfo;
 import com.nz2dev.wordtrainer.domain.models.internal.CoursesOverview;
@@ -38,15 +38,11 @@ public class LoadCourseOverviewUseCase {
     public Single<CoursesOverview> execute() {
         return courseRepository.getCoursesBase()
                 .subscribeOn(schedulersFacade.background())
-                .to(courseBaseCollectionSource -> Observable.fromIterable(courseBaseCollectionSource.blockingGet()))
-                .map(courseBase -> {
-                    Single<CourseInfo> zipSource = Single.zip(
-                            courseBinder.bindCourseBase(courseBase),
-                            wordsRepository.getWordsCount(courseBase.getId()),
-                            CourseInfo::new);
-                    return zipSource.blockingGet();
-                })
-                .subscribeOn(schedulersFacade.background())
+                .flatMapObservable(Observable::fromIterable)
+                .flatMapSingle(courseBase -> Single.zip(
+                        courseBinder.bindCourseBase(courseBase),
+                        wordsRepository.getWordsCount(courseBase.getId()),
+                        CourseInfo::new))
                 .toList()
                 .map(courseInfoList -> new CoursesOverview(courseInfoList, appPreferences.getSelectedCourseId()))
                 .observeOn(schedulersFacade.ui());

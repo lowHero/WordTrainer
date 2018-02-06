@@ -6,7 +6,7 @@
     android:layout_height="match_parent" >
 
     <include
-        layout="@layout/include_structure_languages"
+        layout="@layout/include_unit_languages"
         android:id="@+id/include_structure_language_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

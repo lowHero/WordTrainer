@@ -1,6 +1,6 @@
 package com.nz2dev.wordtrainer.domain.device;
 
-import com.nz2dev.wordtrainer.domain.models.internal.WordsPacket;
+import com.nz2dev.wordtrainer.domain.models.WordsPacket;
 
 import java.io.IOException;
 

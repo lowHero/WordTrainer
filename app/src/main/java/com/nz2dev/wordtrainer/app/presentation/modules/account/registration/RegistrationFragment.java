@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
+import com.nz2dev.wordtrainer.app.presentation.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.presentation.modules.account.registration.elevated.ElevatedRegistrationActivity;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.Dependencies;
 import com.nz2dev.wordtrainer.domain.exceptions.NotImplementedException;

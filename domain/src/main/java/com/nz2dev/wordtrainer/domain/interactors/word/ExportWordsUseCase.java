@@ -4,8 +4,8 @@ import com.nz2dev.wordtrainer.domain.device.Exporter;
 import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.models.CourseBase;
 import com.nz2dev.wordtrainer.domain.models.Word;
-import com.nz2dev.wordtrainer.domain.models.internal.WordData;
-import com.nz2dev.wordtrainer.domain.models.internal.WordsPacket;
+import com.nz2dev.wordtrainer.domain.models.WordData;
+import com.nz2dev.wordtrainer.domain.models.WordsPacket;
 import com.nz2dev.wordtrainer.domain.data.repositories.CourseRepository;
 
 import java.util.Collection;

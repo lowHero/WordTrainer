@@ -7,6 +7,10 @@ import java.util.Date;
  */
 public class Training {
 
+    public static Training unidentified(Word word) {
+        return new Training(0L, word, null, 0);
+    }
+
     private long id;
     private Word word;
     private Date lastTrainingDate;

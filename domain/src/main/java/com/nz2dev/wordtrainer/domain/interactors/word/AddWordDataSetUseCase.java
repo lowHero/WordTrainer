@@ -2,13 +2,14 @@ package com.nz2dev.wordtrainer.domain.interactors.word;
 
 import com.nz2dev.wordtrainer.domain.device.SchedulersFacade;
 import com.nz2dev.wordtrainer.domain.events.AppEventBus;
+import com.nz2dev.wordtrainer.domain.models.Deck;
 import com.nz2dev.wordtrainer.domain.models.Training;
 import com.nz2dev.wordtrainer.domain.models.Word;
-import com.nz2dev.wordtrainer.domain.models.internal.WordData;
+import com.nz2dev.wordtrainer.domain.models.WordData;
 import com.nz2dev.wordtrainer.domain.data.repositories.CourseRepository;
 import com.nz2dev.wordtrainer.domain.data.repositories.TrainingsRepository;
 import com.nz2dev.wordtrainer.domain.data.repositories.WordsRepository;
-import com.nz2dev.wordtrainer.domain.utils.ultralighteventbus.EventBus;
+import com.nz2dev.wordtrainer.domain.models.WordsPacket;
 
 import java.util.Collection;
 
@@ -39,17 +40,16 @@ public class AddWordDataSetUseCase {
         this.schedulersFacade = schedulersFacade;
     }
 
-    public Single<Boolean> execute(String languageKey, Collection<WordData> wordDataSet) {
-        return courseRepository.getCourseBaseByOriginalLanguageKey(languageKey)
+    public Single<Boolean> execute(WordsPacket packet, long targetDeckId) {
+        return courseRepository.getCourseBaseByOriginalLanguageKey(packet.originalLangCode)
                 .subscribeOn(schedulersFacade.background())
                 .map(courseBase -> {
-                    Observable.fromIterable(wordDataSet)
-                            .blockingForEach(wordData -> {
-                                Word word = new Word(0L, courseBase.getId(), wordData.original, wordData.translation);
-                                word.setId(wordsRepository.addWord(word).blockingGet());
+                    for (WordData wordData : packet.data) {
+                        Word word = Word.unidentified(courseBase.getId(), targetDeckId, wordData.original, wordData.translation);
+                        word.setId(wordsRepository.addWord(word).blockingGet());
+                        trainingsRepository.addTraining(Training.unidentified(word)).blockingGet();
+                    }
 
-                                trainingsRepository.addTraining(new Training(0L, word, null, 0)).blockingGet();
-                            });
                     appEventBus.post(WordEvent.newWordAndTrainingPackAdded());
                     return true;
                 })

@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nz2dev.wordtrainer.app.R;
-import com.nz2dev.wordtrainer.app.presentation.modules.ActivityNavigator;
+import com.nz2dev.wordtrainer.app.presentation.ActivityNavigator;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.TrainingRenderer;
 import com.nz2dev.wordtrainer.app.presentation.infrastructure.renderers.TrainingRenderer.ActionListener;
 import com.nz2dev.wordtrainer.app.presentation.modules.trainer.TrainerFragment;
